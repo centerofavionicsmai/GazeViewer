@@ -190,14 +190,14 @@ namespace GazeViewer
                 case Key.F1:
                     if (mainGrid.Visibility == Visibility.Visible)
                     {
-                        mainGrid.Visibility = Visibility.Hidden;
+                     //   mainGrid.Visibility = Visibility.Hidden;
                         
                         
                         MenuWindow.Show();
                     }else if (mainGrid.Visibility == Visibility.Hidden)
                     {
                         MenuWindow.Hide();
-                        mainGrid.Visibility = Visibility.Visible;
+                    //    mainGrid.Visibility = Visibility.Visible;
                     }
                    
                 

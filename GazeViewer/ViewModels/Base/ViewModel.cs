@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GazeViewer.ViewModels.Base
 {
-    internal class ViewModel : INotifyPropertyChanged
+    internal abstract class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
