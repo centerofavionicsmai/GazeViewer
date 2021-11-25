@@ -19,7 +19,7 @@ using System.IO;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
-
+using GazeViewer.Windows;
 namespace GazeViewer
 {
     /// <summary>
@@ -33,6 +33,9 @@ namespace GazeViewer
         private RenderTransfromHelper renderTransfromHelper;
         private HeatMapHelper heatMapHelper;
         private int GazePointIndex = 0;
+
+
+        private MenuWindow MenuWindow = new MenuWindow();
 
         public MainWindow()
         {
@@ -188,8 +191,12 @@ namespace GazeViewer
                     if (mainGrid.Visibility == Visibility.Visible)
                     {
                         mainGrid.Visibility = Visibility.Hidden;
+                        
+                        
+                        MenuWindow.Show();
                     }else if (mainGrid.Visibility == Visibility.Hidden)
                     {
+                        MenuWindow.Hide();
                         mainGrid.Visibility = Visibility.Visible;
                     }
                    
