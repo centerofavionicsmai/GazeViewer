@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GazeViewer.Windows"
         xmlns:vm ="clr-namespace:GazeViewer.ViewModels"
+        xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.DataContext>
@@ -12,8 +13,14 @@
     </Window.DataContext>
     <Grid>
         <Menu x:Name="HeaderMenu">
-            <MenuItem Header="Файл"></MenuItem>
-            <MenuItem Header="Закрыть все окна" Command="{Binding CloseApplicationCommand}"></MenuItem>
+            <MenuItem Header="Файл">
+                
+            </MenuItem>
+            <MenuItem Header="Закрыть приложение" >
+                <MenuItem.Command>
+                <cmd:CloseApplicationCommand/>
+                </MenuItem.Command>
+            </MenuItem>
             
         </Menu>
         

@@ -13,11 +13,7 @@ namespace GazeViewer.ViewModels
 {
    internal class MenuWindowViewModel : ViewModel
     {
-        public MenuWindowViewModel()
-        {
-            CloseApplicationCommand = new ActionCommand(OnCloseApplicationCommandExecute,CanCloseApplicationCommandExecuted);
-        }
-
+       
 
 
         private string _Title = "Menu";
@@ -51,22 +47,9 @@ namespace GazeViewer.ViewModels
         }
         #endregion
 
-        #region Commands
-            #region CloseApplicationComman
-        public ICommand CloseApplicationCommand { get; set; }
-
-        private void OnCloseApplicationCommandExecute(object p)
-        {
-            Application.Current.Shutdown();
-        }
-        private bool CanCloseApplicationCommandExecuted(object p)
-        {
-            return true;
-        }
-           #endregion
+        
 
 
-        #endregion
 
 
 
