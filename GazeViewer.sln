@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GazeViewer", "GazeViewer\GazeViewer.csproj", "{13D7B087-3037-4190-B430-5E174CA690E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GazeViewer", "GazeViewer\GazeViewer.csproj", "{13D7B087-3037-4190-B430-5E174CA690E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{8730102C-B4DA-4821-827F-C852FD3B957B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvReaderTest", "CsvReaderTest\CsvReaderTest.csproj", "{511BB932-2BFB-4EA9-93CD-F663465623AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{13D7B087-3037-4190-B430-5E174CA690E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D7B087-3037-4190-B430-5E174CA690E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13D7B087-3037-4190-B430-5E174CA690E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{511BB932-2BFB-4EA9-93CD-F663465623AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{511BB932-2BFB-4EA9-93CD-F663465623AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{511BB932-2BFB-4EA9-93CD-F663465623AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{511BB932-2BFB-4EA9-93CD-F663465623AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{511BB932-2BFB-4EA9-93CD-F663465623AB} = {8730102C-B4DA-4821-827F-C852FD3B957B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {504AD6D6-5129-4073-BAC0-F3596279B2F0}
