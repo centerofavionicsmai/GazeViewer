@@ -38,12 +38,28 @@ namespace GazeViewer
         {
             InitializeComponent();
             List<GazePoint> GenerateGazePoints = new List<GazePoint>();
-            var a = WriteTestGazePoints(100, 150, -100, 100,5);
-            GenerateGazePoints.AddRange(a);
+            //Debug purposes
+            {
+                var a = WriteTestGazePoints(-100, 100, -100, 100, 100);
+                GenerateGazePoints.AddRange(a);
+                a = WriteTestGazePoints(-100, -80, -100, -80, 100);
+                GenerateGazePoints.AddRange(a);
+                a = WriteTestGazePoints(-80, -60, -80, 0, 100);
+                GenerateGazePoints.AddRange(a);
+                a = WriteTestGazePoints(-900, 250, -980, 290, 75000);
+                GenerateGazePoints.AddRange(a);
+            //    a = WriteTestGazePoints(-1000, 1000, 100, 300, 1500);
+                GenerateGazePoints.AddRange(a);
+            }
             CSVWriter cSVWriter = new CSVWriter();
             cSVWriter.WriteGazePoints(GenerateGazePoints);
 
             InitHelpers();
+            GazePoints = csvFileReader.GetGazePointsList().Result;
+           // GazePoints = renderTransfromHelper.TransformToNormalizeCoordinate(GazePoints, Width, Height);
+           GazePoints = renderTransfromHelper.TransformToWindowCoordinates(GazePoints, Width, Height);
+
+
         }
 
         private void InitHelpers()
@@ -52,7 +68,6 @@ namespace GazeViewer
           renderTransfromHelper  = new RenderTransfromHelper();
           heatMapHelper = new HeatMapHelper();
         }
-
 
         #region Drawing
         public void DrawHeatMap(List<Ellipse> ellipses)
@@ -67,19 +82,28 @@ namespace GazeViewer
         {
             foreach (var point in GazePoints)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = GazePoints.IndexOf(point).ToString();
-                textBlock.FontSize = 16;
-                textBlock.Foreground = new SolidColorBrush(Colors.White);
-                textBlock.RenderTransform = new TranslateTransform(point.X + Width / 2 - 5, point.Y - 10 + Height / 2);
-                Ellipse ellipse = new Ellipse();
-                ellipse.MaxHeight = 28;
-                ellipse.MaxWidth = 28;
-                ellipse.RenderTransform = new TranslateTransform(point.X, point.Y);
-                ellipse.Fill = new SolidColorBrush(Color.FromArgb(65, 255, 255, 255));
-                mainGrid.Children.Add(ellipse);
-                mainGrid.Children.Add(textBlock);
+                //TextBlock textBlock = new TextBlock();
+                //textBlock.Text = GazePoints.IndexOf(point).ToString();
+                //textBlock.FontSize = 16;
+                //textBlock.Foreground = new SolidColorBrush(Colors.White);
+                //textBlock.RenderTransform = new TranslateTransform(point.X + Width / 2 - 8, point.Y - 10 + Height / 2);
+                //Ellipse ellipse = new Ellipse();
+                //ellipse.MaxHeight = 28;
+                //ellipse.MaxWidth = 28;
+                //ellipse.RenderTransform = new TranslateTransform(point.X, point.Y);
+                //ellipse.Fill = new SolidColorBrush(Color.FromArgb(65, 255, 255, 255));
+                //mainGrid.Children.Add(ellipse);
+                //mainGrid.Children.Add(textBlock);
+                System.Windows.Shapes.Path path = new System.Windows.Shapes.Path();
+                Point p = new Point(point.X, point.Y);
+
+                EllipseGeometry ellipseGeometry = new EllipseGeometry(p, 25, 25, new TranslateTransform(point.X, point.Y));
+                path.Data = ellipseGeometry;
+                path.Stroke = new SolidColorBrush(Colors.Black);
+                mainGrid.Children.Add(path);
             }
+            mainGrid.Children.Remove(GazePointReproGrid);
+            mainGrid.Children.Add(GazePointReproGrid);
         }
 
         public void DrawGazePoint(GazePoint gazePoint,Color color)
@@ -88,7 +112,7 @@ namespace GazeViewer
             textBlock.Text = GazePoints.IndexOf(gazePoint).ToString();
             textBlock.FontSize = 16;
             textBlock.Foreground = new SolidColorBrush(Colors.White);
-            textBlock.RenderTransform = new TranslateTransform(gazePoint.X + Width / 2 - 5, gazePoint.Y - 10 + Height / 2);
+            textBlock.RenderTransform = new TranslateTransform(gazePoint.X + Width / 2 - 10, gazePoint.Y - 10 + Height / 2);
             Ellipse ellipse = new Ellipse();
             ellipse.MaxHeight = 28;
             ellipse.MaxWidth = 28;
@@ -168,21 +192,32 @@ namespace GazeViewer
                     {
                         mainGrid.Visibility = Visibility.Visible;
                     }
-                    GazePoints = csvFileReader.GetGazePointsList().Result;
-                    renderTransfromHelper.TransformToWindowCoordinates(ref GazePoints, Width, Height);
-
-
+                   
+                
                     break;
 
             }
         }
 
-        private void Show_Heat_Map_Click(object sender, RoutedEventArgs e)
+        private async void Show_Heat_Map_Click(object sender, RoutedEventArgs e)
         {
-            
-            var ellipses = heatMapHelper.GetHeatMap(GazePoints, 0.8f, 0.6f, 0.2f);
-            DrawHeatMap(ellipses);
+            heatMapHelper.InitDeviceGrid(2000, 2000);
+            var a = await heatMapHelper.GenerateHeatMap(GazePoints,50f,8,15);
+            //  DrawHeatMap(a);
+          // Test(a);
+           
         }
+
+        void Test(List<System.Windows.Shapes.Path> paths)
+        {
+           foreach (var p in paths)
+            {
+                mainGrid.Children.Add(p);
+            }
+
+
+        }
+
 
         private void Show_all_points_Click(object sender, RoutedEventArgs e)
         {
@@ -191,8 +226,7 @@ namespace GazeViewer
 
         private void Next_Frame_Click(object sender, RoutedEventArgs e)
         {
-       
-            
+
             var color = Color.FromArgb(65, 255, 255, 255);
             if (GazePointIndex > GazePoints.Count)
             {

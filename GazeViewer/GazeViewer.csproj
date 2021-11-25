@@ -9,6 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="27.2.0" />
+    <PackageReference Include="WriteableBitmapEx" Version="1.6.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="View\" />
   </ItemGroup>
 
 </Project>
