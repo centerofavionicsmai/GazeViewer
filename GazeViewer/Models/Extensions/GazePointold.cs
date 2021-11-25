@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace GazeViewer.Extensions
 {
-  public  class GazePoint
+  public  class GazePointold
     {
         public double X { get; set; }
         public double Y { get; set; }
         //public DateTime DateTime { get; set; }
         public double timeSpan { get; set; }
-        public GazePoint()
+        public GazePointold()
         {
 
         }
 
-        public GazePoint(double x, double y, double _timeSpan)
+        public GazePointold(double x, double y, double _timeSpan)
         {
             X = x;
             Y = y;

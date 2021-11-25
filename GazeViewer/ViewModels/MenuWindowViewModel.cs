@@ -1,4 +1,5 @@
 ﻿using GazeViewer.Infastructure.Commands;
+using GazeViewer.Models;
 using GazeViewer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,28 @@ namespace GazeViewer.ViewModels
 {
    internal class MenuWindowViewModel : ViewModel
     {
-       
+        public MenuWindowViewModel() {
+
+            var gazePoints = new List<GazePoint>((int)((int) 360 / 0.1));
+            for (var x = 0d; x <= 360; x += 0.1f)
+            {
+                gazePoints.Add(new GazePoint { X = x, Y = (double) Math.Sin(x * MathF.PI) });
+            }
+            _GazePoints = gazePoints;
+        }
+
+        private IEnumerable<GazePoint> _GazePoints;
+
+        public IEnumerable<GazePoint> GazePoints
+        {
+            get => _GazePoints;
+            set => Set(ref _GazePoints, GazePoints);
+        }
+
+
+
+
+
 
 
         private string _Title = "Menu";

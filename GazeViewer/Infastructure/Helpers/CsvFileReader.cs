@@ -14,12 +14,12 @@ namespace GazeViewer.Helpers
     class CsvFileReader
     {
 
-        public  async Task< List<GazePoint>> GetGazePointsList()
+        public  async Task< List<GazePointold>> GetGazePointsList()
         {
 
             string _path = $@"Output/testout.csv";
 
-            List<GazePoint> gazePoints = new List<GazePoint>();
+            List<GazePointold> gazePoints = new List<GazePointold>();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 // Don't write the header again
@@ -30,7 +30,7 @@ namespace GazeViewer.Helpers
             using (var reader = new StreamReader(_path))
             using (var csv = new CsvReader(reader, config))
             {
-                gazePoints = csv.GetRecords<GazePoint>().ToList();
+                gazePoints = csv.GetRecords<GazePointold>().ToList();
             }
             return gazePoints;
         }   

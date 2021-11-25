@@ -14,7 +14,7 @@ namespace GazeViewer.Helpers
     class CSVWriter
     {
 
-        public void WriteGazePoints(List<GazePoint> gazePoints)
+        public void WriteGazePoints(List<GazePointold> gazePoints)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {

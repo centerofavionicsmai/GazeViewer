@@ -30,7 +30,7 @@ namespace GazeViewer
     public partial class MainWindow : Window
     {
 
-        private List<GazePoint> GazePoints;
+        private List<GazePointold> GazePoints;
         private CsvFileReader csvFileReader;
         private RenderTransfromHelper renderTransfromHelper;
         private HeatMapHelper heatMapHelper;
@@ -41,7 +41,7 @@ namespace GazeViewer
         public MainWindow()
         {
             InitializeComponent();
-            List<GazePoint> GenerateGazePoints = new List<GazePoint>();
+            List<GazePointold> GenerateGazePoints = new List<GazePointold>();
             //Debug purposes
             {
                 var a = WriteTestGazePoints(-100, 100, -100, 100, 100);
@@ -59,9 +59,9 @@ namespace GazeViewer
             cSVWriter.WriteGazePoints(GenerateGazePoints);
 
             InitHelpers();
-            GazePoints = csvFileReader.GetGazePointsList().Result;
+      //     var GazePoints = csvFileReader.GetGazePointsList().Result;
            // GazePoints = renderTransfromHelper.TransformToNormalizeCoordinate(GazePoints, Width, Height);
-           GazePoints = renderTransfromHelper.TransformToWindowCoordinates(GazePoints, Width, Height);
+          // GazePoints = renderTransfromHelper.TransformToWindowCoordinates(GazePoints, Width, Height);
 
         }
 
@@ -109,7 +109,7 @@ namespace GazeViewer
             mainGrid.Children.Add(GazePointReproGrid);
         }
 
-        public void DrawGazePoint(GazePoint gazePoint,Color color)
+        public void DrawGazePoint(GazePointold gazePoint,Color color)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = GazePoints.IndexOf(gazePoint).ToString();
@@ -137,7 +137,7 @@ namespace GazeViewer
             mainGrid.Children.Add(polyline);
         }
 
-        public void DrawGazePlot(List<GazePoint> gazePoints)
+        public void DrawGazePlot(List<GazePointold> gazePoints)
         {
             Polyline polyline = new Polyline();
             foreach (var p in gazePoints)
@@ -153,10 +153,10 @@ namespace GazeViewer
 
         #endregion
 
-        private List<GazePoint> WriteTestGazePoints(int _xmin = 0, int _xmax = 0, int _ymin = 0, int _ymax = 0,int count=100)
+        private List<GazePointold> WriteTestGazePoints(int _xmin = 0, int _xmax = 0, int _ymin = 0, int _ymax = 0,int count=100)
         {
 
-            List<GazePoint> records = new List<GazePoint>();
+            List<GazePointold> records = new List<GazePointold>();
             Random random = new Random();
             for (int i = 0; i <= count; i++)
             {
@@ -174,7 +174,7 @@ namespace GazeViewer
                     //mainGrid.Children.Add(ellipse);
 
                 }
-                GazePoint gazePoint = new GazePoint(normX, normY, 555);
+                GazePointold gazePoint = new GazePointold(normX, normY, 555);
                 records.Add(gazePoint);
             }
             return records;
@@ -190,7 +190,7 @@ namespace GazeViewer
                 case Key.F1:
                     if (mainGrid.Visibility == Visibility.Visible)
                     {
-                     //   mainGrid.Visibility = Visibility.Hidden;
+                        mainGrid.Visibility = Visibility.Hidden;
                         
                         
                         MenuWindow.Show();
