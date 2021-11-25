@@ -11,17 +11,14 @@
     <Window.DataContext>
         <vm:MenuWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources >
+        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"></cmd:CloseApplicationCommand>
+        <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
+    </Window.Resources>
     <Grid>
         <Menu x:Name="HeaderMenu">
-            <MenuItem Header="Файл">
-                
-            </MenuItem>
-            <MenuItem Header="Закрыть приложение" >
-                <MenuItem.Command>
-                <cmd:CloseApplicationCommand/>
-                </MenuItem.Command>
-            </MenuItem>
-            
+            <MenuItem Header="Файл" Command="{StaticResource OpenFileDialogCommand}"/>
+            <MenuItem Header="Закрыть приложение" Command="{StaticResource CloseApplicationCommand}"/>
         </Menu>
         
         <Grid x:Name="MenuGrid" Margin="0,0,0,60">
@@ -48,4 +45,7 @@
         
 
     </Grid>
+
+    
+    
 </Window>
