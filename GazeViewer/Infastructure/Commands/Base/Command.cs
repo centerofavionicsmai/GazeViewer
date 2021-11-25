@@ -15,14 +15,9 @@ namespace GazeViewer.Infastructure.Commands.Base
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public abstract bool CanExecute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool CanExecute(object parameter);
 
-        public abstract void Execute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Execute(object parameter);
+       
     }
 }
