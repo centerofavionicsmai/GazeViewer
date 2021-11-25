@@ -20,7 +20,7 @@ namespace GazeViewer.ViewModels
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
-        private int _MaxSliderValue = 75000;
+        private int _MaxSliderValue = 900;
         public int MaxSliderValue
         {
             get => _MaxSliderValue;

@@ -20,6 +20,8 @@ using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
 using GazeViewer.Windows;
+using GazeViewer.ViewModels;
+
 namespace GazeViewer
 {
     /// <summary>
@@ -33,8 +35,7 @@ namespace GazeViewer
         private RenderTransfromHelper renderTransfromHelper;
         private HeatMapHelper heatMapHelper;
         private int GazePointIndex = 0;
-
-
+        private MenuWindowViewModel m = new MenuWindowViewModel();
         private MenuWindow MenuWindow = new MenuWindow();
 
         public MainWindow()
@@ -61,7 +62,6 @@ namespace GazeViewer
             GazePoints = csvFileReader.GetGazePointsList().Result;
            // GazePoints = renderTransfromHelper.TransformToNormalizeCoordinate(GazePoints, Width, Height);
            GazePoints = renderTransfromHelper.TransformToWindowCoordinates(GazePoints, Width, Height);
-
 
         }
 
