@@ -13,6 +13,8 @@
     <Grid>
         <Menu x:Name="HeaderMenu">
             <MenuItem Header="Файл"></MenuItem>
+            <MenuItem Header="Закрыть все окна" Command="{Binding CloseApplicationCommand}"></MenuItem>
+            
         </Menu>
         
         <Grid x:Name="MenuGrid" Margin="0,0,0,60">

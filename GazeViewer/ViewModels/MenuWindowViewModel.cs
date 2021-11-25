@@ -1,17 +1,26 @@
-﻿using GazeViewer.ViewModels.Base;
+﻿using GazeViewer.Infastructure.Commands;
+using GazeViewer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GazeViewer.ViewModels
 {
    internal class MenuWindowViewModel : ViewModel
     {
-        private string _Title = "Menu";
+        public MenuWindowViewModel()
+        {
+            CloseApplicationCommand = new ActionCommand(OnCloseApplicationCommandExecute,CanCloseApplicationCommandExecuted);
+        }
 
+
+
+        private string _Title = "Menu";
         public string Title
         {
             get => _Title;
@@ -41,6 +50,27 @@ namespace GazeViewer.ViewModels
             set => Set(ref _SliderValue, value);
         }
         #endregion
+
+        #region Commands
+            #region CloseApplicationComman
+        public ICommand CloseApplicationCommand { get; set; }
+
+        private void OnCloseApplicationCommandExecute(object p)
+        {
+            Application.Current.Shutdown();
+        }
+        private bool CanCloseApplicationCommandExecuted(object p)
+        {
+            return true;
+        }
+           #endregion
+
+
+        #endregion
+
+
+
+
 
 
 
