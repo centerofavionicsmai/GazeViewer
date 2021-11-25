@@ -8,7 +8,7 @@
          WindowStyle="None"
         WindowState="Maximized"
         AllowsTransparency="True"
-        Title="MainWindow" Height="450" Width="800" x:Name="_MainWindow" Background="{x:Null}" Foreground="#00000000" KeyDown="_MainWindow_KeyDown"
+        Title="MainWindow" Width="800" Height="450"  x:Name="_MainWindow" Background="{x:Null}" Foreground="#00000000" KeyDown="_MainWindow_KeyDown"
         
         >
     <Grid x:Name="mainGrid">
