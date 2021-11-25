@@ -29,7 +29,7 @@ namespace GazeViewer.Helpers
 
         }
 
-        public async Task< List<Path>> GenerateHeatMap(List<GazePoint> gazePoints, float eps = 10, int minIntensivity = 2, int maxIntensivity = 10)
+        public async Task< List<Path>> GenerateHeatMap(List<GazePointold> gazePoints, float eps = 10, int minIntensivity = 2, int maxIntensivity = 10)
         {
             List<Path> paths = new List<Path>();
             //HeatMap Matrix
@@ -77,7 +77,7 @@ namespace GazeViewer.Helpers
             byte b = 0;
             return Color.FromArgb(15, r, g, b);
         }
-        public List<Ellipse> GetHeatMap(List<GazePoint> gazePoints, float firstTreshHold = 0.45f, float secondThreshold = 0.2f, float thirdThreshHold = 0.1f)
+        public List<Ellipse> GetHeatMap(List<GazePointold> gazePoints, float firstTreshHold = 0.45f, float secondThreshold = 0.2f, float thirdThreshHold = 0.1f)
         {
 
             List<Ellipse> ellipses = new List<Ellipse>();

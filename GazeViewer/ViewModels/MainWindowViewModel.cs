@@ -3,11 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GazeViewer.Models;
 using GazeViewer.ViewModels.Base;
 namespace GazeViewer.ViewModels
 {
    internal class MainWindowViewModel:ViewModel
     {
+        //public MainWindowViewModel()
+        //{
+        //}
+
+
+
+
+
+
+
+
+
+
         private string _Title = "Gaze Viewer";
             
         public string Title
