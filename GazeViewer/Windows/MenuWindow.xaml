@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:GazeViewer.Windows"
         xmlns:vm ="clr-namespace:GazeViewer.ViewModels"
         xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
+        xmlns:oxy = "http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.DataContext>
@@ -16,36 +17,121 @@
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
     </Window.Resources>
     <Grid>
-        <Menu x:Name="HeaderMenu">
+        <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
             <MenuItem Header="Файл" Command="{StaticResource OpenFileDialogCommand}"/>
             <MenuItem Header="Закрыть приложение" Command="{StaticResource CloseApplicationCommand}"/>
         </Menu>
-        
-        <Grid x:Name="MenuGrid" Margin="0,0,0,60">
-            <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
 
-                <MenuItem Header="Показать все точки"  ></MenuItem>
-                <MenuItem Header="Показать тепловую карту"  ></MenuItem>
-                <MenuItem Header="Следующий кадр"  ></MenuItem>
-                <MenuItem Header="Предыдущий кадр"  ></MenuItem>
-                <MenuItem Header="Gaze Plot "  ></MenuItem>
-            </Menu>
-            <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue, UpdateSourceTrigger=PropertyChanged}"  Minimum="{Binding MinSliderValue}" Maximum="{Binding MaxSliderValue}"   />
-         <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding SliderValue}"     FontSize="20"></TextBlock>
-        </Grid>
+        <TabControl  Margin="0,20,0,0">
+            <TabItem Header="Вкладка 1" Width="100">
+                <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Margin="0,0,0,35">
+                    <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
 
-        <StatusBar x:Name="ProgressBar" VerticalAlignment="Bottom" Height="50" Margin="10">
+                        <MenuItem Header="Показать все точки"   ></MenuItem>
+                        <MenuItem Header="Показать тепловую карту"  ></MenuItem>
+                        <MenuItem Header="Следующий кадр"  ></MenuItem>
+                        <MenuItem Header="Предыдущий кадр"  ></MenuItem>
+                        <MenuItem Header="Gaze Plot "  ></MenuItem>
+                    </Menu>
+                    <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue, UpdateSourceTrigger=PropertyChanged}"  Minimum="{Binding MinSliderValue}" Maximum="{Binding MaxSliderValue}"   />
+                    <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding SliderValue}"     FontSize="20"></TextBlock>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="График" Width="100">
+                <Grid Margin="0,0,0,35">
+                    <oxy:Plot>
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left"/>
+                            <oxy:LinearAxis Position="Bottom"/>
+                        </oxy:Plot.Axes>
+                        <oxy:LineSeries Color="MediumPurple"
+                                ItemsSource="{Binding GazePoints}"
+                                        DataFieldX="X"
+                                        DataFieldY="Y"
+                                        />
+                    </oxy:Plot>
+
+                </Grid>
+
+
+
+
+
+            </TabItem>
+
+            <TabItem Header="Визуализация">
+                <Grid Margin="0,0,0,35">
+                    <Rectangle Margin="52,104,642,147" MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+                    <Rectangle Margin="317,104,377,147"  MaxHeight="150" MaxWidth="150"   Stroke="Black"/>
+                    <Rectangle Margin="582,104,112,147"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Визуализация + видео">
+                <Grid Margin="0,0,0,35">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="126*"/>
+                        <ColumnDefinition Width="271*"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse Stroke="Black" Grid.ColumnSpan="2" Margin="0,0,0,219" Grid.RowSpan="2"></Ellipse>
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Rectangle Margin="52,82,642,45"    MinHeight="70" MinWidth="70"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+                        <Rectangle Margin="317,82,377,45"  MinHeight="70" MinWidth="70"    MaxHeight="150" MaxWidth="150"   Stroke="Black"/>
+                        <Rectangle Margin="582,82,112,45"  MinHeight="70" MinWidth="70"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+
+                    </Grid>
+
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*">
+
+                        </RowDefinition>
+                        <RowDefinition Height="5*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+
+
+
+
+
+
+                </Grid>
+            </TabItem>
+
+
+
+
+        </TabControl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <StatusBar x:Name="ProgressBar" VerticalAlignment="Bottom" Height="30" Margin="10">
             <StatusBarItem>
                 <TextBlock Text="Debug Info" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
-            <ProgressBar Height="30"  Value="{Binding SliderValue}" Width="150" ></ProgressBar>
+                <ProgressBar Height="30"  Value="{Binding SliderValue}" Width="150" ></ProgressBar>
             </StatusBarItem>
         </StatusBar>
-        
-
     </Grid>
 
-    
-    
+
+
 </Window>
