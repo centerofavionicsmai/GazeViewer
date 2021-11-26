@@ -9,9 +9,7 @@ namespace GazeViewer.ViewModels
 {
    internal class MainWindowViewModel:ViewModel
     {
-        //public MainWindowViewModel()
-        //{
-        //}
+        
 
 
 
