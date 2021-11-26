@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:GazeViewer"
              StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="GridPositionStyle" TargetType="Grid">
+            <Setter Property="Margin" Value="0,0,0,35"></Setter>
+        </Style>
+
+
     </Application.Resources>
 </Application>

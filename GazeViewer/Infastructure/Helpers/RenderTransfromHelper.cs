@@ -12,7 +12,7 @@ namespace GazeViewer.Helpers
     class RenderTransfromHelper
     {
 
-        public List<GazePointold> TransformToWindowCoordinates(List<GazePointold> points, double Width,double Height )
+        public List<GazePointold> TransformToWindowCoordinates(List<GazePointold> points, double Width, double Height)
         {
             foreach (var p in points)
             {
@@ -24,6 +24,18 @@ namespace GazeViewer.Helpers
             }
             return points;
         }
+
+     
+        public (double, double) TransformToWindow (  (double _x,double _y) normValues , double Width, double Height)
+        {
+            double x = normValues._x * (Width/2);
+            double y = normValues._y * (Height/2);
+
+            return (x,y);
+        }
+
+
+
 
         public List<GazePointold> TransformToNormalizeCoordinate(List<GazePointold> points,double Width,double Height)
         {

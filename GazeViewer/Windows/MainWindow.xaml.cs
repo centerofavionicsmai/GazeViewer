@@ -35,7 +35,6 @@ namespace GazeViewer
         private RenderTransfromHelper renderTransfromHelper;
         private HeatMapHelper heatMapHelper;
         private int GazePointIndex = 0;
-        private MenuWindowViewModel m = new MenuWindowViewModel();
         private MenuWindow MenuWindow = new MenuWindow();
 
         public MainWindow()
