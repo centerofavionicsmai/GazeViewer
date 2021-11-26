@@ -3,6 +3,7 @@ using GazeViewer.Models;
 using GazeViewer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,20 @@ namespace GazeViewer.ViewModels
     {
         public MenuWindowViewModel() {
 
-            var gazePoints = new List<GazePoint>((int)((int) 360 / 0.1));
-            for (var x = 0d; x <= 360; x += 0.1f)
+            var gazePoints = new ObservableCollection<GazePoint>();
+            for (var x = 0d; x <= 750; x += 0.1f)
             {
-                gazePoints.Add(new GazePoint { X = x, Y = (double) Math.Sin(x * MathF.PI) });
+                gazePoints.Add(new GazePoint() { X = x, Y = Math.Pow(Math.Sin(x) * Math.PI/2,23) });
             }
             _GazePoints = gazePoints;
         }
 
-        private IEnumerable<GazePoint> _GazePoints;
+        private ObservableCollection<GazePoint> _GazePoints;
 
-        public IEnumerable<GazePoint> GazePoints
+        public ObservableCollection<GazePoint> GazePoints
         {
             get => _GazePoints;
-            set => Set(ref _GazePoints, GazePoints);
+            set => Set(ref _GazePoints, value);
         }
 
 
