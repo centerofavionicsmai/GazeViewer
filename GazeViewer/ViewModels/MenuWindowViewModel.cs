@@ -27,16 +27,12 @@ namespace GazeViewer.ViewModels
    internal class MenuWindowViewModel : ViewModel
     {
         private double[,] _Data;
-
-
         private OxyPlot.PlotModel _HeatMap;
         public OxyPlot.PlotModel HeatMap
         {
             get => _HeatMap;
             set => Set(ref _HeatMap, value);
         }
-
-
 
         public MenuWindowViewModel() {
 
@@ -150,17 +146,24 @@ namespace GazeViewer.ViewModels
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         private double _ReceivedBytes;
         public double ReceivedBytes
         {
             get => _ReceivedBytes;
             set => Set(ref _ReceivedBytes, value);
         }
-
-
-
-
-
 
         private string _Title = "Menu";
         public string Title

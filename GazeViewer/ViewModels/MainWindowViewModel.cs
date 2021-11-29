@@ -9,16 +9,6 @@ namespace GazeViewer.ViewModels
 {
    internal class MainWindowViewModel:ViewModel
     {
-        
-
-
-
-
-
-
-
-
-
 
         private string _Title = "Gaze Viewer";
             
@@ -27,10 +17,6 @@ namespace GazeViewer.ViewModels
             get => _Title;
             set=>Set(ref _Title,value);
         }
-
-
-
-
 
     }
 }
