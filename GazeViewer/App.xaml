@@ -12,9 +12,6 @@
         </Style>
         <Style x:Key="VizualizeImage" TargetType="Image" >
             <Setter Property="Source" Value="{svgc:SvgImage https://upload.wikimedia.org/wikipedia/commons/d/dc/Primary_Flight_Display.svg}"></Setter>
-
-
-
         </Style>
 
     </Application.Resources>

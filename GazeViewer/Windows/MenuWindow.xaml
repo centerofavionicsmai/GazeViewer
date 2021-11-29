@@ -27,7 +27,7 @@
     </Window.Resources>
     <Grid>
         <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
-            <MenuItem Header="Файл" Command="{StaticResource OpenFileDialogCommand}"/>
+            <MenuItem Header="Файл" Command="{Binding  OpenFileCommand}"/>
             <MenuItem Header="Закрыть приложение" Command="{StaticResource CloseApplicationCommand}"/>
         </Menu>
 
@@ -35,17 +35,65 @@
 
 
             <TabItem Header="Вкладка 1" Width="100">
+
+                <Grid>
+                <Grid Margin="0,0,0,150">
+                        <!--<Image Style="{StaticResource VizualizeImage}"/>-->
+                        <ItemsControl    ItemsSource  ="{Binding  Strings }" Margin="0,0,0,0"  VerticalAlignment="Top">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Grid>
+
+                                </Grid>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Ellipse Fill="BlueViolet" Width="15" Height="15" RenderTransformOrigin="0.5,0.5">
+                                        <Ellipse.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="15" Y="15"/>
+                                            </TransformGroup>
+                                        </Ellipse.RenderTransform>
+
+
+
+
+
+                                    </Ellipse>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+
+                    </ItemsControl>
+
+                </Grid>
+
+
+
+
                 <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Style="{StaticResource GridPositionStyle}">
                     <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
 
-                        <MenuItem Header="Показать все точки"   ></MenuItem>
+                        <MenuItem Header="Показать все точки" Command="{Binding ReadCsvLogsCommand}"   ></MenuItem>
                         <MenuItem Header="Показать тепловую карту"  ></MenuItem>
                         <MenuItem Header="Следующий кадр"  ></MenuItem>
                         <MenuItem Header="Предыдущий кадр"  ></MenuItem>
                         <MenuItem Header="Gaze Plot "  ></MenuItem>
                     </Menu>
-                    <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue, UpdateSourceTrigger=PropertyChanged}"  Minimum="{Binding MinSliderValue}" Maximum="{Binding MaxSliderValue}"   />
-                    <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding SliderValue}"     FontSize="20"></TextBlock>
+                    
+
+
+
+                    <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Maximum="{Binding Strings.Count}"   />
+                    <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding  Strings.Count, UpdateSourceTrigger=PropertyChanged}"     FontSize="20"></TextBlock>
+                </Grid>
+
+
                 </Grid>
             </TabItem>
 
@@ -79,9 +127,6 @@
             <TabItem Header="Визуализация">
                 <Grid   Style="{StaticResource GridPositionStyle}">
 
-                    <Image Style="{StaticResource VizualizeImage}"/>
-
-
                     <Ellipse x:Name="GazePoint"  HorizontalAlignment="Left" Height="50" Margin="342,129,0,172" Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5">
 
                         <Ellipse.RenderTransform>
@@ -95,25 +140,49 @@
                     </Ellipse>
 
 
+                    <Image Style="{StaticResource VizualizeImage}"/>
+
+
+
+
+
                 </Grid>
             </TabItem>
 
             <TabItem Header="Визуализация + видео">
                 <Grid Style="{StaticResource GridPositionStyle}">
-                    <Ellipse Stroke="Black"></Ellipse>
-                    <Grid Grid.Row="1" Margin="0,0,0,0">
-                        <Rectangle Margin="52,82,642,45"    MinHeight="70" MinWidth="70"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
-                        <Rectangle Margin="317,82,377,45"  MinHeight="70" MinWidth="70"    MaxHeight="150" MaxWidth="150"   Stroke="Black"/>
-                        <Rectangle Margin="582,82,112,45"  MinHeight="70" MinWidth="70"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+
+                    <Grid Grid.Row="0">
+                        <!--<MediaElement Source="{Binding FilePath}" IsMuted="True" Stretch="Uniform" ></MediaElement>-->
 
                     </Grid>
 
+                    <Grid Grid.Row="1" Margin="0,0,0,0">
+                        <Ellipse   HorizontalAlignment="Left" Height="50" Margin="342,129,0,172" Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5">
 
+                            <Ellipse.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform X="{Binding Xpos}" Y="{Binding Ypos}"/>
+                                </TransformGroup>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+
+
+
+                        <Image Style="{StaticResource VizualizeImage}" />
+                    </Grid>
+
+                    <GridSplitter></GridSplitter>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*">
 
                         </RowDefinition>
-                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="4*">
+
+                        </RowDefinition>
                     </Grid.RowDefinitions>
 
 
@@ -155,6 +224,7 @@
                 <ProgressBar Height="30"  Value="{Binding SliderValue}" Width="150" ></ProgressBar>
             </StatusBarItem>
         </StatusBar>
+
     </Grid>
 
 
