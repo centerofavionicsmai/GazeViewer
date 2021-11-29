@@ -7,6 +7,8 @@
         xmlns:vm ="clr-namespace:GazeViewer.ViewModels"
         xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
         xmlns:oxy = "http://oxyplot.org/wpf"
+
+
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.DataContext>
@@ -15,6 +17,13 @@
     <Window.Resources >
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"></cmd:CloseApplicationCommand>
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
+
+
+
+
+
+
+
     </Window.Resources>
     <Grid>
         <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
@@ -43,7 +52,7 @@
             <TabItem Header="График" Width="100">
                 <Grid Style="{StaticResource GridPositionStyle}">
                     <oxy:PlotView Model="{Binding HeatMap}">
-                        
+
                     </oxy:PlotView>
 
 
@@ -69,9 +78,10 @@
 
             <TabItem Header="Визуализация">
                 <Grid   Style="{StaticResource GridPositionStyle}">
-                    <Rectangle Margin="52,104,642,147" MaxHeight="150" MaxWidth="150" Stroke="Black"/>
-                    <Rectangle Margin="317,104,377,147"  MaxHeight="150" MaxWidth="150"   Stroke="Black"/>
-                    <Rectangle Margin="582,104,112,147"  MaxHeight="150" MaxWidth="150" Stroke="Black"/>
+
+                    <Image Style="{StaticResource VizualizeImage}"/>
+
+
                     <Ellipse x:Name="GazePoint"  HorizontalAlignment="Left" Height="50" Margin="342,129,0,172" Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5">
 
                         <Ellipse.RenderTransform>

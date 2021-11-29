@@ -2,12 +2,20 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GazeViewer"
-             StartupUri="Windows/MainWindow.xaml">
+             StartupUri="Windows/MainWindow.xaml"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             >
     <Application.Resources>
         <Style x:Key="GridPositionStyle" TargetType="Grid">
             <Setter Property="Margin" Value="0,0,0,35"></Setter>
         </Style>
+        <Style x:Key="VizualizeImage" TargetType="Image" >
+            <Setter Property="Source" Value="{svgc:SvgImage https://upload.wikimedia.org/wikipedia/commons/d/dc/Primary_Flight_Display.svg}"></Setter>
 
+
+
+        </Style>
 
     </Application.Resources>
 </Application>
