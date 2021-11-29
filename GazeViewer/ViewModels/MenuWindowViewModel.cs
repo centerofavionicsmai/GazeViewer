@@ -21,11 +21,126 @@ using System.Windows.Media;
 using OxyPlot.Series;
 using OxyPlot;
 using OxyPlot.Axes;
+using GazeViewer.Infastructure.Services;
+using GazeViewer.Infastructure.Services.Interfaces;
+using GazeViewer.Infastructure.Helpers;
 
 namespace GazeViewer.ViewModels
 {
    internal class MenuWindowViewModel : ViewModel
     {
+        #region Properties
+        private double _ReceivedBytes;
+        /// <summary>
+        /// Количество получанных byte, для Live Версии
+        /// </summary>
+        public double ReceivedBytes
+        {
+            get => _ReceivedBytes;
+            set => Set(ref _ReceivedBytes, value);
+        }
+
+        private string _Title = "Menu";
+        /// <summary>
+        /// Заголовок окна
+        /// </summary>
+        public string Title
+        {
+            get => _Title;
+            set => Set(ref _Title, value);
+        }
+
+        #region SliderSettings
+        //Int используется специально, так как мы идем по List<GazePoint>
+        private int _MaxSliderValue = 900;
+        public int MaxSliderValue
+        {
+            get => _MaxSliderValue;
+            set => Set(ref _MaxSliderValue, value);
+        }
+
+        private int _MinSliderValue = 0;
+        public int MinSliderValue
+        {
+            get => _MinSliderValue;
+            set => Set(ref _MinSliderValue, value);
+        }
+
+        private int _SliderValue;
+        public int SliderValue
+        {
+            get => _SliderValue;
+            set => Set(ref _SliderValue, value);
+        }
+        #endregion
+
+        #endregion
+
+        #region Services
+        IDialogService DialogService = new DialogService();
+        #endregion
+
+
+        #region Commands 
+        /// <summary>
+        /// Открыть файл
+        /// </summary>
+        public ICommand OpenFileCommand { get; }
+        private bool CanOpenFileCommandExecuted(object p) => true;
+        private void OpenFileCommandExecute(object p)
+        {
+            FilePath = DialogService.OpenFileDialog();
+
+        }
+
+
+        public ICommand ReadCsvLogsCommand { get; }
+        private bool CanReadCsvLogsCommandExecuted(object p)
+        {
+            if (FilePath is null) return false;
+            return true;
+        }
+        private void ReadCsvLogsCommandExecute(object p)
+        {
+            ///Warning in add CollectionMethod
+            LogReader logReader = new LogReader();
+            foreach (var logs in logReader.ReadCsvLog(FilePath))
+            {
+                _Strings.Add(logs);
+            }
+
+        }
+
+
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private double[,] _Data;
         private OxyPlot.PlotModel _HeatMap;
         public OxyPlot.PlotModel HeatMap
@@ -34,46 +149,24 @@ namespace GazeViewer.ViewModels
             set => Set(ref _HeatMap, value);
         }
 
+
+        private string _FilePath;
+        public string FilePath
+        {
+            get => _FilePath;
+            set => Set(ref _FilePath, value);
+        }
+
+
+
         public MenuWindowViewModel() {
 
-            _HeatMap = new PlotModel { Title = "Heatmap" };
+            OpenFileCommand = new ActionCommand(OpenFileCommandExecute, CanOpenFileCommandExecuted);
+            ReadCsvLogsCommand = new ActionCommand(ReadCsvLogsCommandExecute, CanReadCsvLogsCommandExecuted);
 
-            // Color axis (the X and Y axes are generated automatically)
-            _HeatMap.Axes.Add(new LinearColorAxis
-            {
-                Palette = OxyPalettes.Rainbow(100)
-            });
 
-            // generate 1d normal distribution
-            var singleData = new double[2000];
-            for (int x = 0; x < 2000; ++x)
-            {
-                singleData[x] = Math.Exp((-1.0 / 2.0) * Math.Pow(((double)x - 50.0) / 20.0, 2.0));
-            }
+            _Strings = new ObservableCollection<string>();
 
-            // generate 2d normal distribution
-            var data = new double[2000, 2000];
-            for (int x = 0; x < 2000; ++x)
-            {
-                for (int y = 0; y < 2000; ++y)
-                {
-                    data[x,y] = singleData[x] * singleData[(y + 30) % 100] * 100;
-                }
-            }
-
-            var heatMapSeries = new HeatMapSeries
-            {
-                X0 = 0,
-                X1 = 10,
-                Y0 = 0,
-                Y1 = 10,
-                Interpolate = true, 
-                RenderMethod = HeatMapRenderMethod.Bitmap, Background = OxyColor.FromArgb(0, 0, 0, 0),
-                
-                Data = data
-            };
-
-            _HeatMap.Series.Add(heatMapSeries);
 
 
 
@@ -89,9 +182,6 @@ namespace GazeViewer.ViewModels
 
 
 
-
-            Thread thread = new Thread(new ThreadStart(Test));
-            thread.Start();
 
 
 
@@ -129,6 +219,20 @@ namespace GazeViewer.ViewModels
             set => Set(ref _GazePoints, value);
         }
 
+
+
+
+
+        private ObservableCollection <string> _Strings;
+        public ObservableCollection<string> Strings
+        {
+            get => _Strings;
+            set => Set(ref _Strings, value);
+        }
+
+
+
+
         private double _Xpos;
         public double Xpos
         {
@@ -158,43 +262,8 @@ namespace GazeViewer.ViewModels
 
 
 
-        private double _ReceivedBytes;
-        public double ReceivedBytes
-        {
-            get => _ReceivedBytes;
-            set => Set(ref _ReceivedBytes, value);
-        }
-
-        private string _Title = "Menu";
-        public string Title
-        {
-            get => _Title;
-            set => Set(ref _Title, value);
-        }
-
-        #region SliderSettings
-        //Int используется специально, так как мы идем по List<GazePoint>
-        private int _MaxSliderValue = 900;
-        public int MaxSliderValue
-        {
-            get => _MaxSliderValue;
-            set => Set(ref _MaxSliderValue, value);
-        }
-
-        private int _MinSliderValue = 0;
-        public int MinSliderValue
-        {
-            get => _MinSliderValue;
-            set => Set(ref _MinSliderValue, value);
-        }
-
-        private int _SliderValue;
-        public int SliderValue
-        {
-            get => _SliderValue;
-            set => Set(ref _SliderValue, value);
-        }
-        #endregion
+        
+        
 
         
 
