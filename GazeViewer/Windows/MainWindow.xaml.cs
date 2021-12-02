@@ -32,7 +32,6 @@ namespace GazeViewer
 
         private List<GazePointold> GazePoints;
         private CsvFileReader csvFileReader;
-        private RenderTransfromHelper renderTransfromHelper;
         private HeatMapHelper heatMapHelper;
         private int GazePointIndex = 0;
         private MenuWindow MenuWindow = new MenuWindow();
@@ -67,7 +66,7 @@ namespace GazeViewer
         private void InitHelpers()
         {
           csvFileReader  = new CsvFileReader();
-          renderTransfromHelper  = new RenderTransfromHelper();
+          //renderTransfromHelper  = new RenderTransfromHelper();
           heatMapHelper = new HeatMapHelper();
         }
 

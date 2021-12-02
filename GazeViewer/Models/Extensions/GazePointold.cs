@@ -20,7 +20,7 @@ namespace GazeViewer.Extensions
         public GazePointold(double x, double y, double _timeSpan)
         {
             X = x;
-            Y = y;
+            Y= y;
             timeSpan = _timeSpan;
             //    DateTime = DateTime.UtcNow; //To do, ov
         }
