@@ -9,11 +9,19 @@ namespace GazeViewer.Models
 {
     class GazePoint
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double XGaze { get; set; }
+        public double YGaze{ get; set; } 
+       
 
-     
+        public GazePoint()
+        {
 
+        }
 
+        public GazePoint(double X,double Y)
+        {
+            this.XGaze = X;
+            this.YGaze = Y;
+        }
     }
 }
