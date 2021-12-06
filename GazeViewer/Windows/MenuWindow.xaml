@@ -56,7 +56,7 @@
 
 
 
-                                    <Ellipse  Width="15" Height="15" Fill="DarkGray" RenderTransformOrigin="0.5,0.5" >
+                                    <Ellipse  Width="15" Height="15" Fill="Blue" Opacity="0.005" RenderTransformOrigin="0.5,0.5" >
                                         
 
                                         <Ellipse.RenderTransform>
@@ -66,17 +66,19 @@
                                                 <SkewTransform/>
                                                 <RotateTransform/>
                                                 <TranslateTransform>
+                                                    
                                                     <TranslateTransform.X>
-
+                                                         
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="X"/>
+                                                            <Binding Path="XPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualWidth"/>
 
                                                         </MultiBinding>
                                                     </TranslateTransform.X>
                                                     <TranslateTransform.Y>
+                                                      
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="Y"/>
+                                                            <Binding Path="YPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualHeight"/>
 
                                                         </MultiBinding>

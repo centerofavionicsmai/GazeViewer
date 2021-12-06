@@ -26,6 +26,9 @@ using GazeViewer.Infastructure.Services.Interfaces;
 using GazeViewer.Infastructure.Helpers;
 using System.Globalization;
 using GazeViewer.Infastructure.Temporarily;
+using CsvHelper.Configuration;
+using System.IO;
+using CsvHelper;
 
 namespace GazeViewer.ViewModels
 {
@@ -159,15 +162,18 @@ namespace GazeViewer.ViewModels
             GazePoint gazePoint = new GazePoint();
             foreach (var logRecord in logReader.ReadCsvLog(_CsvLogsFilePath))
             {
-                double x = Double.Parse(logRecord.Split(',')
-                 .Take(1)
-                 .First(), CultureInfo.InvariantCulture);
-                double y = Double.Parse(logRecord.Split(',')
-                    .Take(2)
-                    .First(), CultureInfo.InvariantCulture);
-                gazePoint = new GazePoint(x,y);
+                var lineData = logRecord.Split(',');
+                if (lineData.Length ==3) //Защита от поврежденного файла
+                {
+                    double x = Double.Parse(lineData[0], CultureInfo.InvariantCulture);
+                    double y = Double.Parse(lineData[1], CultureInfo.InvariantCulture);
+                    
+                    //   double timeStamp = Double.Parse(lineData[2],CultureInfo.InvariantCulture);
+                    gazePoint = new GazePoint(x, y, 0);
+                }
                 _CsvFileGazePoints.Add(gazePoint);
             }
+          
 
         }
 
@@ -225,25 +231,83 @@ namespace GazeViewer.ViewModels
 
         private async void Test()
         {
-            UDPController udp = new UDPController(5444);
+
+
+
+           // UDPController udp = new UDPController(5444);
             CoordConverter coordConverter = new CoordConverter();
-            while (true)
+
+
+            UdpClient udpClient = new UdpClient (5444);
+
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                var bytes = await udp.ReceiveBytesAsync();
-              
-                var doubleArray = new double[bytes.Length / 8];
-                Buffer.BlockCopy(bytes, 0, doubleArray, 0, bytes.Length);
+                // Don't write the header again.
+                HasHeaderRecord = false,
+            };
+            List<GazePoint> gazePoints = new List<GazePoint>(1);
+            gazePoints.Add(new GazePoint(0, 0, 0));
+            IPEndPoint iPEndPoint = null;
+            using (var stream = File.Open(@$"Output\output{DateTime.Now.Millisecond}.csv", FileMode.OpenOrCreate))
+            {
+                using (var writer = new StreamWriter(stream))
+                {
 
-                var coord = (doubleArray[0], doubleArray[1]);
 
-             
 
-                Xpos = coord.Item1;
-                Ypos = coord.Item2;
-                ReceivedBytes += doubleArray.Length;
-            
+                    using (var csv = new CsvWriter(writer, config))
+                    {
+
+
+                        while (true)
+                        {
+                            var bytes = udpClient.Receive(ref iPEndPoint);
+
+                            var doubleArray = new double[bytes.Length / 8];
+                            Buffer.BlockCopy(bytes, 0, doubleArray, 0, bytes.Length);
+
+                            var coord = (doubleArray[0], doubleArray[1]);
+
+                            //_CsvFileGazePoints.Add(new GazePoint(coord.Item1, coord.Item2, doubleArray[2]));
+                            //    gazePoints[0] = new GazePoint(doubleArray[0], doubleArray[1], doubleArray[2]);
+
+
+                            if (doubleArray[2] != gazePoints[0].TimeStamp  && doubleArray[0] != gazePoints[0].XPoint)
+                            {
+
+
+                                gazePoints[0].XPoint = Xpos;
+                                gazePoints[0].YPoint = Ypos;
+                                gazePoints[0].TimeStamp = doubleArray[2];
+                                csv.WriteRecords(gazePoints);
+                            }
+                            Xpos = coord.Item1;
+                            Ypos = coord.Item2;
+                            ReceivedBytes += doubleArray.Length;
+
+                 
+                            
+                        }
+                    }
+                }
             }
+                
+            
         }
+
+
+        
+          
+         
+
+
+
+
+
+
+
+        
 
     
 
