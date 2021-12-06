@@ -225,7 +225,7 @@ namespace GazeViewer.ViewModels
 
         private async void Test()
         {
-            UDPController udp = new UDPController(5222);
+            UDPController udp = new UDPController(5444);
             CoordConverter coordConverter = new CoordConverter();
             while (true)
             {
