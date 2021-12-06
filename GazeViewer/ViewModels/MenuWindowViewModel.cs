@@ -213,7 +213,7 @@ namespace GazeViewer.ViewModels
 
             _CsvFileGazePoints = new ObservableCollection<GazePoint>();
 
-
+            _VideoStreamPath = $@"Video/test.mp4";
 
             Thread thread = new Thread(new ThreadStart(Test));
             thread.Start();
@@ -225,7 +225,7 @@ namespace GazeViewer.ViewModels
 
         private async void Test()
         {
-            UDPController udp = new UDPController(5555);
+            UDPController udp = new UDPController(5222);
             CoordConverter coordConverter = new CoordConverter();
             while (true)
             {
@@ -235,6 +235,8 @@ namespace GazeViewer.ViewModels
                 Buffer.BlockCopy(bytes, 0, doubleArray, 0, bytes.Length);
 
                 var coord = (doubleArray[0], doubleArray[1]);
+
+             
 
                 Xpos = coord.Item1;
                 Ypos = coord.Item2;
