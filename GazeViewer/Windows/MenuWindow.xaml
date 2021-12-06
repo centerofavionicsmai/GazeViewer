@@ -41,7 +41,7 @@
                 <Grid>
                     <Grid  x:Name="tab1Grid" Margin="0,0,0,150">
 
-                        <!--<Image Style="{StaticResource VizualizeImage}"/>-->
+                        <Image Style="{StaticResource VizualizeImage}"/>
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -56,7 +56,7 @@
 
 
 
-                                    <Ellipse  Width="15" Height="15" Fill="DarkGray" RenderTransformOrigin="0.5,0.5" >
+                                    <Ellipse  Width="15" Height="15" Fill="Blue" Opacity="0.005" RenderTransformOrigin="0.5,0.5" >
                                         
 
                                         <Ellipse.RenderTransform>
@@ -66,17 +66,19 @@
                                                 <SkewTransform/>
                                                 <RotateTransform/>
                                                 <TranslateTransform>
+                                                    
                                                     <TranslateTransform.X>
-
+                                                         
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="X"/>
+                                                            <Binding Path="XPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualWidth"/>
 
                                                         </MultiBinding>
                                                     </TranslateTransform.X>
                                                     <TranslateTransform.Y>
+                                                      
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="Y"/>
+                                                            <Binding Path="YPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualHeight"/>
 
                                                         </MultiBinding>
