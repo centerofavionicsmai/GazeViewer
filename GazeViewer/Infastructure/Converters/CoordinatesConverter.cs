@@ -13,11 +13,11 @@ namespace GazeViewer.Infastructure.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-          
-            double pos = (double)values[0];
-            double k =  (double)values[1];
 
-            Debug.WriteLine($"Входные {pos} {k} Выходные {pos * (k / 2)}");
+            double pos = 0; Double.TryParse(values[0].ToString(), out pos);
+            double k = 0; Double.TryParse(values[1].ToString(), out k);
+
+         //   Debug.WriteLine($"Входные {pos}");
             return pos * (k / 2);
            
 

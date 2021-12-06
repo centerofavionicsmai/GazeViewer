@@ -11,7 +11,8 @@
             <Setter Property="Margin" Value="0,0,0,35"></Setter>
         </Style>
         <Style x:Key="VizualizeImage" TargetType="Image" >
-            <Setter Property="Source" Value="{svgc:SvgImage https://upload.wikimedia.org/wikipedia/commons/d/dc/Primary_Flight_Display.svg}"></Setter>
+
+            <Setter Property="Source" Value="{svgc:SvgImage Source=Images/pfd.svg}"></Setter>
         </Style>
 
     </Application.Resources>

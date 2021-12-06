@@ -69,14 +69,14 @@
                                                     <TranslateTransform.X>
 
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="XGaze"/>
+                                                            <Binding Path="X"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualWidth"/>
 
                                                         </MultiBinding>
                                                     </TranslateTransform.X>
                                                     <TranslateTransform.Y>
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                            <Binding Path="YGaze"/>
+                                                            <Binding Path="Y"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualHeight"/>
 
                                                         </MultiBinding>
@@ -153,7 +153,7 @@
             
                 <Grid  x:Name="vizualizationGrid" Style="{StaticResource GridPositionStyle}">
                     <Image Style="{StaticResource VizualizeImage}"/>
-                    <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="50"  Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5" Margin="0,151,0,150">
+                    <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="50"  Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150">
 
                         
                         <Ellipse.RenderTransform>
@@ -169,6 +169,7 @@
                                         </MultiBinding>
                                     </TranslateTransform.X>
                                     <TranslateTransform.Y>
+                                        
                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                             <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
                                             <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
@@ -205,7 +206,7 @@
                             <ColumnDefinition Width="257*"/>
                             <ColumnDefinition Width="537*"/>
                         </Grid.ColumnDefinitions>
-                        <!--<MediaElement  x:Name="tests" Source="{Binding FilePath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>-->
+                        <MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>
 
                     </Grid>
 
@@ -228,6 +229,7 @@
                                             </MultiBinding>
                                         </TranslateTransform.X>
                                         <TranslateTransform.Y>
+                                            <!--0-->
                                             <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                 <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
                                                 <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>

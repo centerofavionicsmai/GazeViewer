@@ -9,8 +9,8 @@ namespace GazeViewer.Models
 {
     class GazePoint
     {
-        public double XGaze { get; set; }
-        public double YGaze{ get; set; } 
+        public double X { get; set; }
+        public double Y{ get; set; } 
        
 
         public GazePoint()
@@ -20,8 +20,8 @@ namespace GazeViewer.Models
 
         public GazePoint(double X,double Y)
         {
-            this.XGaze = X;
-            this.YGaze = Y;
+            this.X = X;
+            this.Y = Y;
         }
     }
 }
