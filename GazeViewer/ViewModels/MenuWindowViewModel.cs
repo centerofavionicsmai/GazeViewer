@@ -97,12 +97,6 @@ namespace GazeViewer.ViewModels
             set => Set(ref _CurrentHeight, value);
         }
 
-        private int _LogsDelayFilter = 150;
-        public  int LogsDelayFilter
-        {
-            get => _LogsDelayFilter;
-            set => Set(ref _LogsDelayFilter, value);
-        }
 
 
 
@@ -183,7 +177,7 @@ namespace GazeViewer.ViewModels
 
         }
 
-
+   
 
 
 
@@ -191,8 +185,7 @@ namespace GazeViewer.ViewModels
 
 
 
-        private byte[] UDPBytes = new byte[24];
-       
+
 
 
 
@@ -228,52 +221,79 @@ namespace GazeViewer.ViewModels
 
             _VideoStreamPath = $@"Video/test.mp4";
 
-            Thread vizualizeThread = new Thread(new ThreadStart(VizualizeGazePointThread));
-            vizualizeThread.Start();
-
-            Thread writeLogsThread = new Thread(new ThreadStart(WriteLogsThread));
-            writeLogsThread.Start();
+            Thread thread = new Thread(new ThreadStart(Test));
+            thread.Start();
 
 
 
 
         }
 
-        private void WriteLogsThread()
+        private async void Test()
         {
-                  GazePoint gazePoint = new GazePoint(0, 0, 0);
-                  CSVWriter writer = new CSVWriter($"Output/{DateTime.Now.Millisecond}.csv");
-                  while (true)
-                  { 
-                        
-                      var doubleArray = new double[3];
-                      Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                        if (doubleArray[2] != gazePoint.TimeStamp)
-                        {
-                            gazePoint.XPoint = doubleArray[0];
-                            gazePoint.YPoint = doubleArray[1];
-                            gazePoint.TimeStamp = doubleArray[2];
 
-                            writer.WriteGazePoint(gazePoint);
-                        }
-                Thread.Sleep(LogsDelayFilter);
-                  }        
-            }
-               
-           
 
-        private async void VizualizeGazePointThread()
-        {
+
+           // UDPController udp = new UDPController(5444);
+            CoordConverter coordConverter = new CoordConverter();
+
+
             UdpClient udpClient = new UdpClient (5444);
-            while (true)
+
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                var result = await udpClient.ReceiveAsync();
-                UDPBytes = result.Buffer;
-                var doubleArray = new double[UDPBytes.Length / 8];
-                Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                Xpos = doubleArray[0];
-                Ypos = doubleArray[1];
+                // Don't write the header again.
+                HasHeaderRecord = false,
+            };
+            List<GazePoint> gazePoints = new List<GazePoint>(1);
+            gazePoints.Add(new GazePoint(0, 0, 0));
+            IPEndPoint iPEndPoint = null;
+            using (var stream = File.Open(@$"Output\output{DateTime.Now.Millisecond}.csv", FileMode.OpenOrCreate))
+            {
+                using (var writer = new StreamWriter(stream))
+                {
+
+
+
+                    using (var csv = new CsvWriter(writer, config))
+                    {
+
+
+                        while (true)
+                        {
+                            var bytes = udpClient.Receive(ref iPEndPoint);
+
+                            var doubleArray = new double[bytes.Length / 8];
+                            Buffer.BlockCopy(bytes, 0, doubleArray, 0, bytes.Length);
+
+                            var coord = (doubleArray[0], doubleArray[1]);
+
+                            //_CsvFileGazePoints.Add(new GazePoint(coord.Item1, coord.Item2, doubleArray[2]));
+                            //    gazePoints[0] = new GazePoint(doubleArray[0], doubleArray[1], doubleArray[2]);
+
+
+                            if (doubleArray[2] != gazePoints[0].TimeStamp  && doubleArray[0] != gazePoints[0].XPoint)
+                            {
+
+
+                                gazePoints[0].XPoint = Xpos;
+                                gazePoints[0].YPoint = Ypos;
+                                gazePoints[0].TimeStamp = doubleArray[2];
+                                csv.WriteRecords(gazePoints);
+                            }
+                            Xpos = coord.Item1;
+                            Ypos = coord.Item2;
+                            ReceivedBytes += doubleArray.Length;
+
+                 
+                            
+                        }
+                    }
+                }
             }
+                
+            
         }
 
 
@@ -287,12 +307,29 @@ namespace GazeViewer.ViewModels
 
 
 
-      
+        
+
+    
+
+
+        //private ObservableCollection<GazePoint> _GazePoints;
+
+        //public ObservableCollection<GazePoint> GazePoints
+        //{
+        //    get => _GazePoints;
+        //    set => Set(ref _GazePoints, value);
+        //}
 
 
 
 
-   
+
+        private ObservableCollection <string> _Strings;
+        public ObservableCollection<string> Strings
+        {
+            get => _Strings;
+            set => Set(ref _Strings, value);
+        }
 
 
 

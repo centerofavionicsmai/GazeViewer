@@ -53,7 +53,7 @@ namespace GazeViewer
             //    a = WriteTestGazePoints(-1000, 1000, 100, 300, 1500);
                 GenerateGazePoints.AddRange(a);
             }
-          //  CSVWriter cSVWriter = new CSVWriter();
+            CSVWriter cSVWriter = new CSVWriter();
          //   cSVWriter.WriteGazePoints(GenerateGazePoints);
 
             InitHelpers();
