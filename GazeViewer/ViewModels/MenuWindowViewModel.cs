@@ -32,7 +32,7 @@ using CsvHelper;
 
 namespace GazeViewer.ViewModels
 {
-   internal class MenuWindowViewModel : ViewModel
+    internal class MenuWindowViewModel : ViewModel
     {
         #region Properties
         private double _ReceivedBytes;
@@ -44,6 +44,8 @@ namespace GazeViewer.ViewModels
             get => _ReceivedBytes;
             set => Set(ref _ReceivedBytes, value);
         }
+
+        private byte[] UDPBytes = new byte[24];
 
         private string _Title = "Menu";
         /// <summary>
@@ -69,7 +71,7 @@ namespace GazeViewer.ViewModels
         /// <summary>
         /// Путь к файлу с CSVLogam
         /// </summary>
-        public string  VideoStreamPath
+        public string VideoStreamPath
         {
             get => _VideoStreamPath;
             set => Set(ref _VideoStreamPath, value);
@@ -82,7 +84,7 @@ namespace GazeViewer.ViewModels
             set => Set(ref _CsvFileGazePoints, value);
         }
 
-        
+
         private double _CurrentWidth;
         public double CurrentWidth
         {
@@ -97,10 +99,14 @@ namespace GazeViewer.ViewModels
             set => Set(ref _CurrentHeight, value);
         }
 
+        private int _LogsDelayFilter = 150;
+        public int LogsDelayFilter
+        {
+            get => _LogsDelayFilter;
+            set => Set(ref _LogsDelayFilter, value);
+        }
 
-
-
-
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
@@ -142,7 +148,8 @@ namespace GazeViewer.ViewModels
         private void OpenLogFileCommandExecute(object p)
         {
             _CsvLogsFilePath = DialogService.OpenFileDialog();
-          //  ReadCsvLogsCommandExecute(null);
+            //  ReadCsvLogsCommandExecute(null);
+
         }
 
 
@@ -157,190 +164,148 @@ namespace GazeViewer.ViewModels
         }
         private void ReadCsvLogsCommandExecute(object p)
         {
+
             ///Warning in add CollectionMethod
             LogReader logReader = new LogReader();
-            GazePoint gazePoint = new GazePoint();
+
+            List<GazePoint> gazePoints = new List<GazePoint>();
             foreach (var logRecord in logReader.ReadCsvLog(_CsvLogsFilePath))
             {
                 var lineData = logRecord.Split(',');
-                if (lineData.Length ==3) //Защита от поврежденного файла
+                if (lineData.Length == 3) //Защита от поврежденного файла
                 {
                     double x = Double.Parse(lineData[0], CultureInfo.InvariantCulture);
                     double y = Double.Parse(lineData[1], CultureInfo.InvariantCulture);
-                    
-                    //   double timeStamp = Double.Parse(lineData[2],CultureInfo.InvariantCulture);
-                    gazePoint = new GazePoint(x, y, 0);
-                }
-                _CsvFileGazePoints.Add(gazePoint);
-            }
-          
 
+                    double timeStamp = Double.Parse(lineData[2], CultureInfo.InvariantCulture);
+
+                    //gazePoint.XPoint = x;
+                    //gazePoint.YPoint = y;
+                    //gazePoint.TimeStamp = timeStamp;
+                    gazePoints.Add(new GazePoint(x, y, timeStamp));
+
+                }
+
+
+
+            }
+            CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
         }
 
-   
+        public ICommand ClearGazePointListCommand { get; }
+        private bool CanClearGazePointListCommandExecuted(object p)
+        {
+            if (_CsvFileGazePoints.Count > 0)
+            {
+                return true;
+            }
+            else return false;
+        }
+        private void ClearGazePointListCommandExecute(object p)
+        {
+            _CsvFileGazePoints.Clear();
+        }
 
+        public ICommand StartWriteLogsCommand { get; }
+        private bool CanStartWriteLogsCommandExecuted(object p)
+        {
+          return true;
+
+        }
+        private void StartWriteLogsCommandExecute(object p)
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(WriteLogs), cancellationTokenSource.Token);
+            object oj = 5;
+       
+           
+           
+        }
+
+        public ICommand StopWriteLogsCommand { get; }
+        private bool CanStopWriteLogsCommandExecuted(object p)
+        {
+
+            return cancellationTokenSource.Token.CanBeCanceled;
+        }
+        private void StopWriteLogsCommandExecute(object p)
+        {
+            cancellationTokenSource.Cancel();
+        }
 
 
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
         public MenuWindowViewModel() {
-
+            #region RegisterCommands
             OpenLogFileCommand = new ActionCommand(OpenLogFileCommandExecute, CanOpenLogFileCommandExecuted);
             ReadCsvLogsCommand = new ActionCommand(ReadCsvLogsCommandExecute, CanReadCsvLogsCommandExecuted);
+            ClearGazePointListCommand = new ActionCommand(ClearGazePointListCommandExecute, CanClearGazePointListCommandExecuted);
+            StartWriteLogsCommand = new ActionCommand(StartWriteLogsCommandExecute, CanStartWriteLogsCommandExecuted);
+            StopWriteLogsCommand = new ActionCommand(StopWriteLogsCommandExecute, CanStopWriteLogsCommandExecuted);
+            #endregion
 
             _CsvFileGazePoints = new ObservableCollection<GazePoint>();
 
             _VideoStreamPath = $@"Video/test.mp4";
 
-            Thread thread = new Thread(new ThreadStart(Test));
-            thread.Start();
+            Thread vizualizeThread = new Thread(new ThreadStart(VizualizeGazePointThread));
+            vizualizeThread.Start();
 
-
-
-
+           
         }
 
-        private async void Test()
+        private void WriteLogs(object obj)
         {
+            CancellationToken token = (CancellationToken)obj;
+            GazePoint gazePoint = new GazePoint(0, 0, 0);
+            CsvLogWriter writer = new CsvLogWriter($"Output/{DateTime.Now.ToString("yyyy.MM.dd HH-mm .ss", CultureInfo.InvariantCulture)}.csv");
 
+            while (true)
+            {
 
+                var doubleArray = new double[3];
+                Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
+                if (doubleArray[2] != gazePoint.TimeStamp)
+                {
+                    gazePoint.XPoint = doubleArray[0];
+                    gazePoint.YPoint = doubleArray[1];
+                    gazePoint.TimeStamp = doubleArray[2];
 
-           // UDPController udp = new UDPController(5444);
-            CoordConverter coordConverter = new CoordConverter();
+                    writer.WriteGazePoint(gazePoint);
+                }
 
+                if (token.IsCancellationRequested)
+                {
+                    return;                     
+                }
+                Thread.Sleep(LogsDelayFilter);
+            }
+        }
+               
+          
+        private async void VizualizeGazePointThread()
+        {
 
             UdpClient udpClient = new UdpClient (5444);
-
-
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            while (true)
             {
-                // Don't write the header again.
-                HasHeaderRecord = false,
-            };
-            List<GazePoint> gazePoints = new List<GazePoint>(1);
-            gazePoints.Add(new GazePoint(0, 0, 0));
-            IPEndPoint iPEndPoint = null;
-            using (var stream = File.Open(@$"Output\output{DateTime.Now.Millisecond}.csv", FileMode.OpenOrCreate))
-            {
-                using (var writer = new StreamWriter(stream))
-                {
-
-
-
-                    using (var csv = new CsvWriter(writer, config))
-                    {
-
-
-                        while (true)
-                        {
-                            var bytes = udpClient.Receive(ref iPEndPoint);
-
-                            var doubleArray = new double[bytes.Length / 8];
-                            Buffer.BlockCopy(bytes, 0, doubleArray, 0, bytes.Length);
-
-                            var coord = (doubleArray[0], doubleArray[1]);
-
-                            //_CsvFileGazePoints.Add(new GazePoint(coord.Item1, coord.Item2, doubleArray[2]));
-                            //    gazePoints[0] = new GazePoint(doubleArray[0], doubleArray[1], doubleArray[2]);
-
-
-                            if (doubleArray[2] != gazePoints[0].TimeStamp  && doubleArray[0] != gazePoints[0].XPoint)
-                            {
-
-
-                                gazePoints[0].XPoint = Xpos;
-                                gazePoints[0].YPoint = Ypos;
-                                gazePoints[0].TimeStamp = doubleArray[2];
-                                csv.WriteRecords(gazePoints);
-                            }
-                            Xpos = coord.Item1;
-                            Ypos = coord.Item2;
-                            ReceivedBytes += doubleArray.Length;
-
-                 
-                            
-                        }
-                    }
-                }
-            }
+                var result = await udpClient.ReceiveAsync();
                 
-            
+                UDPBytes = result.Buffer;
+                var doubleArray = new double[UDPBytes.Length / 8];
+                Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
+                Xpos = doubleArray[0];
+                Ypos = doubleArray[1];
+            }
         }
-
-
-        
-          
-         
-
-
-
-
-
-
-
-        
-
-    
-
-
-        //private ObservableCollection<GazePoint> _GazePoints;
-
-        //public ObservableCollection<GazePoint> GazePoints
-        //{
-        //    get => _GazePoints;
-        //    set => Set(ref _GazePoints, value);
-        //}
-
-
-
-
-
-        private ObservableCollection <string> _Strings;
-        public ObservableCollection<string> Strings
-        {
-            get => _Strings;
-            set => Set(ref _Strings, value);
-        }
-
-
-
-
         private double _Xpos;
         public double Xpos
         {
             get => _Xpos;
             set => Set(ref _Xpos, value);
         }
-
         private double _Ypos;
         public double Ypos
         {
