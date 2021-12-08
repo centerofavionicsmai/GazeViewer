@@ -23,9 +23,8 @@
 
 
 
-
-
-
+        
+        
     </Window.Resources>
     <Grid>
         <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
@@ -39,26 +38,20 @@
             <TabItem Header="Вкладка 1" Width="100">
 
                 <Grid>
+            
                     <Grid  x:Name="tab1Grid" Margin="0,0,0,150">
+                        <Image Style="{StaticResource VizualizeImage} "/>
 
-                        <Image Style="{StaticResource VizualizeImage}"/>
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Grid Height="{Binding ActualHeight, ElementName=tab1Grid}" Width="{Binding ActualWidth,ElementName=tab1Grid}">
-
                                     </Grid>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
-
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="vm:MenuWindowViewModel">
-
-
-
-                                    <Ellipse  Width="15" Height="15" Fill="Blue" Opacity="0.005" RenderTransformOrigin="0.5,0.5" >
-                                        
-
+                                    <Ellipse  Width="15" Height="15" Fill="Blue" Opacity="0.003" RenderTransformOrigin="0.5,0.5" >
                                         <Ellipse.RenderTransform>
                                             <TransformGroup>
 
@@ -94,12 +87,14 @@
 
                                     </Ellipse>
 
+                                    
+                                    
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
 
-
+              
                         </ItemsControl>
-
+                   
                     </Grid>
 
 
@@ -107,9 +102,7 @@
 
                     <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Style="{StaticResource GridPositionStyle}">
                         <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
-
-                            <MenuItem Header="Показать все точки" Command="{Binding ReadCsvLogsCommand}"   ></MenuItem>
-                            <MenuItem Header="Показать тепловую карту"  ></MenuItem>
+                            <MenuItem Header="Показать тепловую карту"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
                             <MenuItem Header="Следующий кадр"  ></MenuItem>
                             <MenuItem Header="Предыдущий кадр"  ></MenuItem>
                             <MenuItem Header="Gaze Plot "  ></MenuItem>
