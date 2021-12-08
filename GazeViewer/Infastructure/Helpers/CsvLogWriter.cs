@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace GazeViewer.Helpers
 {
-    class CSVWriter
+    class CsvLogWriter
     {
 
         private readonly string filePath;
 
-        public CSVWriter (string filePath)
-        {
+        public CsvLogWriter (string filePath)
+        { 
             this.filePath = filePath;
             File.CreateText(filePath).Close();
         }

@@ -28,8 +28,11 @@
     </Window.Resources>
     <Grid>
         <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
-            <MenuItem Header="Файл" Command="{Binding  OpenLogFileCommand }"/>
+            <MenuItem Header="Открыть файл" Command="{Binding  OpenLogFileCommand }"/>
+            <MenuItem Header="Начать запись" Command="{Binding  StartWriteLogsCommand  }"/>
+            <MenuItem Header="Остановить запись" Command="{Binding  StopWriteLogsCommand  }"/>
             <MenuItem Header="Закрыть приложение" Command="{StaticResource CloseApplicationCommand}"/>
+            <TextBox  Text="{Binding LogsDelayFilter, Mode=TwoWay}" />
         </Menu>
 
         <TabControl  Margin="0,20,0,0">
@@ -38,9 +41,9 @@
             <TabItem Header="Вкладка 1" Width="100">
 
                 <Grid>
-            
+
                     <Grid  x:Name="tab1Grid" Margin="0,0,0,150">
-                        <Image Style="{StaticResource VizualizeImage} "/>
+                        <Image Style="{StaticResource VizualizeImage}" />
 
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
@@ -87,14 +90,14 @@
 
                                     </Ellipse>
 
-                                    
-                                    
+
+
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
 
-              
+
                         </ItemsControl>
-                   
+
                     </Grid>
 
 
@@ -103,6 +106,7 @@
                     <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Style="{StaticResource GridPositionStyle}">
                         <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
                             <MenuItem Header="Показать тепловую карту"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
+                            <MenuItem Header="Скрыть  тепловую карту"  Command="{Binding  ClearGazePointListCommand}" ></MenuItem>
                             <MenuItem Header="Следующий кадр"  ></MenuItem>
                             <MenuItem Header="Предыдущий кадр"  ></MenuItem>
                             <MenuItem Header="Gaze Plot "  ></MenuItem>
@@ -145,12 +149,12 @@
             </TabItem>
 
             <TabItem Header="Визуализация">
-            
+
                 <Grid  x:Name="vizualizationGrid" Style="{StaticResource GridPositionStyle}">
                     <Image Style="{StaticResource VizualizeImage}"/>
                     <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="50"  Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150">
 
-                        
+
                         <Ellipse.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -175,8 +179,8 @@
 
 
                                 </TranslateTransform>
-                                
-                                
+
+
 
 
                             </TransformGroup>
@@ -208,7 +212,7 @@
                     <Grid x:Name="vizualizationVideoGrid" Grid.Row="1" Margin="0,0,0,0">
 
                         <Image Style="{StaticResource VizualizeImage}" />
-                       
+
                         <Ellipse    Height="50"   Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
 
                             <Ellipse.RenderTransform>
@@ -224,7 +228,7 @@
                                             </MultiBinding>
                                         </TranslateTransform.X>
                                         <TranslateTransform.Y>
-                                            <!--0-->
+                                         
                                             <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                 <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
                                                 <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
