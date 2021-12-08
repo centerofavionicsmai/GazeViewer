@@ -4,6 +4,7 @@ using GazeViewer.Extensions;
 using GazeViewer.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,19 +16,32 @@ namespace GazeViewer.Helpers
     class CSVWriter
     {
 
-        public void WriteGazePoints(List<GazePoint> gazePoints)
+        private readonly string filePath;
+
+        public CSVWriter (string filePath)
+        {
+            this.filePath = filePath;
+            File.CreateText(filePath).Close();
+        }
+
+
+        public void WriteGazePoint(GazePoint gazePoint)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 // Don't write the header again
-                HasHeaderRecord = false,
+                HasHeaderRecord = false, 
+                
+               
             };
-
-            using (var writer = new StreamWriter(@"Output/output.csv"))
+            using (var stream = File.Open(filePath,FileMode.Append))
+            using (var writer = new StreamWriter(stream))
             using (var csv = new CsvWriter(writer, config))
             {
-               csv.WriteRecords(gazePoints);
+                csv.WriteRecord(gazePoint);
+                csv.NextRecord();
             }
+
         }
     }
 }
