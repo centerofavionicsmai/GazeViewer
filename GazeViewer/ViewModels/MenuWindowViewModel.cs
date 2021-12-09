@@ -108,6 +108,22 @@ namespace GazeViewer.ViewModels
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+        private double _Xpos;
+        public double Xpos
+        {
+            get => _Xpos;
+            set => Set(ref _Xpos, value);
+        }
+
+        private double _Ypos;
+        public double Ypos
+        {
+            get => _Ypos;
+            set => Set(ref _Ypos, value);
+        }
+
+
+
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
         private int _MaxSliderValue = 900;
@@ -130,6 +146,21 @@ namespace GazeViewer.ViewModels
             get => _SliderValue;
             set => Set(ref _SliderValue, value);
         }
+
+        private DateTime _CurrentDataTime;
+        public  DateTime CurrentDataTime
+        {
+            get => _CurrentDataTime;
+            set => Set(ref _CurrentDataTime, value);
+        }
+
+        private byte _HetMapIntensivity = 5;
+        public byte HeatMapIntensivity
+        {
+            get => _HetMapIntensivity;
+            set => Set(ref _HetMapIntensivity, value);
+        }
+
         #endregion
 
         #endregion
@@ -182,7 +213,7 @@ namespace GazeViewer.ViewModels
                     //gazePoint.XPoint = x;
                     //gazePoint.YPoint = y;
                     //gazePoint.TimeStamp = timeStamp;
-                    gazePoints.Add(new GazePoint(x, y, timeStamp));
+                    gazePoints.Add(new GazePoint(x, y,Color.FromArgb(_HetMapIntensivity,88,171,232), timeStamp));
 
                 }
 
@@ -250,16 +281,16 @@ namespace GazeViewer.ViewModels
 
             _VideoStreamPath = $@"Video/test.mp4";
 
-            Thread vizualizeThread = new Thread(new ThreadStart(VizualizeGazePointThread));
-            vizualizeThread.Start();
-
+            ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
+            //Thread vizualizeThread = new Thread(new ThreadStart(VizualizeGazePointThread));
+            //vizualizeThread.Start();
            
         }
 
         private void WriteLogs(object obj)
         {
             CancellationToken token = (CancellationToken)obj;
-            GazePoint gazePoint = new GazePoint(0, 0, 0);
+            GazePoint gazePoint = new GazePoint(0, 0,Colors.Blue,0);
             CsvLogWriter writer = new CsvLogWriter($"Output/{DateTime.Now.ToString("yyyy.MM.dd HH-mm .ss", CultureInfo.InvariantCulture)}.csv");
 
             while (true)
@@ -283,16 +314,19 @@ namespace GazeViewer.ViewModels
                 Thread.Sleep(LogsDelayFilter);
             }
         }
+
+    
+
+
                
-          
-        private async void VizualizeGazePointThread()
+        private async void VizualizeGazePointThread(object p)
         {
 
             UdpClient udpClient = new UdpClient (5444);
             while (true)
             {
                 var result = await udpClient.ReceiveAsync();
-                
+                CurrentDataTime = DateTime.Now;
                 UDPBytes = result.Buffer;
                 var doubleArray = new double[UDPBytes.Length / 8];
                 Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
@@ -300,18 +334,7 @@ namespace GazeViewer.ViewModels
                 Ypos = doubleArray[1];
             }
         }
-        private double _Xpos;
-        public double Xpos
-        {
-            get => _Xpos;
-            set => Set(ref _Xpos, value);
-        }
-        private double _Ypos;
-        public double Ypos
-        {
-            get => _Ypos;
-            set => Set(ref _Ypos, value);
-        }
+      
 
     }
 }
