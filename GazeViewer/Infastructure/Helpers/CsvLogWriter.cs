@@ -38,6 +38,7 @@ namespace GazeViewer.Helpers
             using (var writer = new StreamWriter(stream))
             using (var csv = new CsvWriter(writer, config))
             {
+               
                 csv.WriteRecord(gazePoint);
                 csv.NextRecord();
             }

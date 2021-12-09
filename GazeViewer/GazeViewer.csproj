@@ -7,14 +7,19 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="27.2.0" />
     <PackageReference Include="FFME.Windows" Version="4.4.350" />
 
-    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.0" />
 
     <PackageReference Include="SharpVectors" Version="1.7.6" />
     <PackageReference Include="WriteableBitmapEx" Version="1.6.8" />
+    <PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

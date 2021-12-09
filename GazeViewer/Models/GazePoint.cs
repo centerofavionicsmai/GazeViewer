@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvHelper.Configuration.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace GazeViewer.Models
         public double XPoint { get; set; }
         public double YPoint { get; set; }
         public double TimeStamp { get; set; }
+        [Ignore]
         public SolidColorBrush SolidColorBrush { get; set; }
         public GazePoint()
         {
