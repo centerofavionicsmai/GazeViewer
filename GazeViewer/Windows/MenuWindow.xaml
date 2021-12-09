@@ -205,7 +205,7 @@
                             <ColumnDefinition Width="537*"/>
                         </Grid.ColumnDefinitions>
                         <!--<MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>-->
-                        <ffme:MediaElement x:Name="Media" Background="Gray"  Grid.ColumnSpan="2" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="Media_Loaded" MediaOpening="Media_MediaOpening"   />
+                        <ffme:MediaElement x:Name="Media" Background="Gray"  Grid.ColumnSpan="2" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="Media_Loaded" MediaOpening="Media_MediaOpening" MediaInitializing="Media_MediaInitializing"   />
                     </Grid>
 
                     <Grid x:Name="vizualizationVideoGrid" Grid.Row="1" Margin="0,0,0,0">
