@@ -84,7 +84,6 @@ namespace GazeViewer.ViewModels
             set => Set(ref _CsvFileGazePoints, value);
         }
 
-
         private double _CurrentWidth;
         public double CurrentWidth
         {
@@ -121,8 +120,6 @@ namespace GazeViewer.ViewModels
             get => _Ypos;
             set => Set(ref _Ypos, value);
         }
-
-
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
@@ -169,7 +166,6 @@ namespace GazeViewer.ViewModels
         IDialogService DialogService = new DialogService();
         #endregion
 
-
         #region Commands 
         /// <summary>
         /// Открыть файл
@@ -180,10 +176,7 @@ namespace GazeViewer.ViewModels
         {
             _CsvLogsFilePath = DialogService.OpenFileDialog();
             //  ReadCsvLogsCommandExecute(null);
-
         }
-
-
         /// <summary>
         /// Чтение CsvLog`ов  и установка значение GazePoint листа
         /// </summary>
@@ -269,7 +262,6 @@ namespace GazeViewer.ViewModels
 
 
         #endregion
-
 
         public MenuWindowViewModel() {
             #region RegisterCommands
