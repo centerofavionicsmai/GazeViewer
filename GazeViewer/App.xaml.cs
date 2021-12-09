@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Unosquare.FFME;
 
 namespace GazeViewer
 {
@@ -13,5 +14,10 @@ namespace GazeViewer
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Library.FFmpegDirectory = @"FFmpeg" + (Environment.Is64BitProcess ? @"\x64" : string.Empty);
+            base.OnStartup(e);
+        }
     }
 }

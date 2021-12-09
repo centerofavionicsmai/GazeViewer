@@ -8,7 +8,7 @@
         xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
         xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters"
         xmlns:oxy = "http://oxyplot.org/wpf"
-
+        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         mc:Ignorable="d"
         Title="{Binding Title}"  Height="450" Width="800"
         
@@ -43,7 +43,7 @@
                 <Grid>
 
                     <Grid  x:Name="tab1Grid" Margin="0,0,0,150">
-                        <Image Style="{StaticResource VizualizeImage}" />
+                        <Image x:Name="deleteme" Style="{StaticResource VizualizeImage}" MouseDown="deleteme_MouseDown" />
 
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
@@ -54,7 +54,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="vm:MenuWindowViewModel">
-                                    <Ellipse  Width="15" Height="15" Fill="Blue" Opacity="0.003" RenderTransformOrigin="0.5,0.5" >
+                                    <Ellipse  Width="15" Height="15" Fill="{Binding SolidColorBrush}" Opacity="1" RenderTransformOrigin="0.5,0.5" >
                                         <Ellipse.RenderTransform>
                                             <TransformGroup>
 
@@ -107,10 +107,9 @@
                         <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
                             <MenuItem Header="Показать тепловую карту"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
                             <MenuItem Header="Скрыть  тепловую карту"  Command="{Binding  ClearGazePointListCommand}" ></MenuItem>
-                            <MenuItem Header="Следующий кадр"  ></MenuItem>
-                            <MenuItem Header="Предыдущий кадр"  ></MenuItem>
-                            <MenuItem Header="Gaze Plot "  ></MenuItem>
+                            <TextBox Width="75" Text="{Binding HeatMapIntensivity}" ></TextBox>
                         </Menu>
+                        
 
 
 
@@ -205,8 +204,8 @@
                             <ColumnDefinition Width="257*"/>
                             <ColumnDefinition Width="537*"/>
                         </Grid.ColumnDefinitions>
-                        <MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>
-
+                        <!--<MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>-->
+                        <ffme:MediaElement x:Name="Media" Background="Gray"  Grid.ColumnSpan="2" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="Media_Loaded" MediaOpening="Media_MediaOpening"   />
                     </Grid>
 
                     <Grid x:Name="vizualizationVideoGrid" Grid.Row="1" Margin="0,0,0,0">
@@ -290,6 +289,9 @@
             </StatusBarItem>
             <StatusBarItem>
                 <ProgressBar Height="30"  Value="{Binding SliderValue}" Width="150" ></ProgressBar>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Width="150" Text="{Binding CurrentDataTime}"> </TextBlock>
             </StatusBarItem>
         </StatusBar>
 
