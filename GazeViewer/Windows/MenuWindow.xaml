@@ -38,7 +38,7 @@
         <TabControl  Margin="0,20,0,0">
 
 
-            <TabItem Header="Вкладка 1" Width="100">
+            <TabItem Header="Просмотр" Width="100">
 
                 <Grid>
 
