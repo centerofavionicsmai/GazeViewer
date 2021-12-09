@@ -46,7 +46,7 @@ namespace GazeViewer.Windows
         
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
         {
-  
+         
             e.Options.IsTimeSyncDisabled = true;
             e.Options.IsAudioDisabled = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
@@ -65,6 +65,13 @@ namespace GazeViewer.Windows
                 deleteme.Stretch = Stretch.None;
             }
          
+        }
+
+        private void Media_MediaInitializing(object sender, Unosquare.FFME.Common.MediaInitializingEventArgs e)
+        {
+            e.Configuration.ForcedInputFormat = "h264";
+            e.Configuration.GlobalOptions.FlagNoBuffer = true;
+        
         }
     }
 }
