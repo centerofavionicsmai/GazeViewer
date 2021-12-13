@@ -9,6 +9,7 @@
         xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters"
         xmlns:oxy = "http://oxyplot.org/wpf"
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
+        xmlns:media="https://github.com/JohanLarsson/Gu.Wpf.Media"
         mc:Ignorable="d"
         Title="{Binding Title}"  Height="450" Width="800"
         
@@ -354,10 +355,11 @@
             <TabItem Header="Просмотр + визуализация">
                 <Grid Style="{StaticResource GridPositionStyle}">
                     <Grid Grid.Row="0">
-                        <MediaElement  x:Name="media" Loaded="media_Loaded_2" ></MediaElement>
-                        
+                        <!--<MediaElement  x:Name="media" Loaded="media_Loaded_2" ></MediaElement>-->
+                        <media:MediaElementWrapper  x:Name="media" Stretch="Uniform"
+                        Position="{Binding VideoTs,Mode=OneWayToSource}" IsMuted="True" Loaded="MediaElementWrapper_Loaded" ></media:MediaElementWrapper>
                         <!--<ffme:MediaElement Name="media"    Position="{Binding VideoTs t}" Initialized="media_Initialized" Loaded="media_Loaded_1" MediaOpening="media_MediaOpening_1"></ffme:MediaElement>-->
-                        <TextBlock HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="150" Height="30" Text="{Binding VideoTs}" ></TextBlock>
+                        <TextBox HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="150" Height="30" Text="{Binding VideoTs,UpdateSourceTrigger=PropertyChanged}" />
                         <Button Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding  OpenLogFileCommand}" CommandParameter="videofilepath" Margin="5,0,0,0" Content="Открыть" />
 
 

@@ -156,10 +156,19 @@ namespace GazeViewer.Windows
         {
             if (Properties.videoFilePath != string.Empty)
             {
-                media.LoadedBehavior = MediaState.Manual;
-                media.Source = new Uri(Properties.videoFilePath);
-                media.Play();
+                //media.LoadedBehavior = MediaState.Manual;
+                //media.Source = new Uri(Properties.videoFilePath);
+                //media.Play();
                 
+            }
+        }
+
+        private void MediaElementWrapper_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Properties.videoFilePath != string.Empty)
+            {
+                media.Source = new Uri(Properties.videoFilePath);
+                //   media.Play();
             }
         }
     }
