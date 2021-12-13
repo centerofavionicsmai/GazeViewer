@@ -79,5 +79,88 @@ namespace GazeViewer.Windows
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
         
         }
+
+        private void GazePoint_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void test1_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (test1.Stretch == Stretch.None)
+            {
+                test1.Stretch = Stretch.Uniform;
+            }
+            else if (test1.Stretch == Stretch.Uniform)
+            {
+                test1.Stretch = Stretch.None;
+            }
+        }
+
+        private void test2_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (test2.Stretch == Stretch.None)
+            {
+                test2.Stretch = Stretch.Uniform;
+            }
+            else if (test2.Stretch == Stretch.Uniform)
+            {
+                test2.Stretch = Stretch.None;
+            }
+        }
+
+        private async void MediaElement_Loaded(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(Properties.videoFilePath);
+            if (Properties.videoFilePath !=null)
+            await Media.Open(new Uri (Properties.videoFilePath));
+           await Media.Play();
+        }
+
+        private void MediaElement_Loaded_1(object sender, RoutedEventArgs e)
+        {
+         //  Debug.WriteLine( media.Source);
+            //  Debug.WriteLine(Properties.videoFilePath);
+          //  if (Properties.videoFilePath !=null)
+         //   media.Source = new Uri(Properties.videoFilePath);
+        }
+
+        private async void media_Initialized(object sender, EventArgs e)
+        {
+        
+        }
+
+        private async void media_Loaded_1(object sender, RoutedEventArgs e)
+        {
+
+
+
+//            string filePath = Properties.videoFilePath;
+         //   Debug.WriteLine(filePath);
+            string filePath = @"C:\Users\user\Downloads\09.12.21.mp4";
+            //  media.so
+            //await media.Open(new Uri(filePath));
+   
+            //Debug.WriteLine(media.Source);
+            //media.LoadedBehavior = Unosquare.FFME.Common.MediaPlaybackState.Manual;
+            //await media.Play();
+
+        }
+
+        private  async void media_MediaOpening_1(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
+        {
+            
+        }
+
+        private void media_Loaded_2(object sender, RoutedEventArgs e)
+        {
+            if (Properties.videoFilePath != string.Empty)
+            {
+                media.LoadedBehavior = MediaState.Manual;
+                media.Source = new Uri(Properties.videoFilePath);
+                media.Play();
+                
+            }
+        }
     }
 }
