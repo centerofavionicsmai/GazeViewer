@@ -15,7 +15,7 @@ namespace GazeViewer.Infastructure.Services
             string filePath = null;
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                Filter = ("CsvFiles (*.csv)|*.csv"),
+               // Filter = ("CsvFiles (*.csv)|*.csv"),
                 InitialDirectory = Environment.CurrentDirectory,
                 Title = "Открыть файл"
 

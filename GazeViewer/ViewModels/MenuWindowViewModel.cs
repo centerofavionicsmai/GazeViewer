@@ -121,6 +121,25 @@ namespace GazeViewer.ViewModels
             set => Set(ref _Ypos, value);
         }
 
+        private TimeSpan _VideoTs;
+        public TimeSpan VideoTs
+        {
+            get => _VideoTs;
+            set => Set(ref _VideoTs, value);
+        }
+    
+
+        private System.Windows.Data.Binding _Binding;
+        public System.Windows.Data.Binding Binding
+        {
+            get => _Binding;
+            
+            set => Set(ref _Binding, value);
+        }
+        
+        
+
+
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
         private int _MaxSliderValue = 900;
@@ -174,6 +193,14 @@ namespace GazeViewer.ViewModels
         private bool CanOpenLogFileCommandExecuted(object p) => true;
         private void OpenLogFileCommandExecute(object p)
         {
+            if (p.ToString() == "videofilepath")
+            {
+               
+                _VideoStreamPath = DialogService.OpenFileDialog();
+             //   Debug.WriteLine(_VideoStreamPath);
+                Properties.videoFilePath = _VideoStreamPath;
+            }
+            else if (p.ToString() == "logsfilepath")
             _CsvLogsFilePath = DialogService.OpenFileDialog();
             //  ReadCsvLogsCommandExecute(null);
         }
@@ -187,7 +214,7 @@ namespace GazeViewer.ViewModels
             return true;
         }
         private void ReadCsvLogsCommandExecute(object p)
-        {
+        {   
 
             ///Warning in add CollectionMethod
             LogReader logReader = new LogReader();
