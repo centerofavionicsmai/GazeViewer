@@ -144,8 +144,8 @@
 
 
 
-                        <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Maximum="{Binding CsvFileGazePoints.Count}"   />
-                        <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding ActualHeight,ElementName=tab1Grid, UpdateSourceTrigger=PropertyChanged}"     FontSize="20"></TextBlock>
+                        <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue,Mode=TwoWay}"  Minimum="0" Maximum="{Binding MaxSliderValue}"   />
+                        <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding  SliderValue}"     FontSize="20"></TextBlock>
                     </Grid>
 
 
@@ -210,7 +210,7 @@
                     
                     
                     <Image  x:Name="test1" Style="{StaticResource VizualizeImage}" MouseDown="test1_MouseDown" />
-                    <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="50"  Stroke="Black"  Width="50" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150" >
+                    <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="25"  Stroke="Black"  Width="25" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150" >
 
 
                         <Ellipse.RenderTransform>
@@ -273,9 +273,9 @@
                             
                         <Image x:Name="test2"  Style="{StaticResource VizualizeImage}" MouseDown="test2_MouseDown" />
 
-                        <Ellipse    Height="50"   Stroke="Black"  RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
+                        <Ellipse    Height="25 "   Stroke="Black"  RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
                             <Ellipse.Width>
-                                50
+                                25
                             </Ellipse.Width>
 
 
@@ -352,13 +352,13 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Просмотр + визуализация">
+            <!--<TabItem Header="Просмотр + визуализация">
                 <Grid Style="{StaticResource GridPositionStyle}">
                     <Grid Grid.Row="0">
-                        <!--<MediaElement  x:Name="media" Loaded="media_Loaded_2" ></MediaElement>-->
+                        --><!--<MediaElement  x:Name="media" Loaded="media_Loaded_2" ></MediaElement>--><!--
                         <media:MediaElementWrapper  x:Name="media" Stretch="Uniform"
                         Position="{Binding VideoTs,Mode=OneWayToSource}" IsMuted="True" Loaded="MediaElementWrapper_Loaded" ></media:MediaElementWrapper>
-                        <!--<ffme:MediaElement Name="media"    Position="{Binding VideoTs t}" Initialized="media_Initialized" Loaded="media_Loaded_1" MediaOpening="media_MediaOpening_1"></ffme:MediaElement>-->
+                        --><!--<ffme:MediaElement Name="media"    Position="{Binding VideoTs t}" Initialized="media_Initialized" Loaded="media_Loaded_1" MediaOpening="media_MediaOpening_1"></ffme:MediaElement>--><!--
                         <TextBox HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="150" Height="30" Text="{Binding VideoTs,UpdateSourceTrigger=PropertyChanged}" />
                         <Button Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding  OpenLogFileCommand}" CommandParameter="videofilepath" Margin="5,0,0,0" Content="Открыть" />
 
@@ -405,8 +405,51 @@
 
 
 
-            </TabItem>
+            </TabItem>-->
 
+
+            <TabItem Header="Просмотр записи">
+                <Grid x:Name="testGrid" Style="{StaticResource GridPositionStyle}">
+                    <Grid>
+                        <Image Style="{StaticResource VizualizeImage}" Stretch="Uniform"/>
+                        <Ellipse Width="15" Height="15" Fill="Black" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform>
+                                    <TranslateTransform.X>
+                                        <MultiBinding Converter="{StaticResource CoordinatesConverter}">
+                                            <Binding Path="TGazePoint.XPoint" ></Binding>
+                                            <Binding Path="ActualWidth" ElementName="testGrid"/>
+                                        </MultiBinding>
+                                    </TranslateTransform.X>
+                                    <TranslateTransform.Y>
+                                        <MultiBinding Converter="{StaticResource CoordinatesConverter}">
+                                            <Binding Path="TGazePoint.YPoint" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged"></Binding>
+                                            <Binding Path="ActualHeight" ElementName="testGrid"/>
+                                        </MultiBinding>
+                                    </TranslateTransform.Y>
+                                </TranslateTransform>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+
+
+
+
+
+                    </Grid>
+
+                    <Menu  VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
+                        <TextBlock Width="150" Text="{Binding GazePointDateTime}"></TextBlock>
+                        <TextBlock Width="150" Text="{Binding SessionTime}"></TextBlock>
+                    </Menu>
+
+                    <Slider   VerticalAlignment="Bottom"  Value="{Binding SliderValue}"  Minimum="0" Maximum="{Binding MaxSliderValue}"   />
+
+                </Grid >
+
+
+
+            </TabItem>
+            
 
 
 

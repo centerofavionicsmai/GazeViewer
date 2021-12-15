@@ -98,7 +98,7 @@ namespace GazeViewer.ViewModels
             set => Set(ref _CurrentHeight, value);
         }
 
-        private int _LogsDelayFilter = 150;
+        private int _LogsDelayFilter;
         public int LogsDelayFilter
         {
             get => _LogsDelayFilter;
@@ -136,14 +136,14 @@ namespace GazeViewer.ViewModels
             
             set => Set(ref _Binding, value);
         }
-        
-        
+
+
 
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
-        private int _MaxSliderValue = 900;
-        public int MaxSliderValue
+        private double _MaxSliderValue;
+        public double MaxSliderValue
         {
             get => _MaxSliderValue;
             set => Set(ref _MaxSliderValue, value);
@@ -162,6 +162,31 @@ namespace GazeViewer.ViewModels
             get => _SliderValue;
             set => Set(ref _SliderValue, value);
         }
+
+        private GazePoint _TGazePoint;
+        public GazePoint TGazePoint
+        {
+            get {
+                return _TGazePoint;
+            }
+            set => Set(ref _TGazePoint, value);
+        }
+
+        private DateTime _GazePointDateTime;
+        public DateTime GazePointDateTime
+        {
+            get => _GazePointDateTime;
+            set => Set(ref _GazePointDateTime, value);
+
+        }
+
+        private TimeSpan _SessionTime;
+        public TimeSpan SessionTime
+        {
+            get => _SessionTime;
+            set => Set(ref _SessionTime, value);
+        }
+
 
         private DateTime _CurrentDataTime;
         public DateTime CurrentDataTime
@@ -201,8 +226,9 @@ namespace GazeViewer.ViewModels
                 Properties.videoFilePath = _VideoStreamPath;
             }
             else if (p.ToString() == "logsfilepath")
-            _CsvLogsFilePath = DialogService.OpenFileDialog();
-            //  ReadCsvLogsCommandExecute(null);
+            _CsvLogsFilePath = DialogService.OpenFileDialog(); 
+          
+        
         }
         /// <summary>
         /// Чтение CsvLog`ов  и установка значение GazePoint листа
@@ -240,7 +266,14 @@ namespace GazeViewer.ViewModels
 
 
             }
+          
+
             CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
+           double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
+            Debug.WriteLine(duration);
+            MaxSliderValue = CsvFileGazePoints.Count;
+            
+            MinSliderValue = 0;
         }
 
         public ICommand ClearGazePointListCommand { get; }
@@ -302,7 +335,7 @@ namespace GazeViewer.ViewModels
             _CsvFileGazePoints = new ObservableCollection<GazePoint>();
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
-
+            ThreadPool.QueueUserWorkItem(new WaitCallback(VizuaLizeLogsThread));
         }
 
         private void WriteLogs(object obj)
@@ -314,7 +347,9 @@ namespace GazeViewer.ViewModels
             while (true)
             {
 
-                var doubleArray = new double[3];
+
+
+                var doubleArray = new double[7];
                 Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
                 if (doubleArray[2] != gazePoint.TimeStamp)
                 {
@@ -322,7 +357,7 @@ namespace GazeViewer.ViewModels
                     gazePoint.YPoint = doubleArray[1];
                     gazePoint.TimeStamp = doubleArray[2];
 
-                    writer.WriteGazePoint(gazePoint);
+          
                 }
 
                 if (token.IsCancellationRequested)
@@ -333,12 +368,36 @@ namespace GazeViewer.ViewModels
             }
         }
 
+        private async void VizuaLizeLogsThread(object p)
+        {
+            //CancellationToken token = (CancellationToken)p;
+            while (true){
+                if (SliderValue < CsvFileGazePoints.Count)
+                {
+                    TGazePoint = CsvFileGazePoints[SliderValue];
+                    DateTime dateTime=  new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
+                    GazePointDateTime = dateTime.AddSeconds(CsvFileGazePoints[SliderValue].TimeStamp).ToLocalTime();
+
+                    double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
+                    double currentPost = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints[SliderValue].TimeStamp;
+
+                    //SessionTime = Math.Abs( currentPost - ts);
+                    SessionTime = TimeSpan.FromSeconds(Math.Abs(currentPost - ts));
+
+
+                }
+
+            }
+        }
+
+
         private async void VizualizeGazePointThread(object p)
         {
 
             UdpClient udpClient = new UdpClient(5444);
             while (true)
             {
+
                 var result = await udpClient.ReceiveAsync();
                 CurrentDataTime = DateTime.Now;
                 UDPBytes = result.Buffer;
