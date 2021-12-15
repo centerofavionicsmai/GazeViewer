@@ -17,7 +17,7 @@ namespace GazeViewer.Infastructure.Converters
             double pos = 0; Double.TryParse(values[0].ToString(), out pos);
             double k = 0; Double.TryParse(values[1].ToString(), out k);
 
-         //   Debug.WriteLine($"Входные {pos}");
+         //  Debug.WriteLine($"Входные {pos}");
             return pos * (k / 2);
            
 
