@@ -144,8 +144,8 @@
 
 
 
-                        <Slider  VerticalAlignment="Bottom" Margin="10,10,10,30" Value="{Binding SliderValue,Mode=TwoWay}"  Minimum="0" Maximum="{Binding MaxSliderValue}"   />
-                        <TextBlock VerticalAlignment="Bottom"  Height="30"   Text="{Binding  SliderValue}"     FontSize="20"></TextBlock>
+                       
+                       
                     </Grid>
 
 
@@ -470,7 +470,7 @@
 
 
                     </Grid>
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" x:Name="rVideoGrid" Margin="0,0,0,50">
                             <Image Style="{StaticResource VizualizeImage}"/>
                             <Ellipse Width="15" Height="15" Fill="Black" RenderTransformOrigin="0.5,0.5">
                                 <Ellipse.RenderTransform>
@@ -478,13 +478,13 @@
                                         <TranslateTransform.X>
                                             <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                 <Binding Path="TGazePoint.XPoint" ></Binding>
-                                                <Binding Path="ActualWidth" ElementName="ImageGrid"/>
+                                                <Binding Path="ActualWidth" ElementName="rVideoGrid"/>
                                             </MultiBinding>
                                         </TranslateTransform.X>
                                         <TranslateTransform.Y>
                                             <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                 <Binding Path="TGazePoint.YPoint" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged"></Binding>
-                                                <Binding Path="ActualHeight" ElementName="ImageGrid"/>
+                                                <Binding Path="ActualHeight" ElementName="rVideoGrid"/>
                                             </MultiBinding>
                                         </TranslateTransform.Y>
                                     </TranslateTransform>
@@ -514,10 +514,16 @@
 
                    
                 </Grid>
+                    <Grid Height="50" VerticalAlignment="Bottom">
+                        <Menu >
+                            <MenuItem Header="открыть видео" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath"></MenuItem>
+                            <TextBlock  x:Name="CurrentSessionTime"  Text="{Binding SliderValue}"></TextBlock>
 
-                    <Button Height="20" Width="100" HorizontalAlignment="Left"  Content="открыть видео" VerticalAlignment="Bottom" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath" Margin="15,0,0,30"></Button>
-                    <Slider x:Name="timeSlider" VerticalAlignment="Bottom" Margin="0,0,0,10" ></Slider>
-                    
+                            <TextBlock  x:Name="VideoDurationText"></TextBlock>
+                        </Menu>
+                        <Slider x:Name="timeSlider" Value="{Binding SliderValue}" VerticalAlignment="Bottom" Margin="0,0,0,10"></Slider>
+                        
+                    </Grid>
                 </Grid>
             </TabItem>
 
