@@ -30,6 +30,8 @@ using CsvHelper.Configuration;
 using System.IO;
 using CsvHelper;
 using System.Media;
+using System.Windows.Controls;
+
 namespace GazeViewer.ViewModels
 {
     internal class MenuWindowViewModel : ViewModel
@@ -121,11 +123,11 @@ namespace GazeViewer.ViewModels
             set => Set(ref _Ypos, value);
         }
 
-        private TimeSpan _VideoTs;
+        private TimeSpan _VideoTs = TimeSpan.FromSeconds(3);
         public TimeSpan VideoTs
         {
             get => _VideoTs;
-            set => Set(ref _VideoTs, value);
+          //  set => Set(ref _VideoTs, value);
         }
     
 
@@ -136,9 +138,6 @@ namespace GazeViewer.ViewModels
             
             set => Set(ref _Binding, value);
         }
-
-
-
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
@@ -220,7 +219,7 @@ namespace GazeViewer.ViewModels
         {
             if (p.ToString() == "videofilepath")
             {
-               
+                Debug.WriteLine("Opening videFilePath");
                 _VideoStreamPath = DialogService.OpenFileDialog();
              //   Debug.WriteLine(_VideoStreamPath);
                 Properties.videoFilePath = _VideoStreamPath;
@@ -334,6 +333,7 @@ namespace GazeViewer.ViewModels
 
             _CsvFileGazePoints = new ObservableCollection<GazePoint>();
 
+
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizuaLizeLogsThread));
         }
@@ -374,15 +374,22 @@ namespace GazeViewer.ViewModels
             while (true){
                 if (SliderValue < CsvFileGazePoints.Count)
                 {
-                    TGazePoint = CsvFileGazePoints[SliderValue];
-                    DateTime dateTime=  new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
-                    GazePointDateTime = dateTime.AddSeconds(CsvFileGazePoints[SliderValue].TimeStamp).ToLocalTime();
+                    try
+                    {
+                        TGazePoint = CsvFileGazePoints[SliderValue];
+                        DateTime dateTime = new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
+                        GazePointDateTime = dateTime.AddSeconds(CsvFileGazePoints[SliderValue].TimeStamp).ToLocalTime();
 
-                    double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
-                    double currentPost = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints[SliderValue].TimeStamp;
+                        double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
+                        double currentPost = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints[SliderValue].TimeStamp;
 
-                    //SessionTime = Math.Abs( currentPost - ts);
-                    SessionTime = TimeSpan.FromSeconds(Math.Abs(currentPost - ts));
+                        //SessionTime = Math.Abs( currentPost - ts);
+                        SessionTime = TimeSpan.FromSeconds(Math.Abs(currentPost - ts));
+                    }
+                    catch
+                    {
+
+                    }
 
 
                 }
