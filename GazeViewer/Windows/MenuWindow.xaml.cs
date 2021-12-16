@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Unosquare.FFME;
 using Unosquare;
-
+using System.Windows.Threading;
 
 namespace GazeViewer.Windows
 {
@@ -33,31 +33,21 @@ namespace GazeViewer.Windows
         {
             InitializeComponent();
         }
-  
+        private TimeSpan TotalTime;
 
 
         private async void Media_Loaded(object sender, RoutedEventArgs e)
         {
             Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
             Media.RendererOptions.UseLegacyAudioOut = true;
-
             await Media.Open(new Uri("udp://127.0.0.1:5222"));
-
         }
 
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
         {
-
             e.Options.IsTimeSyncDisabled = true;
             e.Options.IsAudioDisabled = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
-
-            //   e.Options.
-            //    e.Options.IsTimeSyncDisabled = false;
-       
-         
-
-
         } 
 
             private void deleteme_MouseDown(object sender, MouseButtonEventArgs e)
@@ -77,7 +67,6 @@ namespace GazeViewer.Windows
         {
             e.Configuration.ForcedInputFormat = "h264";
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
-        
         }
 
         private void GazePoint_MouseDown(object sender, MouseButtonEventArgs e)
@@ -109,66 +98,43 @@ namespace GazeViewer.Windows
             }
         }
 
-        private async void MediaElement_Loaded(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine(Properties.videoFilePath);
-            if (Properties.videoFilePath !=null)
-            await Media.Open(new Uri (Properties.videoFilePath));
-           await Media.Play();
-        }
-
-        private void MediaElement_Loaded_1(object sender, RoutedEventArgs e)
-        {
-         //  Debug.WriteLine( media.Source);
-            //  Debug.WriteLine(Properties.videoFilePath);
-          //  if (Properties.videoFilePath !=null)
-         //   media.Source = new Uri(Properties.videoFilePath);
-        }
-
-        private async void media_Initialized(object sender, EventArgs e)
-        {
         
-        }
 
-        private async void media_Loaded_1(object sender, RoutedEventArgs e)
+        private void media_MediaOpened(object sender, RoutedEventArgs e)
         {
-
-
-
-//            string filePath = Properties.videoFilePath;
-         //   Debug.WriteLine(filePath);
-            string filePath = @"C:\Users\user\Downloads\09.12.21.mp4";
-            //  media.so
-            //await media.Open(new Uri(filePath));
-   
-            //Debug.WriteLine(media.Source);
-            //media.LoadedBehavior = Unosquare.FFME.Common.MediaPlaybackState.Manual;
-            //await media.Play();
-
+            media.LoadedBehavior = MediaState.Pause;
+            TotalTime = media.NaturalDuration.TimeSpan;
+            Debug.WriteLine(TotalTime);
+            var  timerVideoTime = new DispatcherTimer();
+            timerVideoTime.Interval = TimeSpan.FromSeconds(1);
+            timerVideoTime.Tick += new EventHandler(timer_Tick);
+            timerVideoTime.Start();
+            timeSlider.Maximum = media.NaturalDuration.TimeSpan.TotalSeconds;
+            Debug.WriteLine(timeSlider.Maximum);
+            timeSlider.AddHandler(MouseLeftButtonUpEvent,
+                      new MouseButtonEventHandler(timeSlider_MouseLeftButtonUp),
+                      true);
         }
 
-        private  async void media_MediaOpening_1(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
+        private void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+           
+            if (TotalTime.TotalSeconds > 0)
+            {
+                media.Position = TimeSpan.FromSeconds(timeSlider.Value);
+            }
+        }
+
+        void timer_Tick(object sender, EventArgs e)
         {
             
         }
 
-        private void media_Loaded_2(object sender, RoutedEventArgs e)
-        {
-            if (Properties.videoFilePath != string.Empty)
-            {
-                //media.LoadedBehavior = MediaState.Manual;
-                //media.Source = new Uri(Properties.videoFilePath);
-                //media.Play();
-                
-            }
-        }
-
-        private void MediaElementWrapper_Loaded(object sender, RoutedEventArgs e)
+        private void media_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Properties.videoFilePath != string.Empty)
             {
                 media.Source = new Uri(Properties.videoFilePath);
-                //   media.Play();
             }
         }
     }
