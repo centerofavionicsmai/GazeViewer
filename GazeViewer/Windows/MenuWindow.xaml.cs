@@ -102,32 +102,34 @@ namespace GazeViewer.Windows
 
         private void media_MediaOpened(object sender, RoutedEventArgs e)
         {
-            media.LoadedBehavior = MediaState.Pause;
+           
             TotalTime = media.NaturalDuration.TimeSpan;
-            Debug.WriteLine(TotalTime);
+            timeSlider.Maximum = media.NaturalDuration.TimeSpan.TotalSeconds;
+        //    media.LoadedBehavior = MediaState.Pause;
+            VideoDurationText.Text = $"{TotalTime} - {timeSlider.Maximum}.sec";
             var  timerVideoTime = new DispatcherTimer();
             timerVideoTime.Interval = TimeSpan.FromSeconds(1);
             timerVideoTime.Tick += new EventHandler(timer_Tick);
             timerVideoTime.Start();
-            timeSlider.Maximum = media.NaturalDuration.TimeSpan.TotalSeconds;
-            Debug.WriteLine(timeSlider.Maximum);
-            timeSlider.AddHandler(MouseLeftButtonUpEvent,
+      
+            timeSlider.AddHandler(MouseDownEvent,
                       new MouseButtonEventHandler(timeSlider_MouseLeftButtonUp),
                       true);
         }
 
         private void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-           
-            if (TotalTime.TotalSeconds > 0)
-            {
-                media.Position = TimeSpan.FromSeconds(timeSlider.Value);
-            }
+
+
+            media.Position = TimeSpan.FromSeconds(timeSlider.Value);
+            timeSlider.Value = media.Position.TotalSeconds;
+            
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
-            
+           timeSlider.Value = media.Position.TotalSeconds;
+         
         }
 
         private void media_Loaded_1(object sender, RoutedEventArgs e)

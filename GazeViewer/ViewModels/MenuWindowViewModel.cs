@@ -219,7 +219,7 @@ namespace GazeViewer.ViewModels
         {
             if (p.ToString() == "videofilepath")
             {
-                Debug.WriteLine("Opening videFilePath");
+           
                 _VideoStreamPath = DialogService.OpenFileDialog();
              //   Debug.WriteLine(_VideoStreamPath);
                 Properties.videoFilePath = _VideoStreamPath;
