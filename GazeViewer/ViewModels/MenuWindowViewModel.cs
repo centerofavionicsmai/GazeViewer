@@ -249,12 +249,13 @@ namespace GazeViewer.ViewModels
         private void StartVideoRecording(object p)
         {
             CancellationToken ts = (CancellationToken)p;
-            string argument = @$"-r 60 -f gdigrab  -i title=Menu  -vcodec libx264 -preset ultrafast -tune zerolatency -threads 8 -thread_type slice   Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
+            string argument = @$"-r 60 -f gdigrab  -i title=Menu  -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice   Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
             using (process = new Process())
             {
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardInput = true;
                 process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.FileName = @"FFmpeg\x64\ffmpeg.exe";
                 process.StartInfo.Arguments = argument;
                 process.Start();
