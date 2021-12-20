@@ -28,9 +28,11 @@ using System.Globalization;
 using GazeViewer.Infastructure.Temporarily;
 using CsvHelper.Configuration;
 using System.IO;
+using GazeViewer.Windows;
 using CsvHelper;
 using System.Media;
 using System.Windows.Controls;
+using Unosquare.FFME;
 
 namespace GazeViewer.ViewModels
 {
@@ -46,7 +48,7 @@ namespace GazeViewer.ViewModels
             get => _ReceivedBytes;
             set => Set(ref _ReceivedBytes, value);
         }
-
+        VizualizeWindow VizualizeWindow = new VizualizeWindow(new VisualBrush());
         private byte[] UDPBytes = new byte[24];
 
         private string _Title = "Menu";
@@ -116,6 +118,17 @@ namespace GazeViewer.ViewModels
             set => Set(ref _Xpos, value);
         }
 
+        private Unosquare.FFME.MediaElement _MediaElement;
+        public Unosquare.FFME.MediaElement MediaElement
+        {
+            get => _MediaElement;
+            set => Set(ref _MediaElement, value);
+        }
+
+
+
+
+
         private double _Ypos;
         public double Ypos
         {
@@ -127,15 +140,14 @@ namespace GazeViewer.ViewModels
         public TimeSpan VideoTs
         {
             get => _VideoTs;
-          //  set => Set(ref _VideoTs, value);
         }
-    
+
 
         private System.Windows.Data.Binding _Binding;
         public System.Windows.Data.Binding Binding
         {
             get => _Binding;
-            
+
             set => Set(ref _Binding, value);
         }
 
@@ -200,6 +212,7 @@ namespace GazeViewer.ViewModels
             get => _HetMapIntensivity;
             set => Set(ref _HetMapIntensivity, value);
         }
+        Process process;
 
         #endregion
 
@@ -219,16 +232,47 @@ namespace GazeViewer.ViewModels
         {
             if (p.ToString() == "videofilepath")
             {
-           
+
                 _VideoStreamPath = DialogService.OpenFileDialog();
-             //   Debug.WriteLine(_VideoStreamPath);
+                //   Debug.WriteLine(_VideoStreamPath);
                 Properties.videoFilePath = _VideoStreamPath;
             }
             else if (p.ToString() == "logsfilepath")
-            _CsvLogsFilePath = DialogService.OpenFileDialog(); 
-          
-        
+                _CsvLogsFilePath = DialogService.OpenFileDialog();
+
+
         }
+
+
+
+        
+        private void StartVideoRecording(object p)
+        {
+            CancellationToken ts = (CancellationToken)p;
+            string argument = @$"-r 60 -f gdigrab  -i title=Menu  -vcodec libx264 -preset ultrafast -tune zerolatency -threads 8 -thread_type slice   Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
+            using (process = new Process())
+            {
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.FileName = @"FFmpeg\x64\ffmpeg.exe";
+                process.StartInfo.Arguments = argument;
+                process.Start();
+                process.WaitForExit();
+             
+            }
+   
+        }
+
+ 
+
+
+
+
+
+
+
+
         /// <summary>
         /// Чтение CsvLog`ов  и установка значение GazePoint листа
         /// </summary>
@@ -245,19 +289,20 @@ namespace GazeViewer.ViewModels
             LogReader logReader = new LogReader();
 
             List<GazePoint> gazePoints = new List<GazePoint>();
+            int i = 0;
             foreach (var logRecord in logReader.ReadCsvLog(_CsvLogsFilePath))
             {
+             
                 var lineData = logRecord.Split(',');
+        
                 if (lineData.Length == 3) //Защита от поврежденного файла
                 {
+                  
                     double x = Double.Parse(lineData[0], CultureInfo.InvariantCulture);
                     double y = Double.Parse(lineData[1], CultureInfo.InvariantCulture);
-
+         
                     double timeStamp = Double.Parse(lineData[2], CultureInfo.InvariantCulture);
 
-                    //gazePoint.XPoint = x;
-                    //gazePoint.YPoint = y;
-                    //gazePoint.TimeStamp = timeStamp;
                     gazePoints.Add(new GazePoint(x, y, Color.FromArgb(_HetMapIntensivity, 88, 171, 232), timeStamp));
 
                 }
@@ -265,11 +310,11 @@ namespace GazeViewer.ViewModels
 
 
             }
+         
           
 
             CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
-           double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
-            Debug.WriteLine(duration);
+            double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
             MaxSliderValue = CsvFileGazePoints.Count;
             
             MinSliderValue = 0;
@@ -295,13 +340,18 @@ namespace GazeViewer.ViewModels
             return true;
 
         }
+
+
+
+
+
+
         private void StartWriteLogsCommandExecute(object p)
         {
             cancellationTokenSource = new CancellationTokenSource();
             ThreadPool.QueueUserWorkItem(new WaitCallback(WriteLogs), cancellationTokenSource.Token);
-            object oj = 5;
-
-
+            var  cancellationTokenSource1 = new CancellationTokenSource();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartVideoRecording), cancellationTokenSource.Token);
 
         }
 
@@ -316,6 +366,9 @@ namespace GazeViewer.ViewModels
             cancellationTokenSource.Cancel();
         }
 
+
+
+
      
 
 
@@ -329,9 +382,11 @@ namespace GazeViewer.ViewModels
             ClearGazePointListCommand = new ActionCommand(ClearGazePointListCommandExecute, CanClearGazePointListCommandExecuted);
             StartWriteLogsCommand = new ActionCommand(StartWriteLogsCommandExecute, CanStartWriteLogsCommandExecuted);
             StopWriteLogsCommand = new ActionCommand(StopWriteLogsCommandExecute, CanStopWriteLogsCommandExecuted);
+           
+               //   StartVideoRecordingCommand = new ActionCommand(StartVideoRecordingCommandExecute, CanStartVideoRecordingCommandExecuted);
             #endregion
 
-            _CsvFileGazePoints = new ObservableCollection<GazePoint>();
+               _CsvFileGazePoints = new ObservableCollection<GazePoint>();
 
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
@@ -351,17 +406,19 @@ namespace GazeViewer.ViewModels
 
                 var doubleArray = new double[7];
                 Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                if (doubleArray[2] != gazePoint.TimeStamp)
-                {
+                
                     gazePoint.XPoint = doubleArray[0];
                     gazePoint.YPoint = doubleArray[1];
-                    gazePoint.TimeStamp = doubleArray[2];
+                    gazePoint.TimeStamp = doubleArray[6];
+              
 
-          
-                }
+                writer.WriteGazePoint(gazePoint);
+                
 
                 if (token.IsCancellationRequested)
                 {
+                    process.StandardInput.WriteLine("q");
+
                     return;
                 }
                 Thread.Sleep(LogsDelayFilter);
@@ -403,8 +460,7 @@ namespace GazeViewer.ViewModels
 
             UdpClient udpClient = new UdpClient(5444);
             while (true)
-            {
-
+            { 
                 var result = await udpClient.ReceiveAsync();
                 CurrentDataTime = DateTime.Now;
                 UDPBytes = result.Buffer;

@@ -457,10 +457,26 @@
 
             <TabItem Header="Просмотр видео записи">
                 <Grid Style="{StaticResource GridPositionStyle}">
-                    
+
                     <Grid>
-                    
-                    <Grid Grid.Row="0">
+                        
+
+                        <ffme:MediaElement   x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened" />
+
+
+
+                        <Grid VerticalAlignment="Bottom" Height="50">
+                        <Menu >
+                            <MenuItem Header="открыть видео" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath"></MenuItem>
+                            <TextBlock  x:Name="CurrentSessionTime"  Text="{Binding SliderValue}"></TextBlock>
+
+                            <TextBlock  x:Name="VideoDurationText"></TextBlock>
+                        </Menu>
+                        <Slider x:Name="timeSlider" Value="{Binding SliderValue}" VerticalAlignment="Bottom" Margin="0,0,0,10"></Slider>
+                        </Grid>
+                    </Grid>
+
+                    <!--<Grid Grid.Row="0">
 
                         <MediaElement Source="{Binding VideoStreamPath }" x:Name="media" ScrubbingEnabled="True"  MediaOpened="media_MediaOpened" Loaded="media_Loaded_1" ></MediaElement>
 
@@ -515,15 +531,9 @@
                    
                 </Grid>
                     <Grid Height="50" VerticalAlignment="Bottom">
-                        <Menu >
-                            <MenuItem Header="открыть видео" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath"></MenuItem>
-                            <TextBlock  x:Name="CurrentSessionTime"  Text="{Binding SliderValue}"></TextBlock>
-
-                            <TextBlock  x:Name="VideoDurationText"></TextBlock>
-                        </Menu>
-                        <Slider x:Name="timeSlider" Value="{Binding SliderValue}" VerticalAlignment="Bottom" Margin="0,0,0,10"></Slider>
+                    
                         
-                    </Grid>
+                    </Grid>-->
                 </Grid>
             </TabItem>
 

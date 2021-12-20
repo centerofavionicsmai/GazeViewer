@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using Unosquare.FFME;
 using Unosquare;
 using System.Windows.Threading;
+using GazeViewer.ViewModels;
 
 namespace GazeViewer.Windows
 {
@@ -28,19 +29,36 @@ namespace GazeViewer.Windows
     
     public partial class MenuWindow : Window
     {
-    
+
+        private bool timeSliderClick;
+        DispatcherTimer timerVideoTime = new DispatcherTimer();
+
+
         public MenuWindow()
         {
             InitializeComponent();
+          
         }
         private TimeSpan TotalTime;
 
 
         private async void Media_Loaded(object sender, RoutedEventArgs e)
         {
+
+           
             Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
             Media.RendererOptions.UseLegacyAudioOut = true;
+            Media.VideoFrameDecoded += Media_VideoFrameDecoded;
             await Media.Open(new Uri("udp://127.0.0.1:5222"));
+
+            // await Media.Close();
+        }
+
+        private void Media_VideoFrameDecoded(object sender, Unosquare.FFME.Common.FrameDecodedEventArgs e)
+        {
+            var a = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Debug.WriteLine($"First Decode cadr {a}");
+            Media.VideoFrameDecoded -= Media_VideoFrameDecoded;
         }
 
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
@@ -50,7 +68,7 @@ namespace GazeViewer.Windows
             e.Options.MinimumPlaybackBufferPercent = 0;
         } 
 
-            private void deleteme_MouseDown(object sender, MouseButtonEventArgs e)
+        private void deleteme_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (deleteme.Stretch == Stretch.None)
             {
@@ -67,6 +85,7 @@ namespace GazeViewer.Windows
         {
             e.Configuration.ForcedInputFormat = "h264";
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
+     
         }
 
         private void GazePoint_MouseDown(object sender, MouseButtonEventArgs e)
@@ -98,46 +117,53 @@ namespace GazeViewer.Windows
             }
         }
 
-        
-
-        private void media_MediaOpened(object sender, RoutedEventArgs e)
+        private async void staticVideo_Loaded(object sender, RoutedEventArgs e)
         {
-           
-            TotalTime = media.NaturalDuration.TimeSpan;
-            timeSlider.Maximum = media.NaturalDuration.TimeSpan.TotalSeconds;
-        //    media.LoadedBehavior = MediaState.Pause;
-            VideoDurationText.Text = $"{TotalTime} - {timeSlider.Maximum}.sec";
-            var  timerVideoTime = new DispatcherTimer();
-            timerVideoTime.Interval = TimeSpan.FromSeconds(1);
+            if (Properties.videoFilePath != string.Empty)
+            {
+                await staticVideo.Open(new Uri(Properties.videoFilePath));
+                await staticVideo.Play();
+            }
+        }
+
+        private void staticVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        {
+            TotalTime = staticVideo.NaturalDuration.Value;
+            timeSlider.Maximum = staticVideo.NaturalDuration.Value.TotalMilliseconds;
+            VideoDurationText.Text = $"{TotalTime} - {timeSlider.Maximum}.msec";
+            timerVideoTime.Interval = TimeSpan.FromMilliseconds(10);
             timerVideoTime.Tick += new EventHandler(timer_Tick);
             timerVideoTime.Start();
-      
+
             timeSlider.AddHandler(MouseDownEvent,
                       new MouseButtonEventHandler(timeSlider_MouseLeftButtonUp),
                       true);
         }
 
-        private void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-
-            media.Position = TimeSpan.FromSeconds(timeSlider.Value);
-            timeSlider.Value = media.Position.TotalSeconds;
-            
+    private async void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        
+        staticVideo.Position = TimeSpan.FromMilliseconds(timeSlider.Value);
+        timeSlider.Value = staticVideo.Position.TotalMilliseconds;
+        timeSliderClick = true;
+        timerVideoTime.Interval = TimeSpan.FromSeconds(1);
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
-           timeSlider.Value = media.Position.TotalSeconds;
-         
-        }
 
-        private void media_Loaded_1(object sender, RoutedEventArgs e)
-        {
-            if (Properties.videoFilePath != string.Empty)
+            if (!timeSliderClick)
             {
-                media.Source = new Uri(Properties.videoFilePath);
+                timeSlider.Value = staticVideo.Position.TotalMilliseconds;
+                timerVideoTime.Interval = TimeSpan.FromMilliseconds(1);
+            }
+            if (timeSliderClick)
+            {
+                staticVideo.Position = TimeSpan.FromMilliseconds(timeSlider.Value);
+                timeSliderClick = false;
+                return;
             }
         }
+
     }
 }
