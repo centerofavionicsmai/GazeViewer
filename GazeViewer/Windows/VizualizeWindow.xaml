@@ -25,10 +25,10 @@
     <Grid>
         <Grid   Style="{StaticResource GridPositionStyle}">
             <Grid  Grid.Row="0">
-                <!--<ContentControl Content="{Binding  MediaElement}" />-->
-                <Rectangle x:Name="test"></Rectangle>
-                
-                
+                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" MediaOpened="Media_MediaOpened" MediaOpening="Media_MediaOpening" />
+
+
+
             </Grid>
 
             <Grid x:Name="vizualizationVideoGrid" ShowGridLines="True" Grid.Row="1" Margin="0,0,0,0">

@@ -23,8 +23,29 @@ namespace GazeViewer.Windows
         public VizualizeWindow(VisualBrush visualBrush)
         {
             InitializeComponent();
-            test.Fill = visualBrush;
+           
         }
 
+        private async void Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
+            Media.RendererOptions.UseLegacyAudioOut = true;
+            //Media.VideoFrameDecoded += Media_VideoFrameDecoded;
+              await Media.Open(new Uri("udp://127.0.0.1:5222"));
+        }
+
+        private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
+        {
+            e.Options.IsTimeSyncDisabled = true;
+            e.Options.IsAudioDisabled = true;
+            e.Options.MinimumPlaybackBufferPercent = 0;
+        }
+
+        private void Media_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        {
+
+        }
+
+      
     }
 }

@@ -254,17 +254,12 @@
 
                 </Grid>
             </TabItem>
-
-            <TabItem Header="Визуализация + видео">
+          
+            <TabItem Header="Визуализация + видео"   >
 
                 <Grid   Style="{StaticResource GridPositionStyle}">
-
-
-
                     <Grid Grid.Row="0">
-
-
-                        <!--<MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>-->
+                        <MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>
                         <ffme:MediaElement x:Name="Media" Background="Gray"  Grid.ColumnSpan="2" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="Media_Loaded" MediaOpening="Media_MediaOpening" MediaInitializing="Media_MediaInitializing"   />
                     </Grid>
 
@@ -324,92 +319,19 @@
                             </Grid.ColumnDefinitions>
 
                         </Grid>
-
-
-
                     </Grid>
 
                     <GridSplitter></GridSplitter>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*">
-
                         </RowDefinition>
                         <RowDefinition Height="4*">
-
-
-
-
-
                         </RowDefinition>
                     </Grid.RowDefinitions>
-
-
-
-
-
-
-
                 </Grid>
             </TabItem>
 
-            <!--<TabItem Header="Просмотр + визуализация">
-                <Grid Style="{StaticResource GridPositionStyle}">
-                    <Grid Grid.Row="0">
-                        -->
-            <!--<MediaElement  x:Name="media" Loaded="media_Loaded_2" ></MediaElement>-->
-            <!--
-                        <media:MediaElementWrapper  x:Name="media" Stretch="Uniform"
-                        Position="{Binding VideoTs,Mode=OneWayToSource}" IsMuted="True" Loaded="MediaElementWrapper_Loaded" ></media:MediaElementWrapper>
-                        -->
-            <!--<ffme:MediaElement Name="media"    Position="{Binding VideoTs t}" Initialized="media_Initialized" Loaded="media_Loaded_1" MediaOpening="media_MediaOpening_1"></ffme:MediaElement>-->
-            <!--
-                        <TextBox HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="150" Height="30" Text="{Binding VideoTs,UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding  OpenLogFileCommand}" CommandParameter="videofilepath" Margin="5,0,0,0" Content="Открыть" />
-
-
-                    </Grid>
-                    <Grid Grid.Row="1" ShowGridLines="True">
-                        <Grid.RowDefinitions>
-                            <RowDefinition  Height="2*"></RowDefinition>
-                            <RowDefinition  Height="2*"></RowDefinition>
-                            <RowDefinition  Height="2*"></RowDefinition>
-                            <RowDefinition  Height="2*"></RowDefinition>
-                            <RowDefinition  Height="2*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        
-                        
-                        
-                    </Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3*">
-
-                        </RowDefinition>
-                        <RowDefinition Height="4*">
-                                
-                            
-                            
-                            
-                        </RowDefinition>
-                    </Grid.RowDefinitions>
-
-
-
-                </Grid>
-
-
-
-
-            </TabItem>-->
+          
 
 
             <TabItem Header="Просмотр записи">

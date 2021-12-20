@@ -49,7 +49,7 @@ namespace GazeViewer.Windows
             Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
             Media.RendererOptions.UseLegacyAudioOut = true;
             Media.VideoFrameDecoded += Media_VideoFrameDecoded;
-            await Media.Open(new Uri("udp://127.0.0.1:5222"));
+         //   await Media.Open(new Uri("udp://127.0.0.1:5222"));
 
             // await Media.Close();
         }
