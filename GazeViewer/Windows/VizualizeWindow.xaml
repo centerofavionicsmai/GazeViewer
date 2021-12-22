@@ -8,7 +8,7 @@
         xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters" xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win" xmlns:vm="clr-namespace:GazeViewer.ViewModels" d:DataContext="{d:DesignInstance Type=vm:MenuWindowViewModel}"
         mc:Ignorable="d"
         ResizeMode="CanResize"
-        Title="VizualizeWindow" WindowStyle="None"  KeyDown="Window_KeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
+        Title="VizualizeWindow" WindowStyle="None"  Width="800" Height="620" KeyDown="Window_KeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
     <Window.Resources >
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"></cmd:CloseApplicationCommand>
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
@@ -16,15 +16,14 @@
         <conv:RelativeConverter    x:Key="RelativeConverter" />
     </Window.Resources>
     <Grid>
-        <Grid   Style="{StaticResource GridPositionStyle}">
+        <Grid >
             <Grid  Grid.Row="0">
-                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded"  MediaOpening="Media_MediaOpening" />
+                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" Stretch="Fill"  MediaOpening="Media_MediaOpening" />
             </Grid>
 
-            <Grid x:Name="vizualizationVideoGrid" ShowGridLines="True" Grid.Row="1" Margin="0,0,0,0">
-                <Grid x:Name="vizualizationGrid">
-                    <Image x:Name="test2"  Style="{StaticResource VizualizeImage}"/>
-                    <Ellipse    Height="35"   Stroke="Black"  StrokeThickness="8" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
+                <Grid Grid.Row="1" x:Name="vizualizationGrid">
+                
+                <Ellipse    Height="35"   Stroke="Black"  StrokeThickness="8" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
                         <Ellipse.Width>
                             35
                         </Ellipse.Width>
@@ -50,34 +49,18 @@
                             </TransformGroup>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-                </Grid>
-
-                <Grid ShowGridLines="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition  Height="2*"></RowDefinition>
-                        <RowDefinition  Height="2*"></RowDefinition>
-                        <RowDefinition  Height="2*"></RowDefinition>
-                        <RowDefinition  Height="2*"></RowDefinition>
-                        <RowDefinition  Height="2*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                </Grid>
+                <Image x:Name="test2" Stretch="Uniform"  Style="{StaticResource VizualizeImage}"/>
             </Grid>
+
+               
+                
+            
 
             <GridSplitter></GridSplitter>
             <Grid.RowDefinitions>
-                <RowDefinition Height="5*">
+                <RowDefinition Height="2*">
                 </RowDefinition>
-                <RowDefinition Height="4*">
+                <RowDefinition Height="2.5*">
                 </RowDefinition>
             </Grid.RowDefinitions>
         </Grid>
