@@ -393,10 +393,15 @@ namespace GazeViewer.ViewModels
             {
                     var doubleArray = new double[7];
                     Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                    gazePoint.XPoint = doubleArray[4];
-                    gazePoint.YPoint = doubleArray[5];
+                if (doubleArray[6] != gazePoint.TimeStamp)
+                {
+                    gazePoint.XPoint = doubleArray[0];
+                    gazePoint.YPoint = doubleArray[1];
                     gazePoint.TimeStamp = doubleArray[6];
-                writer.WriteGazePoint(gazePoint);
+                    writer.WriteGazePoint(gazePoint);
+                }
+               
+         
                 
                 if (token.IsCancellationRequested)
                 {
@@ -467,9 +472,5 @@ namespace GazeViewer.ViewModels
             }
 
         }
-
-
-
-
     }
 }
