@@ -59,7 +59,7 @@
             <GridSplitter></GridSplitter>
           
                 <Grid.RowDefinitions>
-                <RowDefinition Height="2.5*">
+                <RowDefinition Height="2.9*">
                 </RowDefinition>
                 <RowDefinition Height="3.5*">
                 </RowDefinition>
