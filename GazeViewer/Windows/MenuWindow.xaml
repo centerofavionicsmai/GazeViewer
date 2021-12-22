@@ -305,11 +305,11 @@
 
 
 
-                    <Slider   VerticalAlignment="Bottom"  Value="{Binding SliderValue}"  Minimum="0" Maximum="{Binding MaxSliderValue}"   />
+                    <Slider   VerticalAlignment="Bottom"  Value="{Binding GazePointSliderValue}"  Minimum="0" Maximum="{Binding CsvFileGazePoints.Count}"   />
                     <Menu  VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,25" >
                         <TextBlock Width="150" Text="{Binding GazePointDateTime}"></TextBlock>
                         <TextBlock Width="150" Text="{Binding SessionTime}"></TextBlock>
-                        <MenuItem Header="Загрузить логи"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
+                        <MenuItem Header="Загрузить лог"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
                     </Menu>
                 </Grid >
 
