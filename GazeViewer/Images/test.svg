@@ -1,26 +1,38 @@
-<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="383" height="145" viewBox="0 0 383 145">
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="1980.5" height="1080" viewBox="0 0 1980.5 1080">
   <g>
-    <rect x="145" y="55" width="44" height="44" style="fill: #fff"/>
-    <path d="M1029.5,558.5v43h-43v-43h43m1-1h-45v45h45v-45Z" transform="translate(-841 -503)"/>
+    <rect x="959.5" y="505.5" width="99" height="99" style="fill: #fff"/>
+    <path d="M1057.5,506v98h-98V506h98m1-1h-100V605h100V505Z" transform="translate(0.5 0)"/>
   </g>
   <g>
-    <rect x="40.5" y="63.5" width="27" height="18" style="fill: #fff"/>
-    <path d="M908,567v17H882V567h26m1-1H881v19h28V566Z" transform="translate(-841 -503)"/>
+    <rect x="0.5" y="0.5" width="74" height="1079" style="fill: #fff"/>
+    <path d="M73.5,1V1079H.5V1h73m1-1H-.5V1080h75V0Z" transform="translate(0.5 0)"/>
   </g>
   <g>
-    <rect x="265.5" y="63.5" width="26" height="18" style="fill: #fff"/>
-    <path d="M1132,567v17h-25V567h25m1-1h-27v19h27V566Z" transform="translate(-841 -503)"/>
+    <rect x="1906" y="0.5" width="74" height="1079" style="fill: #fff"/>
+    <path d="M1979,1V1079h-73V1h73m1-1h-75V1080h75V0Z" transform="translate(0.5 0)"/>
   </g>
   <g>
-    <rect x="0.5" y="0.5" width="39" height="144" style="fill: #fff"/>
-    <path d="M880,504V647H842V504h38m1-1H841V648h40V503Z" transform="translate(-841 -503)"/>
+    <rect x="659" y="505.5" width="99" height="99" style="fill: #fff"/>
+    <path d="M757,506v98H659V506h98m1-1H658V605H758V505Z" transform="translate(0.5 0)"/>
   </g>
   <g>
-    <rect x="292.5" y="0.5" width="39" height="144" style="fill: #fff"/>
-    <path d="M1172,504V647h-38V504h38m1-1h-40V648h40V503Z" transform="translate(-841 -503)"/>
+    <rect x="1289" y="505.5" width="99" height="99" style="fill: #fff"/>
+    <path d="M1387,506v98h-98V506h98m1-1H1288V605h100V505Z" transform="translate(0.5 0)"/>
   </g>
   <g>
-    <rect x="356.5" y="64.5" width="26" height="18" style="fill: #fff"/>
-    <path d="M1223,568v17h-25V568h25m1-1h-27v19h27V567Z" transform="translate(-841 -503)"/>
+    <rect x="1513" y="533.5" width="89" height="44" style="fill: #fff"/>
+    <path d="M1601,534v43h-88V534h88m1-1h-90v45h90V533Z" transform="translate(0.5 0)"/>
+  </g>
+  <g>
+    <rect x="542" y="386.5" width="89" height="319" style="fill: #fff"/>
+    <path d="M630,387V705H542V387h88m1-1H541V706h90V386Z" transform="translate(0.5 0)"/>
+  </g>
+  <g>
+    <rect x="1414" y="386.5" width="89" height="319" style="fill: #fff"/>
+    <path d="M1502,387V705h-88V387h88m1-1h-90V706h90V386Z" transform="translate(0.5 0)"/>
+  </g>
+  <g>
+    <rect x="959" y="982" width="99" height="74" style="fill: #fff"/>
+    <path d="M1057,982.5v73H959v-73h98m1-1H958v75h100v-75Z" transform="translate(0.5 0)"/>
   </g>
 </svg>
