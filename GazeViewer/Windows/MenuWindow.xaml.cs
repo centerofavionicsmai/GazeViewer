@@ -46,9 +46,9 @@ namespace GazeViewer.Windows
         {
 
            
-            Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
-            Media.RendererOptions.UseLegacyAudioOut = true;
-            Media.VideoFrameDecoded += Media_VideoFrameDecoded;
+            //Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
+            //Media.RendererOptions.UseLegacyAudioOut = true;
+            //Media.VideoFrameDecoded += Media_VideoFrameDecoded;
          //   await Media.Open(new Uri("udp://127.0.0.1:5222"));
 
             // await Media.Close();
@@ -58,7 +58,7 @@ namespace GazeViewer.Windows
         {
             var a = DateTimeOffset.Now.ToUnixTimeSeconds();
             Debug.WriteLine($"First Decode cadr {a}");
-            Media.VideoFrameDecoded -= Media_VideoFrameDecoded;
+         //   Media.VideoFrameDecoded -= Media_VideoFrameDecoded;
         }
 
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
@@ -107,14 +107,14 @@ namespace GazeViewer.Windows
 
         private void test2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (test2.Stretch == Stretch.None)
-            {
-                test2.Stretch = Stretch.Uniform;
-            }
-            else if (test2.Stretch == Stretch.Uniform)
-            {
-                test2.Stretch = Stretch.None;
-            }
+            //if (test2.Stretch == Stretch.None)
+            //{
+            //    test2.Stretch = Stretch.Uniform;
+            //}
+            //else if (test2.Stretch == Stretch.Uniform)
+            //{
+            //    test2.Stretch = Stretch.None;
+            //}
         }
 
         private async void staticVideo_Loaded(object sender, RoutedEventArgs e)

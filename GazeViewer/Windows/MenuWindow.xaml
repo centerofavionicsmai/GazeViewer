@@ -11,7 +11,7 @@
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:media="https://github.com/JohanLarsson/Gu.Wpf.Media"
         mc:Ignorable="d"
-        Title="{Binding Title}"  Height="450" Width="800"
+        Title="{Binding Title}"  Height="580" Width="800" ResizeMode="CanResizeWithGrip"
         
         >
     <Window.DataContext>
@@ -258,76 +258,16 @@
             <TabItem Header="Визуализация + видео"   >
 
                 <Grid   Style="{StaticResource GridPositionStyle}">
-                    <Grid Grid.Row="0">
-                        <MediaElement  x:Name="tests" Source="{Binding VideoStreamPath}" IsMuted="True" Stretch="Uniform" Grid.ColumnSpan="2" ></MediaElement>
-                        <ffme:MediaElement x:Name="Media" Background="Gray"  Grid.ColumnSpan="2" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="Media_Loaded" MediaOpening="Media_MediaOpening" MediaInitializing="Media_MediaInitializing"   />
-                    </Grid>
-
-                    <Grid x:Name="vizualizationVideoGrid" ShowGridLines="True" Grid.Row="1" Margin="0,0,0,0">
-                        <Grid>
-
-                            <Image x:Name="test2"  Style="{StaticResource VizualizeImage}" MouseDown="test2_MouseDown" />
-
-                            <Ellipse    Height="25 "   Stroke="Black"  RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
-                                <Ellipse.Width>
-                                    25
-                                </Ellipse.Width>
-
-
-                                <Ellipse.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform/>
-                                        <TranslateTransform >
-                                            <TranslateTransform.X>
-                                                <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                    <Binding Path="Xpos" UpdateSourceTrigger="PropertyChanged"></Binding>
-                                                    <Binding Path="ActualWidth" ElementName="vizualizationGrid"/>
-                                                </MultiBinding>
-                                            </TranslateTransform.X>
-                                            <TranslateTransform.Y>
-
-                                                <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                    <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
-                                                    <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
-                                                </MultiBinding>
-                                            </TranslateTransform.Y>
-                                        </TranslateTransform>
-                                    </TransformGroup>
-                                </Ellipse.RenderTransform>
-                            </Ellipse>
-                        </Grid>
-
-                        <Grid ShowGridLines="True">
-                            <Grid.RowDefinitions>
-                                <RowDefinition  Height="2*"></RowDefinition>
-                                <RowDefinition  Height="2*"></RowDefinition>
-                                <RowDefinition  Height="2*"></RowDefinition>
-                                <RowDefinition  Height="2*"></RowDefinition>
-                                <RowDefinition  Height="2*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-
-                        </Grid>
-                    </Grid>
-
-                    <GridSplitter></GridSplitter>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3*">
-                        </RowDefinition>
-                        <RowDefinition Height="4*">
-                        </RowDefinition>
-                    </Grid.RowDefinitions>
+                    <Menu Margin="10">
+                        <MenuItem Header="Начать запись" Command="{Binding StartWriteLogsCommand}"></MenuItem>
+                        <MenuItem Header="Остановить запись" Command="{Binding StopWriteLogsCommand}"></MenuItem>
+                        <MenuItem Header="Gaze Plot"></MenuItem>
+                        <MenuItem Header="Открыть окно" Command="{Binding OpenVizualizeWindowCommand}"></MenuItem>
+                        <MenuItem Header="Закрыть окно" Command="{Binding CloseVizualizeWindowCommand}"></MenuItem>
+                    </Menu>
+                    
+                    
+                            
                 </Grid>
             </TabItem>
 
@@ -383,7 +323,7 @@
                     <Grid>
                         
 
-                        <ffme:MediaElement   x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened" />
+                        <ffme:MediaElement Margin="0,0,0,80"   x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened" />
 
 
 

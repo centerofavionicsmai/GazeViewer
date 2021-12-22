@@ -48,7 +48,7 @@ namespace GazeViewer.ViewModels
             get => _ReceivedBytes;
             set => Set(ref _ReceivedBytes, value);
         }
-        VizualizeWindow VizualizeWindow = new VizualizeWindow(new VisualBrush());
+        VizualizeWindow VizualizeWindow = new VizualizeWindow();
         private byte[] UDPBytes = new byte[24];
 
         private string _Title = "Menu";
@@ -167,6 +167,17 @@ namespace GazeViewer.ViewModels
             set => Set(ref _MinSliderValue, value);
         }
 
+        private PointCollection _GazePlot;
+        public PointCollection GazePlot
+        {
+            get => _GazePlot;
+
+            set => Set(ref _GazePlot, value);
+
+        }
+
+
+
         private int _SliderValue;
         public int SliderValue
         {
@@ -239,39 +250,7 @@ namespace GazeViewer.ViewModels
             }
             else if (p.ToString() == "logsfilepath")
                 _CsvLogsFilePath = DialogService.OpenFileDialog();
-
-
         }
-
-
-
-        
-        private void StartVideoRecording(object p)
-        {
-            CancellationToken ts = (CancellationToken)p;
-            string argument = @$"-r 60 -f gdigrab  -i title=Menu  -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice   Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
-            using (process = new Process())
-            {
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.FileName = @"FFmpeg\x64\ffmpeg.exe";
-                process.StartInfo.Arguments = argument;
-                process.Start();
-                process.WaitForExit();
-             
-            }
-   
-        }
-
- 
-
-
-
-
-
-
 
 
         /// <summary>
@@ -301,23 +280,17 @@ namespace GazeViewer.ViewModels
                   
                     double x = Double.Parse(lineData[0], CultureInfo.InvariantCulture);
                     double y = Double.Parse(lineData[1], CultureInfo.InvariantCulture);
-         
                     double timeStamp = Double.Parse(lineData[2], CultureInfo.InvariantCulture);
 
                     gazePoints.Add(new GazePoint(x, y, Color.FromArgb(_HetMapIntensivity, 88, 171, 232), timeStamp));
 
                 }
 
-
-
             }
          
-          
-
             CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
             double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
             MaxSliderValue = CsvFileGazePoints.Count;
-            
             MinSliderValue = 0;
         }
 
@@ -341,12 +314,6 @@ namespace GazeViewer.ViewModels
             return true;
 
         }
-
-
-
-
-
-
         private void StartWriteLogsCommandExecute(object p)
         {
             cancellationTokenSource = new CancellationTokenSource();
@@ -367,12 +334,33 @@ namespace GazeViewer.ViewModels
             cancellationTokenSource.Cancel();
         }
 
-
-
-
-     
-
-
+        public ICommand OpenVizualizeWindowCommand { get; }
+        private bool CanOpenVizualizeWindowCommandExecuted (object p)
+        {
+            if (VizualizeWindow.IsActive)
+            {
+                return false;
+            }
+            else return true;
+        }
+        private void OpenVizualizeWindowCommandExecute(object p)
+        {
+            VizualizeWindow.DataContext = this;
+            VizualizeWindow.Show();
+        }
+        public ICommand CloseVizualizeWindowCommand { get; }
+        private bool CanCloseVizualizeWindowCommandExecuted(object p)
+        {
+            if (VizualizeWindow.IsLoaded)
+            {
+                return true;
+            }
+            else return false;
+        }
+        private void CloseVizualizeWindowCommandExecute(object p)
+        {
+            VizualizeWindow.Hide();
+        }
 
         #endregion
 
@@ -383,12 +371,13 @@ namespace GazeViewer.ViewModels
             ClearGazePointListCommand = new ActionCommand(ClearGazePointListCommandExecute, CanClearGazePointListCommandExecuted);
             StartWriteLogsCommand = new ActionCommand(StartWriteLogsCommandExecute, CanStartWriteLogsCommandExecuted);
             StopWriteLogsCommand = new ActionCommand(StopWriteLogsCommandExecute, CanStopWriteLogsCommandExecuted);
-           
+            OpenVizualizeWindowCommand = new ActionCommand(OpenVizualizeWindowCommandExecute, CanOpenVizualizeWindowCommandExecuted);
+            CloseVizualizeWindowCommand = new ActionCommand(CloseVizualizeWindowCommandExecute, CanCloseVizualizeWindowCommandExecuted);
                //   StartVideoRecordingCommand = new ActionCommand(StartVideoRecordingCommandExecute, CanStartVideoRecordingCommandExecuted);
             #endregion
 
                _CsvFileGazePoints = new ObservableCollection<GazePoint>();
-
+            GazePlot = new PointCollection();
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizuaLizeLogsThread));
@@ -402,24 +391,16 @@ namespace GazeViewer.ViewModels
 
             while (true)
             {
-
-
-
-                var doubleArray = new double[7];
-                Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                
-                    gazePoint.XPoint = doubleArray[0];
-                    gazePoint.YPoint = doubleArray[1];
+                    var doubleArray = new double[7];
+                    Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
+                    gazePoint.XPoint = doubleArray[4];
+                    gazePoint.YPoint = doubleArray[5];
                     gazePoint.TimeStamp = doubleArray[6];
-              
-
                 writer.WriteGazePoint(gazePoint);
                 
-
                 if (token.IsCancellationRequested)
                 {
                     process.StandardInput.WriteLine("q");
-
                     return;
                 }
                 Thread.Sleep(LogsDelayFilter);
@@ -428,7 +409,6 @@ namespace GazeViewer.ViewModels
 
         private async void VizuaLizeLogsThread(object p)
         {
-            //CancellationToken token = (CancellationToken)p;
             while (true){
                 if (SliderValue < CsvFileGazePoints.Count)
                 {
@@ -441,15 +421,12 @@ namespace GazeViewer.ViewModels
                         double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
                         double currentPost = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints[SliderValue].TimeStamp;
 
-                        //SessionTime = Math.Abs( currentPost - ts);
                         SessionTime = TimeSpan.FromSeconds(Math.Abs(currentPost - ts));
                     }
                     catch
                     {
 
                     }
-
-
                 }
 
             }
@@ -470,6 +447,25 @@ namespace GazeViewer.ViewModels
                 Xpos = doubleArray[0];
                 Ypos = doubleArray[1];
             }
+        }
+
+        private void StartVideoRecording(object p)
+        {
+            CancellationToken ts = (CancellationToken)p;
+            string argument = @$"-r 60 -f gdigrab  -i title=VizualizeWindow  -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
+            using (process = new Process())
+            {
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.FileName = @"FFmpeg\x64\ffmpeg.exe";
+                process.StartInfo.Arguments = argument;
+                process.Start();
+                process.WaitForExit();
+
+            }
+
         }
 
 
