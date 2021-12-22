@@ -465,7 +465,7 @@ namespace GazeViewer.ViewModels
         private void StartVideoRecording(object p)
         {
             CancellationToken ts = (CancellationToken)p;
-            string argument = @$"-r 60 -f gdigrab  -i title=VizualizeWindow  -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
+            string argument = @"-r 60 -f gdigrab  -i title=VizualizeWindow -vf drawtext=fontfile=/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf:text='%{localtime}':fontcolor=yellow@1:x=7:y=50 -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice" +     $" Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
             using (process = new Process())
             {
                 process.StartInfo.UseShellExecute = false;
