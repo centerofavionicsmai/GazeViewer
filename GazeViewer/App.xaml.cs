@@ -19,5 +19,10 @@ namespace GazeViewer
             Library.FFmpegDirectory = @"FFmpeg" + (Environment.Is64BitProcess ? @"\x64" : string.Empty);
             base.OnStartup(e);
         }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            this.Shutdown();
+            base.OnExit(e);
+        }
     }
 }

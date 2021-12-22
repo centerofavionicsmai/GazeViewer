@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\pfd.svg" />
+    <None Remove="Images\test.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="27.2.0" />
     <PackageReference Include="FFME.Windows" Version="4.4.350" />
     <PackageReference Include="Gu.Wpf.Media" Version="0.5.1" />
@@ -28,6 +33,15 @@
     <Folder Include="FFmpeg\" />
     <Folder Include="View\" />
     <Folder Include="Windows\Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\pfd.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\test.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

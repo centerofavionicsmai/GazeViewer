@@ -15,7 +15,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
             <Setter Property="Stretch" Value="Uniform"></Setter>
             <!--<Setter Property="Stretch" Value="None"/>-->
-            <Setter Property="Source" Value="{svgc:SvgImage Source=Images/pfd.svg}"></Setter>
+            <Setter Property="Source" Value="{svgc:SvgImage Source=Images/test.svg}"></Setter>
         </Style>
 
     </Application.Resources>

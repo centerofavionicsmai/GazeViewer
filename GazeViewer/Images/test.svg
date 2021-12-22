@@ -1,0 +1,26 @@
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="383" height="145" viewBox="0 0 383 145">
+  <g>
+    <rect x="145" y="55" width="44" height="44" style="fill: #fff"/>
+    <path d="M1029.5,558.5v43h-43v-43h43m1-1h-45v45h45v-45Z" transform="translate(-841 -503)"/>
+  </g>
+  <g>
+    <rect x="40.5" y="63.5" width="27" height="18" style="fill: #fff"/>
+    <path d="M908,567v17H882V567h26m1-1H881v19h28V566Z" transform="translate(-841 -503)"/>
+  </g>
+  <g>
+    <rect x="265.5" y="63.5" width="26" height="18" style="fill: #fff"/>
+    <path d="M1132,567v17h-25V567h25m1-1h-27v19h27V566Z" transform="translate(-841 -503)"/>
+  </g>
+  <g>
+    <rect x="0.5" y="0.5" width="39" height="144" style="fill: #fff"/>
+    <path d="M880,504V647H842V504h38m1-1H841V648h40V503Z" transform="translate(-841 -503)"/>
+  </g>
+  <g>
+    <rect x="292.5" y="0.5" width="39" height="144" style="fill: #fff"/>
+    <path d="M1172,504V647h-38V504h38m1-1h-40V648h40V503Z" transform="translate(-841 -503)"/>
+  </g>
+  <g>
+    <rect x="356.5" y="64.5" width="26" height="18" style="fill: #fff"/>
+    <path d="M1223,568v17h-25V568h25m1-1h-27v19h27V567Z" transform="translate(-841 -503)"/>
+  </g>
+</svg>

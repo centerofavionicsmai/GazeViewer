@@ -5,38 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GazeViewer.Windows"
         xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
-        xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters" xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win" xmlns:vm="clr-namespace:GazeViewer.ViewModels"
+        xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters" xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win" xmlns:vm="clr-namespace:GazeViewer.ViewModels" d:DataContext="{d:DesignInstance Type=vm:MenuWindowViewModel}"
         mc:Ignorable="d"
-       
-        Title="VizualizeWindow" Height="450" Width="800">
+        ResizeMode="CanResize"
+        Title="VizualizeWindow" WindowStyle="None"  KeyDown="Window_KeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
     <Window.Resources >
-
-     
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"></cmd:CloseApplicationCommand>
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
         <conv:CoordinatesConverter x:Key="CoordinatesConverter"/>
         <conv:RelativeConverter    x:Key="RelativeConverter" />
     </Window.Resources>
-
-
- 
-
-
     <Grid>
         <Grid   Style="{StaticResource GridPositionStyle}">
             <Grid  Grid.Row="0">
-                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" MediaOpened="Media_MediaOpened" MediaOpening="Media_MediaOpening" />
-
-
-
+                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded"  MediaOpening="Media_MediaOpening" />
             </Grid>
 
             <Grid x:Name="vizualizationVideoGrid" ShowGridLines="True" Grid.Row="1" Margin="0,0,0,0">
                 <Grid x:Name="vizualizationGrid">
                     <Image x:Name="test2"  Style="{StaticResource VizualizeImage}"/>
-                    <Ellipse    Height="25 "   Stroke="Black"  RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
+                    <Ellipse    Height="35"   Stroke="Black"  StrokeThickness="8" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
                         <Ellipse.Width>
-                            25
+                            35
                         </Ellipse.Width>
                         <Ellipse.RenderTransform>
                             <TransformGroup>

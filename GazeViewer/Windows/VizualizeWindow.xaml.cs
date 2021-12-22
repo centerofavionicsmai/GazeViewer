@@ -20,7 +20,7 @@ namespace GazeViewer.Windows
     /// </summary>
     public partial class VizualizeWindow : Window
     {
-        public VizualizeWindow(VisualBrush visualBrush)
+        public VizualizeWindow()
         {
             InitializeComponent();
            
@@ -41,11 +41,19 @@ namespace GazeViewer.Windows
             e.Options.MinimumPlaybackBufferPercent = 0;
         }
 
-        private void Media_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Escape)
+            {
+             
+                this.Hide();
+            }
         }
 
-      
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
     }
 }
