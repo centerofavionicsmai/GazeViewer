@@ -8,7 +8,7 @@
         xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters" xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win" xmlns:vm="clr-namespace:GazeViewer.ViewModels" d:DataContext="{d:DesignInstance Type=vm:MenuWindowViewModel}"
         mc:Ignorable="d"
         ResizeMode="CanResize"
-        Title="VizualizeWindow" WindowStyle="None"  Width="800" Height="620" KeyDown="Window_KeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
+        Title="VizualizeWindow" WindowStyle="None"  Width="800" Height="800" KeyDown="Window_KeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" >
     <Window.Resources >
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"></cmd:CloseApplicationCommand>
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
@@ -21,46 +21,47 @@
                 <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" Stretch="Fill"  MediaOpening="Media_MediaOpening" />
             </Grid>
 
-                <Grid Grid.Row="1" x:Name="vizualizationGrid">
-                
+            <Grid Grid.Row="1" x:Name="vizualizationGrid">
+
                 <Ellipse    Height="35"   Stroke="Black"  StrokeThickness="8" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" >
-                        <Ellipse.Width>
-                            35
-                        </Ellipse.Width>
-                        <Ellipse.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform >
-                                    <TranslateTransform.X>
-                                        <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                            <Binding Path="Xpos" UpdateSourceTrigger="PropertyChanged"></Binding>
-                                            <Binding Path="ActualWidth" ElementName="vizualizationGrid"/>
-                                        </MultiBinding>
-                                    </TranslateTransform.X>
-                                    <TranslateTransform.Y>
-                                        <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                            <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
-                                            <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
-                                        </MultiBinding>
-                                    </TranslateTransform.Y>
-                                </TranslateTransform>
-                            </TransformGroup>
-                        </Ellipse.RenderTransform>
-                    </Ellipse>
-                <Image x:Name="test2" Stretch="Uniform"  Style="{StaticResource VizualizeImage}"/>
+                    <Ellipse.Width>
+                        35
+                    </Ellipse.Width>
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform >
+                                <TranslateTransform.X>
+                                    <MultiBinding Converter="{StaticResource CoordinatesConverter}">
+                                        <Binding Path="Xpos" UpdateSourceTrigger="PropertyChanged"></Binding>
+                                        <Binding Path="ActualWidth" ElementName="vizualizationGrid"/>
+                                    </MultiBinding>
+                                </TranslateTransform.X>
+                                <TranslateTransform.Y>
+                                    <MultiBinding Converter="{StaticResource CoordinatesConverter}">
+                                        <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
+                                        <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
+                                    </MultiBinding>
+                                </TranslateTransform.Y>
+                            </TranslateTransform>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Image x:Name="test2" Stretch="Uniform"  Style="{StaticResource VizualizeImage}" HorizontalAlignment="Stretch"   />
             </Grid>
 
-               
-                
-            
+
+
+
 
             <GridSplitter></GridSplitter>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*">
-                </RowDefinition>
+          
+                <Grid.RowDefinitions>
                 <RowDefinition Height="2.5*">
+                </RowDefinition>
+                <RowDefinition Height="3.5*">
                 </RowDefinition>
             </Grid.RowDefinitions>
         </Grid>
