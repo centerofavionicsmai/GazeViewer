@@ -32,7 +32,7 @@ namespace GazeViewer.Windows
 
         private bool timeSliderClick;
         DispatcherTimer timerVideoTime = new DispatcherTimer();
-
+        private TimeSpan LastTimePosition = TimeSpan.Zero;
 
         public MenuWindow()
         {
@@ -116,8 +116,10 @@ namespace GazeViewer.Windows
         private  async void staticVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
         {
             Debug.WriteLine("MediaOpened");
-
+            staticVideo.MediaClosed += StaticVideo_MediaClosed;
             TotalTime = staticVideo.NaturalDuration.Value;
+          
+         
             timeSlider.Maximum = staticVideo.NaturalDuration.Value.TotalMilliseconds;
             VideoDurationText.Text = $"{TotalTime} - {timeSlider.Maximum}.msec";
             timerVideoTime.Interval = TimeSpan.FromMilliseconds(10);
@@ -126,9 +128,17 @@ namespace GazeViewer.Windows
             timeSlider.AddHandler(MouseDownEvent,
                       new MouseButtonEventHandler(timeSlider_MouseLeftButtonUp),
                       true);
+         
         }
 
-          private async void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void StaticVideo_MediaClosed(object sender, EventArgs e)
+        {
+            
+           
+
+        }
+
+        private async void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
         
         staticVideo.Position = TimeSpan.FromMilliseconds(timeSlider.Value);
@@ -138,19 +148,26 @@ namespace GazeViewer.Windows
         }
 
         void timer_Tick(object sender, EventArgs e)
-        { 
+        {
+           
             if (!timeSliderClick)
             {
                 timeSlider.Value = staticVideo.Position.TotalMilliseconds;
                 timerVideoTime.Interval = TimeSpan.FromMilliseconds(1);
+                
+                
                 return;
             }
             if (timeSliderClick)
             {
                 staticVideo.Position = TimeSpan.FromMilliseconds(timeSlider.Value);
                 timeSliderClick = false;
+                if (!staticVideo.IsPaused)
+                    staticVideo.Pause();
+                
                 return;
             }
+
           
         }
 
@@ -165,6 +182,6 @@ namespace GazeViewer.Windows
             }
         }
 
-      
+     
     }
 }

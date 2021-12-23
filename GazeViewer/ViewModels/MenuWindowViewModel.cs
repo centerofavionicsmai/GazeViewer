@@ -419,13 +419,14 @@ namespace GazeViewer.ViewModels
 
         private async void VizuaLizeLogsThread(object p)
         {
+            DateTime dateTime = new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
             while (true){
                 if (GazePointSliderValue < CsvFileGazePoints.Count)
                 {
                     try
                     {
                         TGazePoint = CsvFileGazePoints[GazePointSliderValue];
-                        DateTime dateTime = new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
+                      
                         GazePointDateTime = dateTime.AddMilliseconds(CsvFileGazePoints[GazePointSliderValue].TimeStamp).ToLocalTime();
 
                         double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
@@ -447,12 +448,13 @@ namespace GazeViewer.ViewModels
         {
 
             UdpClient udpClient = new UdpClient(5444);
+            var doubleArray = new double[sizeof(double)*7 / 8];
             while (true)
             { 
                 var result = await udpClient.ReceiveAsync();
                 CurrentDataTime = DateTime.Now;
                 UDPBytes = result.Buffer;
-                var doubleArray = new double[UDPBytes.Length / 8];
+                
                 Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
                 Xpos = doubleArray[0];
                 Ypos = doubleArray[1];
