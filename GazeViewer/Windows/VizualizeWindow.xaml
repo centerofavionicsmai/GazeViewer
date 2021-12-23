@@ -18,7 +18,7 @@
     <Grid>
         <Grid >
             <Grid  Grid.Row="0">
-                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" Stretch="Fill"  MediaOpening="Media_MediaOpening" />
+                <ffme:MediaElement x:Name="Media" Loaded="Media_Loaded" Stretch="Fill"  MediaOpening="Media_MediaOpening" MediaInitializing="Media_MediaInitializing" />
             </Grid>
 
             <Grid Grid.Row="1" x:Name="vizualizationGrid">

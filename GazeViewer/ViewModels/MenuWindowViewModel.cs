@@ -430,12 +430,12 @@ namespace GazeViewer.ViewModels
                     {
                         TGazePoint = CsvFileGazePoints[GazePointSliderValue];
                         DateTime dateTime = new DateTime(1970, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc);
-                        GazePointDateTime = dateTime.AddSeconds(CsvFileGazePoints[GazePointSliderValue].TimeStamp).ToLocalTime();
+                        GazePointDateTime = dateTime.AddMilliseconds(CsvFileGazePoints[GazePointSliderValue].TimeStamp).ToLocalTime();
 
                         double ts = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;//Общее время сессии
                         double currentPost = CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints[GazePointSliderValue].TimeStamp;
 
-                        SessionTime = TimeSpan.FromSeconds(Math.Abs(currentPost - ts));
+                        SessionTime = TimeSpan.FromMilliseconds(Math.Abs(currentPost - ts));
                     }
                     catch
                     {

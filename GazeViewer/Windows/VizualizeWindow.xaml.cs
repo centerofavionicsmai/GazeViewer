@@ -34,6 +34,15 @@ namespace GazeViewer.Windows
               await Media.Open(new Uri("udp://127.0.0.1:5222"));
         }
 
+        private void Media_MediaInitializing(object sender, Unosquare.FFME.Common.MediaInitializingEventArgs e)
+        {
+            e.Configuration.ForcedInputFormat = "h264";
+            e.Configuration.GlobalOptions.FlagNoBuffer = true;
+
+        }
+
+
+
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
         {
             e.Options.IsTimeSyncDisabled = true;
@@ -55,5 +64,7 @@ namespace GazeViewer.Windows
             base.OnMouseLeftButtonDown(e);
             this.DragMove();
         }
+
+      
     }
 }

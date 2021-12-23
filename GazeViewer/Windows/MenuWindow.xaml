@@ -180,6 +180,7 @@
             <TabItem Header="Визуализация">
 
                 <Grid  x:Name="vizualizationGrid" Style="{StaticResource GridPositionStyle}">
+                    <Image  x:Name="test1" Style="{StaticResource VizualizeImage}" MouseDown="test1_MouseDown" />
                     <Grid ShowGridLines="False"  >
                         <Grid.RowDefinitions>
                             <RowDefinition  Height="2*"></RowDefinition>
@@ -209,7 +210,7 @@
                     </Grid>
 
 
-                    <Image  x:Name="test1" Style="{StaticResource VizualizeImage}" MouseDown="test1_MouseDown" />
+                 
                     <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="25"  Stroke="Black"  Width="25" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150" >
 
 
