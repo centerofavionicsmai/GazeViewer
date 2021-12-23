@@ -29,7 +29,8 @@ namespace GazeViewer.Windows
 
         private async void Media_Loaded(object sender, RoutedEventArgs e)
         {
-            Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
+            Media.RendererOptions.AudioDisableSync = false;
+            Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.WriteableBitmap; 
             Media.RendererOptions.UseLegacyAudioOut = true;
             //Media.VideoFrameDecoded += Media_VideoFrameDecoded;
               await Media.Open(new Uri("udp://127.0.0.1:5222"));
@@ -44,7 +45,8 @@ namespace GazeViewer.Windows
             e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.Zero;
             e.Configuration.GlobalOptions.EnableReducedBuffering = true;
             e.Configuration.GlobalOptions.FlagEnableFastSeek = true;
-            e.Configuration.GlobalOptions.ProbeSize = 320000;
+
+         
         }
 
 
@@ -56,6 +58,7 @@ namespace GazeViewer.Windows
             e.Options.UseParallelDecoding = true;
             e.Options.UseParallelRendering = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
+            e.Options.IsSubtitleDisabled = true;
         }
 
        

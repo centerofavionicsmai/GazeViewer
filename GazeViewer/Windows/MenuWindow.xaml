@@ -126,7 +126,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Визуализация">
+            <TabItem Header="Визуализация" IsSelected="True">
                 <Grid  x:Name="vizualizationGrid" Style="{StaticResource GridPositionStyle}">
                     <Image  x:Name="test1" Style="{StaticResource VizualizeImage}" MouseDown="test1_MouseDown" />
                     <Grid ShowGridLines="False"  >
@@ -229,7 +229,7 @@
 
             </TabItem>
 
-            <TabItem Header="Просмотр видео записи">
+            <TabItem Header="Просмотр видео записи"   >
                 <Grid Style="{StaticResource GridPositionStyle}">
 
                     <Grid>
