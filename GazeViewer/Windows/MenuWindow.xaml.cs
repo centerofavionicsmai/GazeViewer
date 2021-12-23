@@ -109,7 +109,6 @@ namespace GazeViewer.Windows
             {
                 await staticVideo.Open(new Uri(Properties.videoFilePath));
             }
-
         }
 
 
@@ -154,8 +153,6 @@ namespace GazeViewer.Windows
             {
                 timeSlider.Value = staticVideo.Position.TotalMilliseconds;
                 timerVideoTime.Interval = TimeSpan.FromMilliseconds(1);
-                
-                
                 return;
             }
             if (timeSliderClick)
