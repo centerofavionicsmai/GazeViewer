@@ -27,7 +27,7 @@ namespace GazeViewer.Windows
     /// Interaction logic for MenuWindow.xaml
     /// </summary>
     
-    public partial class MenuWindow : Window
+    public  partial class MenuWindow : Window
     {
 
         private bool timeSliderClick;
@@ -107,13 +107,17 @@ namespace GazeViewer.Windows
         {
             if (Properties.videoFilePath != string.Empty)
             {
-              //  await staticVideo.Open(new Uri(Properties.videoFilePath));
-               // await staticVideo.Play();
+
+                await staticVideo.Open(new Uri(Properties.videoFilePath));
+
             }
+
         }
 
-        private void staticVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+
+        private  async void staticVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
         {
+            Debug.WriteLine("MediaOpened");
 
             TotalTime = staticVideo.NaturalDuration.Value;
             timeSlider.Maximum = staticVideo.NaturalDuration.Value.TotalMilliseconds;
@@ -121,7 +125,6 @@ namespace GazeViewer.Windows
             timerVideoTime.Interval = TimeSpan.FromMilliseconds(10);
             timerVideoTime.Tick += new EventHandler(timer_Tick);
             timerVideoTime.Start();
-
             timeSlider.AddHandler(MouseDownEvent,
                       new MouseButtonEventHandler(timeSlider_MouseLeftButtonUp),
                       true);
@@ -137,8 +140,7 @@ namespace GazeViewer.Windows
         }
 
         void timer_Tick(object sender, EventArgs e)
-        {
-
+        { 
             if (!timeSliderClick)
             {
                 timeSlider.Value = staticVideo.Position.TotalMilliseconds;
@@ -164,5 +166,7 @@ namespace GazeViewer.Windows
                     staticVideo.Play();
             }
         }
+
+      
     }
 }
