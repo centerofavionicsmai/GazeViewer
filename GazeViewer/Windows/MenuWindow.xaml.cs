@@ -39,26 +39,17 @@ namespace GazeViewer.Windows
             InitializeComponent();
           
         }
-        private TimeSpan TotalTime;
 
-
-        private async void Media_Loaded(object sender, RoutedEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-
-           
-            //Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.InteropBitmap;
-            //Media.RendererOptions.UseLegacyAudioOut = true;
-            //Media.VideoFrameDecoded += Media_VideoFrameDecoded;
-         //   await Media.Open(new Uri("udp://127.0.0.1:5222"));
-
-            // await Media.Close();
+            base.OnClosed(e);
+            Application.Current.Shutdown();
         }
+        private TimeSpan TotalTime;
 
         private void Media_VideoFrameDecoded(object sender, Unosquare.FFME.Common.FrameDecodedEventArgs e)
         {
-            var a = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Debug.WriteLine($"First Decode cadr {a}");
-         //   Media.VideoFrameDecoded -= Media_VideoFrameDecoded;
+     
         }
 
         private void Media_MediaOpening(object sender, Unosquare.FFME.Common.MediaOpeningEventArgs e)
@@ -79,18 +70,13 @@ namespace GazeViewer.Windows
             }
            
            
-    }
+        }
 
         private void Media_MediaInitializing(object sender, Unosquare.FFME.Common.MediaInitializingEventArgs e)
         {
             e.Configuration.ForcedInputFormat = "h264";
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
      
-        }
-
-        private void GazePoint_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         private void test1_MouseDown(object sender, MouseButtonEventArgs e)
@@ -128,6 +114,7 @@ namespace GazeViewer.Windows
 
         private void staticVideo_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
         {
+
             TotalTime = staticVideo.NaturalDuration.Value;
             timeSlider.Maximum = staticVideo.NaturalDuration.Value.TotalMilliseconds;
             VideoDurationText.Text = $"{TotalTime} - {timeSlider.Maximum}.msec";
@@ -176,8 +163,6 @@ namespace GazeViewer.Windows
                 else
                     staticVideo.Play();
             }
-
-
         }
     }
 }

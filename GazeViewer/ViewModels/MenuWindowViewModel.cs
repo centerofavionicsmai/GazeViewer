@@ -238,14 +238,17 @@ namespace GazeViewer.ViewModels
         private void OpenLogFileCommandExecute(object p)
         {
             string filePath = DialogService.OpenFileDialog();
-            if (filePath.EndsWith(".csv"))
+            if (filePath != null && filePath != string.Empty)
             {
-                _CsvLogsFilePath = filePath;
-            }
-            else if (filePath.EndsWith(".avi"))
-            {
-                _VideoStreamPath = filePath;
-                Properties.videoFilePath = _VideoStreamPath;
+                if (filePath.EndsWith(".csv"))
+                {
+                    _CsvLogsFilePath = filePath;
+                }
+                else if (filePath.EndsWith(".avi"))
+                {
+                    _VideoStreamPath = filePath;
+                    Properties.videoFilePath = _VideoStreamPath;
+                }
             }
         }
 
@@ -390,7 +393,7 @@ namespace GazeViewer.ViewModels
             {
                     var doubleArray = new double[7];
                     Buffer.BlockCopy(UDPBytes, 0, doubleArray, 0, UDPBytes.Length);
-                if (doubleArray[6] != gazePoint.TimeStamp)
+                if (doubleArray[0] != gazePoint.XPoint && doubleArray[1] != gazePoint.YPoint)
                 {
                     gazePoint.XPoint = doubleArray[0];
                     gazePoint.YPoint = doubleArray[1];
@@ -402,8 +405,17 @@ namespace GazeViewer.ViewModels
                 
                 if (token.IsCancellationRequested)
                 {
-                    process.StandardInput.WriteLine("q");
-                    return;
+                    try
+                    {
+                        process.StandardInput.WriteLine("q");
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                   
+                   
+              
                 }
                 Thread.Sleep(LogsDelayFilter);
             }

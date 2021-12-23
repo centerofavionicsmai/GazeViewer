@@ -11,7 +11,7 @@
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:media="https://github.com/JohanLarsson/Gu.Wpf.Media"
         mc:Ignorable="d"
-        Title="{Binding Title}"  Height="660" Width="800" ResizeMode="CanResizeWithGrip" KeyDown="Window_KeyDown"
+        Title="{Binding Title}"  Height="620" Width="800" ResizeMode="CanResizeWithGrip" KeyDown="Window_KeyDown"
         
         >
     <Window.DataContext>
@@ -72,7 +72,7 @@
                     </Grid>
 
 
-                    <Grid  x:Name="tab1Grid" Margin="0,0,0,150">
+                    <Grid  x:Name="tab1Grid" Margin="0,0,0,105">
                         <Image x:Name="deleteme" Style="{StaticResource VizualizeImage}" MouseDown="deleteme_MouseDown" />
 
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
@@ -133,8 +133,8 @@
 
 
 
-                    <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Style="{StaticResource GridPositionStyle}">
-                        <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,50" >
+                    <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Margin="0,0,0,30">
+                        <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,10" >
                             <MenuItem Header="Показать тепловую карту"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
                             <MenuItem Header="Скрыть  тепловую карту"  Command="{Binding  ClearGazePointListCommand}" ></MenuItem>
                             <TextBox Width="75" Text="{Binding HeatMapIntensivity}" ></TextBox>
@@ -323,7 +323,7 @@
                     <Grid>
                         
 
-                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened"  />
+                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded"  MediaOpened="staticVideo_MediaOpened"  />
 
 
 
