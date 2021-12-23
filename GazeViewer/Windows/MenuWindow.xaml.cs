@@ -122,7 +122,7 @@ namespace GazeViewer.Windows
             if (Properties.videoFilePath != string.Empty)
             {
                 await staticVideo.Open(new Uri(Properties.videoFilePath));
-                await staticVideo.Play();
+               // await staticVideo.Play();
             }
         }
 
@@ -156,6 +156,7 @@ namespace GazeViewer.Windows
             {
                 timeSlider.Value = staticVideo.Position.TotalMilliseconds;
                 timerVideoTime.Interval = TimeSpan.FromMilliseconds(1);
+                return;
             }
             if (timeSliderClick)
             {
@@ -163,7 +164,20 @@ namespace GazeViewer.Windows
                 timeSliderClick = false;
                 return;
             }
+          
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                if (!staticVideo.IsPaused)
+                    staticVideo.Pause();
+                else
+                    staticVideo.Play();
+            }
+
+
+        }
     }
 }

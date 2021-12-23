@@ -153,19 +153,7 @@ namespace GazeViewer.ViewModels
 
         #region SliderSettings
         //Int используется специально, так как мы идем по List<GazePoint>
-        private double _MaxSliderValue;
-        public double MaxSliderValue
-        {
-            get => _MaxSliderValue;
-            set => Set(ref _MaxSliderValue, value);
-        }
-
-        private int _MinSliderValue = 0;
-        public int MinSliderValue
-        {
-            get => _MinSliderValue;
-            set => Set(ref _MinSliderValue, value);
-        }
+       
 
         private PointCollection _GazePlot;
         public PointCollection GazePlot
@@ -249,15 +237,16 @@ namespace GazeViewer.ViewModels
         private bool CanOpenLogFileCommandExecuted(object p) => true;
         private void OpenLogFileCommandExecute(object p)
         {
-            if (p.ToString() == "videofilepath")
+            string filePath = DialogService.OpenFileDialog();
+            if (filePath.EndsWith(".csv"))
             {
-
-                _VideoStreamPath = DialogService.OpenFileDialog();
-                //   Debug.WriteLine(_VideoStreamPath);
+                _CsvLogsFilePath = filePath;
+            }
+            else if (filePath.EndsWith(".avi"))
+            {
+                _VideoStreamPath = filePath;
                 Properties.videoFilePath = _VideoStreamPath;
             }
-            else if (p.ToString() == "logsfilepath")
-                _CsvLogsFilePath = DialogService.OpenFileDialog();
         }
 
 
@@ -298,8 +287,8 @@ namespace GazeViewer.ViewModels
          
             CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
             double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
-            MaxSliderValue = CsvFileGazePoints.Count;
-            MinSliderValue = 0;
+            //MaxSliderValue = CsvFileGazePoints.Count;
+            //MinSliderValue = 0;
         }
 
         public ICommand ClearGazePointListCommand { get; }
@@ -423,7 +412,7 @@ namespace GazeViewer.ViewModels
         private async void VizuaLizeLogsThread(object p)
         {
             while (true){
-                if (SliderValue < CsvFileGazePoints.Count)
+                if (GazePointSliderValue < CsvFileGazePoints.Count)
                 {
                     try
                     {
@@ -465,7 +454,8 @@ namespace GazeViewer.ViewModels
         private void StartVideoRecording(object p)
         {
             CancellationToken ts = (CancellationToken)p;
-            string argument = @"-r 60 -f gdigrab  -i title=VizualizeWindow -vf drawtext=fontfile=/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf:text='%{localtime}':fontcolor=yellow@1:x=7:y=50 -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice" +     $" Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
+          //  string temp = "timestamp\:%{pts\:gmtime\:0\:% H\\\:% M\\\:% S";
+            string argument = @"-r 60 -f gdigrab  -i title=VizualizeWindow -vf drawtext=fontfile=/usr/share/fonts/truetype/freefont/TimesNewRoam.ttf:text='%{localtime}':fontcolor=yellow@1:x=2:y=35 -vcodec libx264 -preset ultrafast -draw_mouse 0  -tune zerolatency -threads 8 -thread_type slice" +   $" Video/{DateTime.Now.ToString("yyyy.MM.dd.HH-mm.ss", CultureInfo.InvariantCulture)}.avi";
             using (process = new Process())
             {
                 process.StartInfo.UseShellExecute = false;
