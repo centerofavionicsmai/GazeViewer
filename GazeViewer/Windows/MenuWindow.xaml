@@ -11,7 +11,7 @@
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:media="https://github.com/JohanLarsson/Gu.Wpf.Media"
         mc:Ignorable="d"
-        Title="{Binding Title}"  Height="800" Width="800" ResizeMode="CanResizeWithGrip"
+        Title="{Binding Title}"  Height="660" Width="800" ResizeMode="CanResizeWithGrip" KeyDown="Window_KeyDown"
         
         >
     <Window.DataContext>
@@ -323,7 +323,7 @@
                     <Grid>
                         
 
-                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened" />
+                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded" MediaOpened="staticVideo_MediaOpened"  />
 
 
 
