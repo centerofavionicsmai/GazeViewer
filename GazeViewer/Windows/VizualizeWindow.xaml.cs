@@ -56,8 +56,6 @@ namespace GazeViewer.Windows
             e.Options.UseParallelDecoding = true;
             e.Options.UseParallelRendering = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
-        
-         
         }
 
        

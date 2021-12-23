@@ -376,7 +376,7 @@ namespace GazeViewer.ViewModels
                //   StartVideoRecordingCommand = new ActionCommand(StartVideoRecordingCommandExecute, CanStartVideoRecordingCommandExecuted);
             #endregion
 
-               _CsvFileGazePoints = new ObservableCollection<GazePoint>();
+            _CsvFileGazePoints = new ObservableCollection<GazePoint>();
             GazePlot = new PointCollection();
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(VizualizeGazePointThread));
@@ -400,8 +400,6 @@ namespace GazeViewer.ViewModels
                     gazePoint.TimeStamp = doubleArray[6];
                     writer.WriteGazePoint(gazePoint);
                 }
-               
-         
                 
                 if (token.IsCancellationRequested)
                 {
@@ -413,9 +411,7 @@ namespace GazeViewer.ViewModels
                     {
                         return;
                     }
-                   
-                   
-              
+             
                 }
                 Thread.Sleep(LogsDelayFilter);
             }

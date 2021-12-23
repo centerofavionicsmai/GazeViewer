@@ -107,9 +107,7 @@ namespace GazeViewer.Windows
         {
             if (Properties.videoFilePath != string.Empty)
             {
-
                 await staticVideo.Open(new Uri(Properties.videoFilePath));
-
             }
 
         }
@@ -130,8 +128,8 @@ namespace GazeViewer.Windows
                       true);
         }
 
-    private async void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
+          private async void timeSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
         
         staticVideo.Position = TimeSpan.FromMilliseconds(timeSlider.Value);
         timeSlider.Value = staticVideo.Position.TotalMilliseconds;

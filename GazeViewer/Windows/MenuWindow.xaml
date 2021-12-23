@@ -22,12 +22,8 @@
         <cmd:OpenFileDialogCommand x:Key="OpenFileDialogCommand"></cmd:OpenFileDialogCommand>
         <conv:CoordinatesConverter x:Key="CoordinatesConverter"/>
         <conv:RelativeConverter    x:Key="RelativeConverter" />
-
-
-
-
-
     </Window.Resources>
+    
     <Grid>
         <Menu x:Name="HeaderMenu" Height="20" VerticalAlignment="Top">
             <MenuItem Header="Открыть файл" Command="{Binding  OpenLogFileCommand }" CommandParameter="logsfilepath"/>
@@ -38,8 +34,6 @@
         </Menu>
 
         <TabControl  Margin="0,20,0,0">
-
-
             <TabItem Header="Просмотр" Width="100">
 
                 <Grid>
@@ -53,7 +47,6 @@
                             <RowDefinition Height="2*"></RowDefinition>
                             <RowDefinition Height="2*"></RowDefinition>
                             <RowDefinition Height="2*"></RowDefinition>
-
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions >
                             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -70,11 +63,8 @@
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                     </Grid>
-
-
                     <Grid  x:Name="tab1Grid" Margin="0,0,0,105">
                         <Image x:Name="deleteme" Style="{StaticResource VizualizeImage}" MouseDown="deleteme_MouseDown" />
-
                         <ItemsControl    ItemsSource  ="{Binding  CsvFileGazePoints}" Margin="0,0,0,0"  VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -87,77 +77,42 @@
                                     <Ellipse  Width="15" Height="15" Fill="{Binding SolidColorBrush}" Opacity="1" RenderTransformOrigin="0.5,0.5" >
                                         <Ellipse.RenderTransform>
                                             <TransformGroup>
-
                                                 <ScaleTransform/>
                                                 <SkewTransform/>
                                                 <RotateTransform/>
                                                 <TranslateTransform>
-
                                                     <TranslateTransform.X>
-
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                             <Binding Path="XPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualWidth"/>
-
                                                         </MultiBinding>
                                                     </TranslateTransform.X>
                                                     <TranslateTransform.Y>
-
                                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                                             <Binding Path="YPoint"/>
                                                             <Binding ElementName="tab1Grid" Path="ActualHeight"/>
-
                                                         </MultiBinding>
                                                     </TranslateTransform.Y>
-
                                                 </TranslateTransform>
                                             </TransformGroup>
                                         </Ellipse.RenderTransform>
-
-
-
-
-
                                     </Ellipse>
-
-
-
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-
-
                         </ItemsControl>
-
                     </Grid>
-
-
-
-
                     <Grid x:Name="MenuGrid" Height="100" VerticalAlignment="Bottom" Margin="0,0,0,30">
                         <Menu x:Name="MenuItems" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,10" >
                             <MenuItem Header="Показать тепловую карту"  Command="{Binding ReadCsvLogsCommand}" ></MenuItem>
                             <MenuItem Header="Скрыть  тепловую карту"  Command="{Binding  ClearGazePointListCommand}" ></MenuItem>
                             <TextBox Width="75" Text="{Binding HeatMapIntensivity}" ></TextBox>
                         </Menu>
-
-
-
-
-
-                       
-                       
                     </Grid>
-
-
                 </Grid>
             </TabItem>
 
             <TabItem Header="График" Width="100">
                 <Grid Style="{StaticResource GridPositionStyle}">
-
-
-
-
                     <!--<oxy:Plot >
                         <oxy:Plot.Axes>
                             <oxy:LinearAxis Position="Left"/>
@@ -169,16 +124,9 @@
                                         DataFieldY="Y"/>
                     </oxy:Plot>-->
                 </Grid>
-
-
-
-
-
-
             </TabItem>
 
             <TabItem Header="Визуализация">
-
                 <Grid  x:Name="vizualizationGrid" Style="{StaticResource GridPositionStyle}">
                     <Image  x:Name="test1" Style="{StaticResource VizualizeImage}" MouseDown="test1_MouseDown" />
                     <Grid ShowGridLines="False"  >
@@ -191,7 +139,6 @@
                             <RowDefinition Height="2*"></RowDefinition>
                             <RowDefinition Height="2*"></RowDefinition>
                             <RowDefinition Height="2*"></RowDefinition>
-
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions >
                             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -208,12 +155,7 @@
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                     </Grid>
-
-
-                 
                     <Ellipse x:Name="GazePoint"  HorizontalAlignment="Center" Height="25"  Stroke="Black"  Width="25" RenderTransformOrigin="0.5,0.5" Margin="0,150,0,150" >
-
-
                         <Ellipse.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -227,37 +169,19 @@
                                         </MultiBinding>
                                     </TranslateTransform.X>
                                     <TranslateTransform.Y>
-
                                         <MultiBinding Converter="{StaticResource CoordinatesConverter}">
                                             <Binding Path="Ypos" UpdateSourceTrigger="PropertyChanged"></Binding>
                                             <Binding Path="ActualHeight" ElementName="vizualizationGrid"/>
                                         </MultiBinding>
                                     </TranslateTransform.Y>
-
-
-
-
                                 </TranslateTransform>
-
-
-
-
                             </TransformGroup>
                         </Ellipse.RenderTransform>
                     </Ellipse>
-
-
-
-
-
-
-
-
                 </Grid>
             </TabItem>
-          
-            <TabItem Header="Визуализация + видео"   >
 
+            <TabItem Header="Визуализация + видео"   >
                 <Grid   Style="{StaticResource GridPositionStyle}">
                     <Menu Margin="10">
                         <MenuItem Header="Начать запись" Command="{Binding StartWriteLogsCommand}"></MenuItem>
@@ -266,14 +190,8 @@
                         <MenuItem Header="Открыть окно" Command="{Binding OpenVizualizeWindowCommand}"></MenuItem>
                         <MenuItem Header="Закрыть окно" Command="{Binding CloseVizualizeWindowCommand}"></MenuItem>
                     </Menu>
-                    
-                    
-                            
                 </Grid>
             </TabItem>
-
-          
-
 
             <TabItem Header="Просмотр записи">
                 <Grid x:Name="testGrid" Style="{StaticResource GridPositionStyle}">
@@ -297,15 +215,8 @@
                                 </TranslateTransform>
                             </Ellipse.RenderTransform>
                         </Ellipse>
-
-
-
-
-
                     </Grid>
-
-
-
+                    
                     <Slider   VerticalAlignment="Bottom"  Value="{Binding GazePointSliderValue}"  Minimum="0" Maximum="{Binding CsvFileGazePoints.Count}"   />
                     <Menu  VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" Margin="30,30,30,25" >
                         <TextBlock Width="150" Text="{Binding GazePointDateTime}"></TextBlock>
@@ -322,105 +233,20 @@
                 <Grid Style="{StaticResource GridPositionStyle}">
 
                     <Grid>
-                        
-
                         <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded"  MediaOpened="staticVideo_MediaOpened"/>
-
-
-
                         <Grid VerticalAlignment="Bottom" Height="50">
-                        <Menu >
-                            <MenuItem Header="открыть видео" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath"></MenuItem>
-                            <TextBlock  x:Name="CurrentSessionTime"  Text="{Binding SliderValue}"></TextBlock>
+                            <Menu >
+                                <MenuItem Header="открыть видео" Command="{Binding OpenLogFileCommand}" CommandParameter="videofilepath"></MenuItem>
+                                <TextBlock  x:Name="CurrentSessionTime"  Text="{Binding SliderValue}"></TextBlock>
 
-                            <TextBlock  x:Name="VideoDurationText"></TextBlock>
-                        </Menu>
-                        <Slider x:Name="timeSlider" Value="{Binding SliderValue}" VerticalAlignment="Bottom" Margin="0,0,0,10"></Slider>
+                                <TextBlock  x:Name="VideoDurationText"></TextBlock>
+                            </Menu>
+                            <Slider x:Name="timeSlider" Value="{Binding SliderValue}" VerticalAlignment="Bottom" Margin="0,0,0,10"></Slider>
                         </Grid>
                     </Grid>
-
-                    <!--<Grid Grid.Row="0">
-
-                        <MediaElement Source="{Binding VideoStreamPath }" x:Name="media" ScrubbingEnabled="True"  MediaOpened="media_MediaOpened" Loaded="media_Loaded_1" ></MediaElement>
-
-
-
-
-
-
-                    </Grid>
-                    <Grid Grid.Row="1" x:Name="rVideoGrid" Margin="0,0,0,50">
-                            <Image Style="{StaticResource VizualizeImage}"/>
-                            <Ellipse Width="15" Height="15" Fill="Black" RenderTransformOrigin="0.5,0.5">
-                                <Ellipse.RenderTransform>
-                                    <TranslateTransform>
-                                        <TranslateTransform.X>
-                                            <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                <Binding Path="TGazePoint.XPoint" ></Binding>
-                                                <Binding Path="ActualWidth" ElementName="rVideoGrid"/>
-                                            </MultiBinding>
-                                        </TranslateTransform.X>
-                                        <TranslateTransform.Y>
-                                            <MultiBinding Converter="{StaticResource CoordinatesConverter}">
-                                                <Binding Path="TGazePoint.YPoint" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged"></Binding>
-                                                <Binding Path="ActualHeight" ElementName="rVideoGrid"/>
-                                            </MultiBinding>
-                                        </TranslateTransform.Y>
-                                    </TranslateTransform>
-                                </Ellipse.RenderTransform>
-                            </Ellipse>
-
-
-
-
-                        </Grid>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
-                        <RowDefinition Height="4*"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-
-
-
-
-
-                
-                  
-
-
-
-
-                   
-                </Grid>
-                    <Grid Height="50" VerticalAlignment="Bottom">
-                    
-                        
-                    </Grid>-->
                 </Grid>
             </TabItem>
-
-
-
-
         </TabControl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <StatusBar x:Name="ProgressBar" VerticalAlignment="Bottom" Height="30" Margin="10">
             <StatusBarItem>
@@ -433,9 +259,5 @@
                 <TextBlock Width="150" Text="{Binding CurrentDataTime}"></TextBlock>
             </StatusBarItem>
         </StatusBar>
-
     </Grid>
-
-
-
 </Window>
