@@ -1,6 +1,7 @@
 ﻿using GazeViewer.Infastructure;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,9 @@ namespace GazeViewer.Windows
             e.Configuration.GlobalOptions.FlagIgnoreDts = true;
             e.Configuration.GlobalOptions.SeekToAny = true;
             e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.Zero;
+            e.Configuration.GlobalOptions.EnableReducedBuffering = true;
+            e.Configuration.GlobalOptions.FlagEnableFastSeek = true;
+            e.Configuration.GlobalOptions.ProbeSize = 320000;
         }
 
 
@@ -52,7 +56,11 @@ namespace GazeViewer.Windows
             e.Options.UseParallelDecoding = true;
             e.Options.UseParallelRendering = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
+        
+         
         }
+
+       
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

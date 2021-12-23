@@ -324,7 +324,7 @@
                     <Grid>
                         
 
-                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded"  MediaOpened="staticVideo_MediaOpened"  />
+                        <ffme:MediaElement Margin="0,0,0,80"   Stretch="Uniform" x:Name="staticVideo" LoadedBehavior="Play" UnloadedBehavior="Manual" Loaded="staticVideo_Loaded"  MediaOpened="staticVideo_MediaOpened"/>
 
 
 
