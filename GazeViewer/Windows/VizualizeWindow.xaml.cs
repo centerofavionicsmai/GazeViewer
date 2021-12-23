@@ -38,6 +38,11 @@ namespace GazeViewer.Windows
         {
             e.Configuration.ForcedInputFormat = "h264";
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
+            e.Configuration.GlobalOptions.FlagIgnoreDts = true;
+            e.Configuration.GlobalOptions.SeekToAny = true;
+            e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.Zero;
+            e.Configuration.GlobalOptions.FlagEnableFastSeek = true;
+       
 
         }
 
@@ -47,6 +52,8 @@ namespace GazeViewer.Windows
         {
             e.Options.IsTimeSyncDisabled = true;
             e.Options.IsAudioDisabled = true;
+            e.Options.UseParallelDecoding = true;
+            e.Options.UseParallelRendering = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
         }
 
