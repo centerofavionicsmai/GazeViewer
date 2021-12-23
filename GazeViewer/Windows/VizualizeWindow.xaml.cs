@@ -41,9 +41,6 @@ namespace GazeViewer.Windows
             e.Configuration.GlobalOptions.FlagIgnoreDts = true;
             e.Configuration.GlobalOptions.SeekToAny = true;
             e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.Zero;
-            e.Configuration.GlobalOptions.FlagEnableFastSeek = true;
-       
-
         }
 
 
@@ -61,7 +58,6 @@ namespace GazeViewer.Windows
         {
             if (e.Key == Key.Escape)
             {
-             
                 this.Hide();
             }
         }
