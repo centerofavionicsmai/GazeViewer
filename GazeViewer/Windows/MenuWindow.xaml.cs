@@ -107,7 +107,7 @@ namespace GazeViewer.Windows
         {
             if (Properties.videoFilePath != string.Empty)
             {
-                await staticVideo.Open(new Uri(Properties.videoFilePath));
+              //  await staticVideo.Open(new Uri(Properties.videoFilePath));
                // await staticVideo.Play();
             }
         }
