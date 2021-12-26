@@ -29,7 +29,8 @@ namespace GazeViewer.Windows
 
         private async void Media_Loaded(object sender, RoutedEventArgs e)
         {
-            Media.RendererOptions.AudioDisableSync = false;
+            Media.RendererOptions.AudioDisableSync = true;
+      
             Media.RendererOptions.VideoImageType = Unosquare.FFME.Common.VideoRendererImageType.WriteableBitmap; 
             Media.RendererOptions.UseLegacyAudioOut = true;
             //Media.VideoFrameDecoded += Media_VideoFrameDecoded;
@@ -38,7 +39,7 @@ namespace GazeViewer.Windows
 
         private void Media_MediaInitializing(object sender, Unosquare.FFME.Common.MediaInitializingEventArgs e)
         {
-            e.Configuration.ForcedInputFormat = "h264";
+         //   e.Conf
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
             e.Configuration.GlobalOptions.FlagIgnoreDts = true;
             e.Configuration.GlobalOptions.SeekToAny = true;
@@ -58,7 +59,10 @@ namespace GazeViewer.Windows
             e.Options.UseParallelDecoding = true;
             e.Options.UseParallelRendering = true;
             e.Options.MinimumPlaybackBufferPercent = 0;
+            e.Options.DecoderParams.EnableFastDecoding = true;
+            e.Options.DecoderParams.EnableLowDelayDecoding = true;
             e.Options.IsSubtitleDisabled = true;
+   
         }
 
        
