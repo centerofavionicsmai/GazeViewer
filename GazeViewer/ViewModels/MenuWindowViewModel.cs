@@ -33,12 +33,25 @@ using CsvHelper;
 using System.Media;
 using System.Windows.Controls;
 using Unosquare.FFME;
+using OxyPlot.Wpf;
+
 
 namespace GazeViewer.ViewModels
 {
     internal class MenuWindowViewModel : ViewModel
     {
         #region Properties
+        List<GazePoint> gazePoints = new List<GazePoint>();
+
+
+        private OxyPlot.PlotModel _PlotModel;
+        public OxyPlot.PlotModel PlotModel
+        {
+            get => _PlotModel;
+            set => Set(ref _PlotModel, value);
+        }
+       
+
         private double _ReceivedBytes;
         /// <summary>
         /// Количество получанных byte, для Live Версии
@@ -111,6 +124,9 @@ namespace GazeViewer.ViewModels
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+
+        private ObservableCollection<DataPoint> Points;
+
         private double _Xpos;
         public double Xpos
         {
@@ -124,10 +140,6 @@ namespace GazeViewer.ViewModels
             get => _MediaElement;
             set => Set(ref _MediaElement, value);
         }
-
-
-
-
 
         private double _Ypos;
         public double Ypos
@@ -268,7 +280,7 @@ namespace GazeViewer.ViewModels
             ///Warning in add CollectionMethod
             LogReader logReader = new LogReader();
 
-            List<GazePoint> gazePoints = new List<GazePoint>();
+            
             int i = 0;
             foreach (var logRecord in logReader.ReadCsvLog(_CsvLogsFilePath))
             {
@@ -281,7 +293,6 @@ namespace GazeViewer.ViewModels
                     double x = Double.Parse(lineData[0], CultureInfo.InvariantCulture);
                     double y = Double.Parse(lineData[1], CultureInfo.InvariantCulture);
                     double timeStamp = Double.Parse(lineData[2], CultureInfo.InvariantCulture);
-
                     gazePoints.Add(new GazePoint(x, y, Color.FromArgb(_HetMapIntensivity, 88, 171, 232), timeStamp));
 
                 }
@@ -290,9 +301,101 @@ namespace GazeViewer.ViewModels
          
             CsvFileGazePoints = new ObservableCollection<GazePoint>(gazePoints);
             double duration =   CsvFileGazePoints.Last().TimeStamp - CsvFileGazePoints.First().TimeStamp;
-            //MaxSliderValue = CsvFileGazePoints.Count;
-            //MinSliderValue = 0;
         }
+
+        public ICommand GenerateTimeGraphCommand { get; }
+        private bool CanGenerateTimeGraphCommandExecuted (object p)
+        {
+
+            
+                if (gazePoints.Count > 0)
+                {
+                    return true;
+                }
+                else return false;
+        }
+        private void GenerateTimeGraphCommandExecute (object p)
+        {
+     
+
+            // Weekday axis (horizontal)
+            _PlotModel.Axes.Add(new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+
+                // Key used for specifying this axis in the HeatMapSeries
+                Key = "WeekdayAxis",
+
+                // Array of Categories (see above), mapped to one of the coordinates of the 2D-data array
+                ItemsSource = new[]
+                {
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+    }
+            });
+
+            // Cake type axis (vertical)
+            _PlotModel.Axes.Add(new CategoryAxis
+            {
+                Position = AxisPosition.Left,
+                Key = "CakeAxis",
+                ItemsSource = new[]
+                {
+            "Apple cake",
+            "Baumkuchen",
+            "Bundt cake",
+            "Chocolate cake",
+            "Carrot cake"
+    }
+            });
+
+            // Color axis
+            _PlotModel.Axes.Add(new LinearColorAxis
+            {
+                Palette = OxyPalettes.Hot(200)
+            });
+
+            var rand = new Random();
+            var data = new double[7, 5];
+            for (int x = 0; x < 5; ++x)
+            {
+                for (int y = 0; y < 7; ++y)
+                {
+                    data[y, x] = rand.Next(0, 200) * (0.13 * (y + 1));
+                }
+            }
+
+            var heatMapSeries = new HeatMapSeries
+            {
+                X0 = 0,
+                X1 = 6,
+                Y0 = 0,
+                Y1 = 4,
+                XAxisKey = "WeekdayAxis",
+                YAxisKey = "CakeAxis",
+                RenderMethod = HeatMapRenderMethod.Rectangles, FontSize = 12,
+                LabelFontSize = 0.2, // neccessary to display the label
+                Data = data
+            };
+           
+            _PlotModel.Series.Add(heatMapSeries);
+
+
+
+            _PlotModel.InvalidatePlot(true);
+
+
+
+
+        }
+
+
+
 
         public ICommand ClearGazePointListCommand { get; }
         private bool CanClearGazePointListCommandExecuted(object p)
@@ -305,7 +408,8 @@ namespace GazeViewer.ViewModels
         }
         private void ClearGazePointListCommandExecute(object p)
         {
-            _CsvFileGazePoints.Clear();
+            gazePoints.Clear();
+            CsvFileGazePoints.Clear();
         }
 
         public ICommand StartWriteLogsCommand { get; }
@@ -373,9 +477,9 @@ namespace GazeViewer.ViewModels
             StopWriteLogsCommand = new ActionCommand(StopWriteLogsCommandExecute, CanStopWriteLogsCommandExecuted);
             OpenVizualizeWindowCommand = new ActionCommand(OpenVizualizeWindowCommandExecute, CanOpenVizualizeWindowCommandExecuted);
             CloseVizualizeWindowCommand = new ActionCommand(CloseVizualizeWindowCommandExecute, CanCloseVizualizeWindowCommandExecuted);
-               //   StartVideoRecordingCommand = new ActionCommand(StartVideoRecordingCommandExecute, CanStartVideoRecordingCommandExecuted);
+            GenerateTimeGraphCommand = new ActionCommand(GenerateTimeGraphCommandExecute, CanGenerateTimeGraphCommandExecuted);
             #endregion
-
+            _PlotModel = new PlotModel();
             _CsvFileGazePoints = new ObservableCollection<GazePoint>();
             GazePlot = new PointCollection();
 
@@ -442,7 +546,6 @@ namespace GazeViewer.ViewModels
 
             }
         }
-
 
         private async void VizualizeGazePointThread(object p)
         {

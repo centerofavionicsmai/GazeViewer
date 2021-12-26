@@ -20,7 +20,8 @@ using Unosquare.FFME;
 using Unosquare;
 using System.Windows.Threading;
 using GazeViewer.ViewModels;
-
+using OxyPlot;
+using OxyPlot.Series;
 namespace GazeViewer.Windows
 {
     /// <summary>
@@ -33,6 +34,8 @@ namespace GazeViewer.Windows
         private bool timeSliderClick;
         DispatcherTimer timerVideoTime = new DispatcherTimer();
         private TimeSpan LastTimePosition = TimeSpan.Zero;
+
+     
 
         public MenuWindow()
         {

@@ -7,7 +7,7 @@
         xmlns:vm ="clr-namespace:GazeViewer.ViewModels"
         xmlns:cmd ="clr-namespace:GazeViewer.Infastructure.Commands"
         xmlns:conv ="clr-namespace:GazeViewer.Infastructure.Converters"
-        xmlns:oxy = "http://oxyplot.org/wpf"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:media="https://github.com/JohanLarsson/Gu.Wpf.Media"
         mc:Ignorable="d"
@@ -112,17 +112,21 @@
             </TabItem>
 
             <TabItem Header="График" Width="100">
-                <Grid Style="{StaticResource GridPositionStyle}">
-                    <!--<oxy:Plot >
-                        <oxy:Plot.Axes>
-                            <oxy:LinearAxis Position="Left"/>
-                            <oxy:LinearAxis Position="Bottom"/>
-                        </oxy:Plot.Axes>
-                        <oxy:LineSeries Color="MediumPurple"
-                                ItemsSource="{Binding GazePoints}"
-                                        DataFieldX="X"
-                                        DataFieldY="Y"/>
-                    </oxy:Plot>-->
+                <Grid>
+                <Grid Style="{StaticResource GridPositionStyle}" Margin="0,0,0,75">
+                        <oxy:PlotView Model="{Binding PlotModel}">
+                            
+                        </oxy:PlotView>
+                  
+                </Grid>
+                <Grid Height="75" VerticalAlignment="Bottom">
+                        <Menu Height="25" VerticalAlignment="Top">
+                            <MenuItem Header="Построить график" Command="{Binding GenerateTimeGraphCommand}">
+                                
+                            </MenuItem>
+                            
+                        </Menu>
+                </Grid>
                 </Grid>
             </TabItem>
 
