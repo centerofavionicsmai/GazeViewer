@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using GazeViewer.Extensions;
 using GazeViewer.Models;
 using System;
 using System.Collections.Generic;

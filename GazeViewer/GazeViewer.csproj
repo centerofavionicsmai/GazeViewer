@@ -31,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="FFmpeg\" />
+    <Folder Include="Models\Extensions\" />
     <Folder Include="View\" />
     <Folder Include="Windows\Extensions\" />
   </ItemGroup>
