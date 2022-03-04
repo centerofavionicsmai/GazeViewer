@@ -163,9 +163,6 @@ namespace GazeViewer.ViewModels
             set => Set(ref _GazePlot, value);
 
         }
-
-
-
         private int _SliderValue;
         public int SliderValue
         {
